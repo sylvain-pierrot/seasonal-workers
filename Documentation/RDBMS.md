@@ -4,7 +4,7 @@
 
 ----
 
-SW works are managed by RDBMS (Relational DataBase Management System). This documentation aims to define the database schema.
+SW is managed by RDBMS (Relational DataBase Management System). This documentation aims to define the database schema.
 
 This System Information (SI) represents a comprehensive platform for both seasonal workers and recruiters alike. It serves as the backbone of our software infrastructure, facilitating the seamless connection between job seekers and employers in the seasonal work industry.
 
