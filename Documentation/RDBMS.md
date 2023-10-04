@@ -2,13 +2,26 @@
 
 <img alt="logo" src="https://seeklogo.com/images/A/amazon-database-logo-BAA099F432-seeklogo.com.png" width=80 />
 
-----
+---
 
 SW is managed by RDBMS (Relational DataBase Management System). This documentation aims to define the database schema.
 
 This System Information (SI) represents a comprehensive platform for both seasonal workers and recruiters alike. It serves as the backbone of our software infrastructure, facilitating the seamless connection between job seekers and employers in the seasonal work industry.
 
-<details open><summary>Conceptual Data Model</summary>
+## Data Modelling
+
+### Relationship Syntax
+
+| Value (left) | Value (right) | Meaning                       |
+| :----------: | :-----------: | ----------------------------- |
+|    `\|o`     |     `o\|`     | Zero or one                   |
+|    `\|\|`    |    `\|\|`     | Exactly one                   |
+|     `}o`     |     `o{`      | Zero or more (no upper limit) |
+|    `}\|`     |     `\|{`     | One or more (no upper limit)  |
+
+### Relationship diagrams
+
+<details><summary>Conceptual Data Model</summary>
 
 ```mermaid
 ---
