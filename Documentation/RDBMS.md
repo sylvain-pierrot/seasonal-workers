@@ -21,7 +21,9 @@ This System Information (SI) represents a comprehensive platform for both season
 
 ### Relationship diagrams
 
-<details><summary>Conceptual Data Model</summary>
+The database schema design follows the principles of the **third normal form (3NF)**. This approach is employed to reduce data duplication, prevent data anomalies, ensure referential integrity, and simplify data management within the database.
+
+<details open><summary>Conceptual Data Model</summary>
 
 ```mermaid
 ---
