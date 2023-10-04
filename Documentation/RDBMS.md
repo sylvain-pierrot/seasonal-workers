@@ -94,7 +94,7 @@ erDiagram
     AD o|--o{ ADDRESS : "Relates to"
     USER o{--}o AD : "Is approved"
     EXPERIENCE ||--o{ COMPANY : "refer to"
-    USER o{--|| AD : "Post"
+    USER o{--o| AD : "Post"
     USER ||--o{ ADDRESS : "Live at"
     USER o{--|| REFERENT : "Provides"
     USER o{--|| EXPERIENCE : "Own"
