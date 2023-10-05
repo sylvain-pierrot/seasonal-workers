@@ -33,6 +33,7 @@ erDiagram
     BENEFIT {
         integer benefit_id
         varchar name
+        varchar icon_path
     }
     AD {
         integer ad_id
@@ -68,6 +69,7 @@ erDiagram
         varchar description
         varchar cv_path
         date last_auth
+        boolean hidden
     }
     ADDRESS {
         integer address_id
@@ -89,17 +91,17 @@ erDiagram
         date date
         feedback_type feedback_type
     }
-    BENEFIT ||--o{ AD : "Includes"
-    AD o|--o{ COMPANY : "Refer to"
-    AD o|--o{ ADDRESS : "Relates to"
-    USER o{--}o AD : "Is approved"
-    EXPERIENCE ||--o{ COMPANY : "refer to"
-    USER o{--o| AD : "Post"
-    USER ||--o{ ADDRESS : "Live at"
-    USER o{--|| REFERENT : "Provides"
-    USER o{--|| EXPERIENCE : "Own"
-    USER o{--|| FEEDBACK : "Relates to"
-    ADDRESS o{--o{ COMPANY : "Located at"
-    REFERENT ||--o{ COMPANY : "Work at"
+    BENEFIT o{--}o AD : "BENEFIT_AD"
+    AD o|--}o COMPANY : "REFER"
+    AD o|--}o ADDRESS : "RELATE"
+    USER o{--}o AD : "AD_USER"
+    EXPERIENCE ||--}o COMPANY : "REFER"
+    USER o{--o| AD : "POST"
+    USER ||--}o ADDRESS : "LIVE"
+    USER o{--|| REFERENT : "INFORM"
+    USER o{--|| EXPERIENCE : "PROVIDE"
+    USER o{--|| FEEDBACK : "RELATE"
+    ADDRESS o{--}o COMPANY : "ADDRESS_COMPANY"
+    REFERENT ||--}o COMPANY : "WORK"
 ```
 </details>
