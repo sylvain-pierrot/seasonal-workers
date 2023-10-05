@@ -94,7 +94,7 @@ erDiagram
     BENEFIT o{--}o AD : "BENEFIT_AD"
     AD o|--}o COMPANY : "REFER"
     AD o|--}o ADDRESS : "RELATE"
-    USER o{--}o AD : "AD_USER"
+    USER o{--}o AD : "AD_USER_RESPONSE"
     EXPERIENCE ||--}o COMPANY : "REFER"
     USER o{--o| AD : "POST"
     USER ||--}o ADDRESS : "LIVE"
