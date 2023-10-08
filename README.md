@@ -1,5 +1,10 @@
 # Seasonal Workers
 
+<img alt="logo" src="Documentation/assets/logo.png" width=120 />
+
+---
+
+
 ## React Native App
 
 Welcome to the React Native Seasonal Workers App project, developed as part of our school project. This mobile application is designed to meet the needs of seasonal workers and employers. It allows seasonal workers to find a job and employers to find seasonal workers. The application is availbale in 2 languages, including English, French.
@@ -9,8 +14,6 @@ Welcome to the React Native Seasonal Workers App project, developed as part of o
 ## Backend architecture
 
 The backend of our application is designed with a microservices (MS) architecture to efficiently manage various aspects of the system and will be accessible through an API gateway.
-
-<img alt="logo" src="Documentation/assets/logo.png" width=120 />
 
 ## Requirements
 
