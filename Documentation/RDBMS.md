@@ -1,4 +1,4 @@
-# Seasonal Workers (SW) - Database
+# Seasonal Workers (SW) - RDBMS
 
 <img alt="logo" src="https://seeklogo.com/images/A/amazon-database-logo-BAA099F432-seeklogo.com.png" width=80 />
 
@@ -104,4 +104,5 @@ erDiagram
     ADDRESS o{--}o COMPANY : "ADDRESS_COMPANY"
     REFERENT ||--}o COMPANY : "WORK"
 ```
+
 </details>
