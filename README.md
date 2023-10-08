@@ -4,7 +4,6 @@
 
 ---
 
-
 ## React Native App
 
 Welcome to the React Native Seasonal Workers App project, developed as part of our school project. This mobile application is designed to meet the needs of seasonal workers and employers. It allows seasonal workers to find a job and employers to find seasonal workers. The application is availbale in 2 languages, including English, French.
