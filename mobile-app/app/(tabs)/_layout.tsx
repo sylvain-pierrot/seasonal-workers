@@ -1,7 +1,7 @@
 import React from "react";
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 // import { useKeycloak } from "../../hooks/useKeycloak";
-import { BottomNavigation } from "react-native-paper";
+import { BottomNavigation, Text } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { CommonActions } from "@react-navigation/native";
 
@@ -27,16 +27,16 @@ export default function TabsLayout() {
   // Only require authentication within the (app) group's layout as users
   // need to be able to access the (auth) group and sign in again.
   // if (!isLoggedIn) {
-  // On web, static rendering will stop here as the user is not authenticated
-  // in the headless Node process that the pages are rendered in.
-  // return <Redirect href="/sign-in" />;
+  //   // On web, static rendering will stop here as the user is not authenticated
+  //   // in the headless Node process that the pages are rendered in.
+  //   return <Redirect href="/sign-in" />;
   // }
-
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
       }}
+      initialRouteName="index"
       tabBar={({ navigation, state, descriptors, insets }) => (
         <BottomNavigation.Bar
           navigationState={state}
