@@ -1,0 +1,19 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /api
+spring:
+  sql:
+    init:
+     mode: always
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/seasonalProfile
+    username: user
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    defer-datasource-initialization: true
