@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.seasonalworkers.profile.entity.WorkerEntity;
 
 @Repository
-public interface WorkerRepository extends JpaRepository<WorkerEntity, Integer> {
-    WorkerEntity findById(int id);
+public interface WorkerRepository extends JpaRepository<WorkerEntity, Long> {
 }

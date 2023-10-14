@@ -3,33 +3,36 @@ package com.seasonalworkers.profile.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seasonalworkers.profile.entity.WorkerEntity;
 import com.seasonalworkers.profile.service.WorkerService;
 
+import jakarta.validation.Valid;
+
 @RestController
-@RequestMapping("user")
+@RequestMapping("workers")
 public class WorkerController {
 	@Autowired
-	private WorkerService profileService;
-
-	@GetMapping()
-	public List<WorkerEntity> getAll() {
-		return profileService.getAll();
-	}
+	private WorkerService workerService;
 
 	@PostMapping()
-	public WorkerEntity create(WorkerEntity profile) {
-		return profileService.create(profile);
+	public ResponseEntity<WorkerEntity> create(@RequestBody @Valid WorkerEntity worker) {
+		WorkerEntity seasonalWorker = workerService.create(worker);
+		return ResponseEntity.ok(seasonalWorker);
 	}
 
 	@GetMapping("/{id}")
-	public String getSeasonalWorkerById(@PathVariable String id) {
-		return "You ask for seasonalworker with id: " + id;
+	public ResponseEntity<WorkerEntity> getById(@PathVariable Long id) {
+		WorkerEntity worker = workerService.getById(id);
+		return ResponseEntity.ok(worker);
 	}
 }
