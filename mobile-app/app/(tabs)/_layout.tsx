@@ -1,55 +1,101 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable, useColorScheme } from 'react-native';
+import React from "react";
+import { Redirect, Tabs } from "expo-router";
+// import { useKeycloak } from "../../hooks/useKeycloak";
+import { BottomNavigation, Text } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { CommonActions } from "@react-navigation/native";
 
-import Colors from '../../constants/Colors';
+const tabs: {
+  icon: string;
+  name: string;
+  label: string;
+}[] = [
+  { icon: "briefcase", name: "index", label: "Jobs" },
+  { icon: "chat", name: "messages", label: "Messages" },
+  { icon: "calendar", name: "candidatures", label: "Candidatures" },
+  { icon: "account", name: "profile", label: "Profile" },
+];
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
+export default function TabsLayout() {
+  // const { isLoggedIn, isLoading } = useKeycloak();
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  // You can keep the splash screen open, or render a loading screen like we do here.
+  // if (isLoading) {
+  //   return <Text>Loading...</Text>;
+  // }
 
+  // Only require authentication within the (app) group's layout as users
+  // need to be able to access the (auth) group and sign in again.
+  // if (!isLoggedIn) {
+  //   // On web, static rendering will stop here as the user is not authenticated
+  //   // in the headless Node process that the pages are rendered in.
+  //   return <Redirect href="/sign-in" />;
+  // }
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
+        headerShown: false,
+      }}
+      initialRouteName="index"
+      tabBar={({ navigation, state, descriptors, insets }) => (
+        <BottomNavigation.Bar
+          navigationState={state}
+          safeAreaInsets={insets}
+          shifting
+          onTabPress={({ route, preventDefault }) => {
+            const event = navigation.emit({
+              type: "tabPress",
+              target: route.key,
+              canPreventDefault: true,
+            });
+
+            if (event.defaultPrevented) {
+              preventDefault();
+            } else {
+              navigation.dispatch({
+                ...CommonActions.navigate(route.name, route.params),
+                target: state.key,
+              });
+              route.state?.index;
+            }
+          }}
+          renderIcon={({ route, focused, color }) => {
+            const { options } = descriptors[route.key];
+            if (options.tabBarIcon) {
+              return options.tabBarIcon({ focused, color, size: 24 });
+            }
+
+            return null;
+          }}
+          getLabelText={({ route }) => {
+            const { options } = descriptors[route.key];
+            if (typeof options.tabBarLabel === "string") {
+              return options.tabBarLabel;
+            }
+
+            return options.title !== undefined ? options.title : route.name;
+          }}
+        />
+      )}
+    >
+      {tabs.map(({ icon, name, label }, key) => (
+        <Tabs.Screen
+          {...{ key }}
+          name={name}
+          options={{
+            tabBarLabel: label,
+            tabBarIcon: ({ focused, color, size }) => {
+              return (
+                <Icon
+                  name={focused ? icon : `${icon}-outline`}
+                  size={size}
+                  color={color}
+                />
+              );
+            },
+          }}
+        />
+      ))}
     </Tabs>
   );
 }

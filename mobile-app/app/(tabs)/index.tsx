@@ -4,9 +4,8 @@ import React from "react";
 import { Button } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Logger } from "../../logger/logger.config";
-import EditScreenInfo from "../../components/EditScreenInfo";
 
-export default function App() {
+export default function Home() {
   const { t, i18n } = useTranslation();
   const logger = new Logger("App");
 
@@ -30,7 +29,6 @@ export default function App() {
       />
       <Button title="English" onPress={() => i18n.changeLanguage("en")} />
       <Button title="French" onPress={() => i18n.changeLanguage("fr")} />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
     </View>
   );
 }
