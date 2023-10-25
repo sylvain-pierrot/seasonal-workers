@@ -1,8 +1,49 @@
 {
   "welcome": "Bienvenue sur le site de la formation Node.js",
   "name": "Node.js",
-  "(tabs)": "Ceci est provisoir",
-  "sign-up": "S'inscrire",
-  "sign-in": "Se connecter",
-  "forgot-password": "Mot de passe oublié"
+  "(tabs)": {
+    "title": "Ceci est provisoir"
+  },
+  "sign-up": {
+    "title": "S'inscrire",
+    "form": {
+      "picture": "Votre photo",
+      "fullname": "Nom complet",
+      "birthdate": "Date de naissance",
+      "country": "Pays",
+      "gender": {
+        "select": "Veuillez sélectionner une option...",
+        "male": "Homme",
+        "female": "Femme"
+      },
+      "phone": "Numéro de téléphone",
+      "biography": "Biographie",
+      "cv": "Votre CV",
+      "password": "Mot de passe",
+      "confirm": "Confirmer le mot de passe"
+    },
+    "actions": {
+      "next": "Suivant",
+      "previous": "Précédent",
+      "finish": "S'inscrire"
+    }
+  },
+  "sign-in": {
+    "title": "Se connecter",
+    "form": {
+      "password": "Mot de passe"
+    },
+    "actions": {
+      "forgot": "Mot de passe oublié ?",
+      "sign-in": "Se connecter",
+      "sign-up": "S'inscrire"
+    }
+  },
+  "forgot-password": {
+    "title": "Mot de passe oublié",
+    "actions": {
+      "reset": "Réinitialiser le mot de passe",
+      "sign-in": "Se connecter"
+    }
+  }
 }

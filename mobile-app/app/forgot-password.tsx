@@ -3,8 +3,11 @@ import React from "react";
 import { router } from "expo-router";
 import { Button, TextInput } from "react-native-paper";
 import { defaultStyles } from "../constants/Styles";
+import { useTranslation } from "react-i18next";
 
 export default function ForgotPassword() {
+  const { t } = useTranslation();
+
   return (
     <View style={defaultStyles.container}>
       <TextInput
@@ -18,7 +21,7 @@ export default function ForgotPassword() {
         onPress={() => {}}
         style={defaultStyles.button}
       >
-        Reset Password
+        {t("forgot-password.actions.reset")}
       </Button>
       <Button
         mode={"outlined"}
@@ -26,7 +29,7 @@ export default function ForgotPassword() {
         style={defaultStyles.button}
         textColor="#000000"
       >
-        Log In
+        {t("forgot-password.actions.sign-in")}
       </Button>
     </View>
   );

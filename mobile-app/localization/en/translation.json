@@ -1,8 +1,49 @@
 {
   "welcome": "Welcome to the world of Node.js",
   "name": "Node.js",
-  "(tabs)": "This is provisional",
-  "sign-up": "Register",
-  "sign-in": "Log in",
-  "forgot-password": "Forgot password"
+  "(tabs)": {
+    "title": "This is provisional"
+  },
+  "sign-up": {
+    "title": "Register",
+    "form": {
+      "picture": "Your photo",
+      "fullname": "Fullname",
+      "birthdate": "Birthdate",
+      "country": "Country",
+      "gender": {
+        "select": "Please select an option...",
+        "male": "Male",
+        "female": "Female"
+      },
+      "phone": "Phone number",
+      "biography": "Biography",
+      "cv": "Your CV",
+      "password": "Password",
+      "confirm": "Confirm password"
+    },
+    "actions": {
+      "next": "Next",
+      "previous": "Previous",
+      "finish": "Sing up"
+    }
+  },
+  "sign-in": {
+    "title": "Log in",
+    "form": {
+      "password": "Password"
+    },
+    "actions": {
+      "forgot": "Forgot yout password?",
+      "sign-in": "Log in",
+      "sign-up": "Sign up"
+    }
+  },
+  "forgot-password": {
+    "title": "Forgot password",
+    "actions": {
+      "reset": "Reset Password",
+      "sign-in": "Log in"
+    }
+  }
 }

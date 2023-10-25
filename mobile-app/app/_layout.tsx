@@ -4,7 +4,7 @@ import {
   KeycloakProvider,
 } from "../providers/KeycloakProvider";
 import AppConfig from "../app.json";
-import React, { useState } from "react";
+import React from "react";
 import { Appbar, PaperProvider } from "react-native-paper";
 import { ThemeSW } from "../constants/Themes";
 import { useTranslation } from "react-i18next";
@@ -12,7 +12,6 @@ import { Lang } from "../constants/Lang";
 
 export default function RootLayout() {
   const { t, i18n } = useTranslation();
-  const [lang, setLang] = useState(i18n.language);
 
   const keycloakConfiguration: IKeycloakConfiguration = {
     clientId: "AGENT_007",
@@ -25,7 +24,7 @@ export default function RootLayout() {
     <KeycloakProvider {...keycloakConfiguration}>
       <PaperProvider
         settings={{
-          rippleEffectEnabled: false,
+          rippleEffectEnabled: true,
         }}
         theme={ThemeSW}
       >
@@ -46,11 +45,12 @@ export default function RootLayout() {
                   )}
                   <Appbar.Content title={props.options.title} />
                   <Appbar.Action
-                    color={lang === Lang.En ? "#ab4b52" : "#318ce7"}
+                    color={i18n.language === Lang.En ? "#ab4b52" : "#318ce7"}
                     icon="translate"
                     onPress={() => {
-                      lang === Lang.En ? setLang(Lang.Fr) : setLang(Lang.En);
-                      i18n.changeLanguage(lang);
+                      i18n.language === Lang.En
+                        ? i18n.changeLanguage(Lang.Fr)
+                        : i18n.changeLanguage(Lang.En);
                     }}
                   />
                 </Appbar.Header>
@@ -58,12 +58,18 @@ export default function RootLayout() {
             },
           }}
         >
-          <Stack.Screen name="(tabs)" options={{ title: t("(tabs)") }} />
-          <Stack.Screen name="sign-in" options={{ title: t("sign-in") }} />
-          <Stack.Screen name="sign-up" options={{ title: t("sign-up") }} />
+          <Stack.Screen name="(tabs)" options={{ title: t("(tabs).title") }} />
+          <Stack.Screen
+            name="sign-in"
+            options={{ title: t("sign-in.title") }}
+          />
+          <Stack.Screen
+            name="sign-up"
+            options={{ title: t("sign-up.title") }}
+          />
           <Stack.Screen
             name="forgot-password"
-            options={{ title: t("forgot-password") }}
+            options={{ title: t("forgot-password.title") }}
           />
           {/* <Slot /> */}
         </Stack>

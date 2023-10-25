@@ -4,8 +4,10 @@ import { router } from "expo-router";
 import { useKeycloak } from "../hooks/useKeycloak";
 import { Button, TextInput } from "react-native-paper";
 import { defaultStyles } from "../constants/Styles";
+import { useTranslation } from "react-i18next";
 
 export default function SignIn() {
+  const { t } = useTranslation();
   const { signIn } = useKeycloak();
 
   return (
@@ -18,7 +20,7 @@ export default function SignIn() {
       />
       <TextInput
         mode="outlined"
-        placeholder="Password"
+        placeholder={t("sign-in.form.password")}
         style={defaultStyles.input}
         outlineColor="transparent"
       />
@@ -32,14 +34,14 @@ export default function SignIn() {
         }}
         style={defaultStyles.button}
       >
-        Log In
+        {t("sign-in.actions.sign-in")}
       </Button>
       <Button
         mode={"text"}
         onPress={() => router.push("/forgot-password")}
         style={defaultStyles.button}
       >
-        Forgot yout password?
+        {t("sign-in.actions.forgot")}
       </Button>
       <Button
         mode={"outlined"}
@@ -47,7 +49,7 @@ export default function SignIn() {
         style={defaultStyles.button}
         textColor="#000000"
       >
-        Sign Up
+        {t("sign-in.actions.sign-up")}
       </Button>
     </View>
   );

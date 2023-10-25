@@ -12,12 +12,14 @@ import { DatePickerInput } from "react-native-paper-dates";
 import { Picker } from "@react-native-picker/picker";
 import { defaultStyles } from "../constants/Styles";
 import { Stack } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 export default function SignUp() {
   // const { signIn } = useKeycloak();
   const [secure, setSecure] = useState(true);
   const theme = useTheme();
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { t, i18n } = useTranslation();
 
   const pickImage = async (): Promise<ImagePicker.ImagePickerAsset | null> => {
     // No permissions request is necessary for launching the image library
@@ -49,7 +51,7 @@ export default function SignUp() {
       return null;
     };
 
-  const handleConfirmPassword = (pwd: string, cPwd: string) => {
+  const passwordIsConfirm = (pwd: string, cPwd: string) => {
     return pwd.length > 7 && pwd === cPwd;
   };
 
@@ -85,6 +87,7 @@ export default function SignUp() {
                 !values.country ||
                 !values.gender
               }
+              nextBtnText={t("sign-up.actions.next")}
             >
               <View
                 style={{
@@ -115,12 +118,12 @@ export default function SignUp() {
                   }}
                   style={{ flex: 1, marginLeft: 10 }}
                 >
-                  Your photo
+                  {t("sign-up.form.picture")}
                 </Button>
               </View>
               <TextInput
                 mode="outlined"
-                placeholder="Fullname"
+                placeholder={t("sign-up.form.fullname")}
                 style={defaultStyles.input}
                 outlineColor="transparent"
                 onChangeText={handleChange("fullname")}
@@ -128,8 +131,8 @@ export default function SignUp() {
                 value={values.fullname}
               />
               <DatePickerInput
-                locale="en"
-                label="Birthdate"
+                locale={i18n.language}
+                placeholder={t("sign-up.form.birthdate")}
                 inputMode={"start"}
                 mode="outlined"
                 onBlur={handleBlur("birthdate")}
@@ -143,7 +146,7 @@ export default function SignUp() {
               />
               <TextInput
                 mode="outlined"
-                placeholder="Country"
+                placeholder={t("sign-up.form.country")}
                 style={defaultStyles.input}
                 outlineColor="transparent"
                 onChangeText={handleChange("country")}
@@ -169,9 +172,18 @@ export default function SignUp() {
                 onBlur={handleBlur("gender")}
                 prompt="Options"
               >
-                <Picker.Item label="Please select an option..." value={""} />
-                <Picker.Item label="Male" value={Gender.Male} />
-                <Picker.Item label="Female" value={Gender.Female} />
+                <Picker.Item
+                  label={t("sign-up.form.gender.select")}
+                  value={""}
+                />
+                <Picker.Item
+                  label={t("sign-up.form.gender.male")}
+                  value={Gender.Male}
+                />
+                <Picker.Item
+                  label={t("sign-up.form.gender.female")}
+                  value={Gender.Female}
+                />
               </Picker>
             </ProgressStep>
             <ProgressStep
@@ -192,10 +204,12 @@ export default function SignUp() {
                 !values.country ||
                 !values.gender
               }
+              nextBtnText={t("sign-up.actions.next")}
+              previousBtnText={t("sign-up.actions.previous")}
             >
               <TextInput
                 mode="outlined"
-                placeholder="Phone number"
+                placeholder={t("sign-up.form.phone")}
                 style={defaultStyles.input}
                 outlineColor="transparent"
                 onChangeText={handleChange("phone")}
@@ -213,7 +227,7 @@ export default function SignUp() {
               />
               <TextInput
                 mode="outlined"
-                placeholder="Biography"
+                placeholder={t("sign-up.form.biography")}
                 style={defaultStyles.input}
                 outlineColor="transparent"
                 onChangeText={handleChange("biography")}
@@ -234,7 +248,7 @@ export default function SignUp() {
                 }}
                 style={defaultStyles.button}
               >
-                {values.cv ? values.cv.name : "Your CV"}
+                {values.cv ? values.cv.name : t("sign-up.form.cv")}
               </Button>
             </ProgressStep>
             <ProgressStep
@@ -248,16 +262,16 @@ export default function SignUp() {
                 ...{ borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness },
               }}
               previousBtnTextStyle={styles.previousBtnTextStyle}
-              finishBtnText="Sign up"
               onSubmit={handleSubmit}
-              nextBtnDisabled={handleConfirmPassword(
-                values.password,
-                confirmPassword
-              )}
+              nextBtnDisabled={
+                !passwordIsConfirm(values.password, confirmPassword)
+              }
+              finishBtnText={t("sign-up.actions.finish")}
+              previousBtnText={t("sign-up.actions.previous")}
             >
               <TextInput
                 mode="outlined"
-                placeholder="Password"
+                placeholder={t("sign-up.form.password")}
                 style={defaultStyles.input}
                 outlineColor="transparent"
                 onChangeText={handleChange("password")}
@@ -273,14 +287,11 @@ export default function SignUp() {
               />
               <TextInput
                 mode="outlined"
-                placeholder="Confirm password"
+                placeholder={t("sign-up.form.confirm")}
                 style={defaultStyles.input}
                 theme={{
                   colors: {
-                    primary: handleConfirmPassword(
-                      values.password,
-                      confirmPassword
-                    )
+                    primary: passwordIsConfirm(values.password, confirmPassword)
                       ? theme.colors.primary
                       : "red",
                   },
