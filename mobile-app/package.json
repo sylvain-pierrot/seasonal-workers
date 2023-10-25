@@ -12,9 +12,11 @@
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
     "@react-native-async-storage/async-storage": "1.18.2",
+    "@react-native-picker/picker": "2.4.10",
     "@react-navigation/native": "^6.1.8",
     "expo": "~49.0.13",
     "expo-auth-session": "~5.0.2",
+    "expo-document-picker": "~11.5.4",
     "expo-font": "~11.4.0",
     "expo-image-picker": "~14.3.2",
     "expo-linking": "~5.0.2",
@@ -29,14 +31,13 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "^13.2.2",
-    "react-native": "0.72.5",
+    "react-native": "0.72.6",
     "react-native-gesture-handler": "~2.12.0",
     "react-native-logs": "^5.0.1",
     "react-native-paper": "^5.10.6",
     "react-native-paper-dates": "^0.19.8",
     "react-native-vector-icons": "^10.0.0",
-    "react-native-web": "~0.19.6",
-    "expo-document-picker": "~11.5.4"
+    "react-native-web": "~0.19.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

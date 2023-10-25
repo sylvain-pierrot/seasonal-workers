@@ -6,58 +6,20 @@ import { StyleSheet, View } from "react-native";
 import { Avatar, Button, TextInput, useTheme } from "react-native-paper";
 //@ts-ignore
 import { ProgressStep, ProgressSteps } from "react-native-progress-steps";
-import { defaultUser } from "../constants/User";
+import { Gender, defaultUser } from "../constants/User";
 import { DatePickerInput } from "react-native-paper-dates";
 // import { useKeycloak } from "../hooks/useKeycloak";
+import { Picker } from "@react-native-picker/picker";
+import { defaultStyles } from "../constants/Styles";
+import { Stack } from "expo-router";
 
-export default function SignIn() {
+export default function SignUp() {
   // const { signIn } = useKeycloak();
-  const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null);
-  const [document, setDocument] =
-    useState<DocumentPicker.DocumentPickerAsset | null>(null);
   const [secure, setSecure] = useState(true);
   const theme = useTheme();
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-      marginRight: 20,
-      marginLeft: 20,
-    },
-    text: {
-      textAlign: "left",
-    },
-    input: {
-      marginTop: 10,
-      alignSelf: "stretch",
-      textAlign: "left",
-    },
-    button: {
-      marginTop: 20,
-      alignSelf: "stretch",
-      textAlign: "center",
-    },
-    previousBtnStyle: {
-      backgroundColor: "#FFFFFF",
-      borderColor: "#000000",
-      borderWidth: 1,
-      borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness,
-    },
-    nextBtnStyle: {
-      backgroundColor: "#007FFF",
-      borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness,
-    },
-    previousBtnTextStyle: {
-      color: "#000000",
-    },
-    nextBtnTextStyle: {
-      color: "#FFFFFF",
-    },
-  });
-
-  const pickImage = async () => {
+  const pickImage = async (): Promise<ImagePicker.ImagePickerAsset | null> => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -67,24 +29,32 @@ export default function SignIn() {
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0]);
+      return result.assets[0];
     }
-  };
-  const pickDocument = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await DocumentPicker.getDocumentAsync({
-      copyToCacheDirectory: false,
-      multiple: false,
-      type: "application/pdf",
-    });
 
-    if (!result.canceled) {
-      setDocument(result.assets[0]);
-    }
+    return null;
+  };
+  const pickDocument =
+    async (): Promise<DocumentPicker.DocumentPickerAsset | null> => {
+      let result = await DocumentPicker.getDocumentAsync({
+        copyToCacheDirectory: false,
+        multiple: false,
+        type: "application/pdf",
+      });
+
+      if (!result.canceled) {
+        return result.assets[0];
+      }
+
+      return null;
+    };
+
+  const handleConfirmPassword = (pwd: string, cPwd: string) => {
+    return pwd.length > 7 && pwd === cPwd;
   };
 
   return (
-    <View style={styles.container}>
+    <View style={defaultStyles.container}>
       <Formik
         initialValues={defaultUser}
         onSubmit={(values) => console.log(values)}
@@ -103,8 +73,18 @@ export default function SignIn() {
             completedProgressBarColor={"#007FFF"}
           >
             <ProgressStep
-              nextBtnStyle={styles.nextBtnStyle}
+              nextBtnStyle={{
+                ...styles.nextBtnStyle,
+                ...{ borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness },
+              }}
               nextBtnTextStyle={styles.nextBtnTextStyle}
+              nextBtnDisabled={
+                !values.picture ||
+                !values.fullname ||
+                !values.birthdate ||
+                !values.country ||
+                !values.gender
+              }
             >
               <View
                 style={{
@@ -117,8 +97,8 @@ export default function SignIn() {
                   size={60}
                   style={{ backgroundColor: "transparent" }}
                   source={
-                    image
-                      ? { uri: image.uri }
+                    values.picture
+                      ? { uri: values.picture.uri }
                       : require("../assets/images/default_pfp.png")
                   }
                 />
@@ -127,7 +107,12 @@ export default function SignIn() {
                   icon={"download"}
                   contentStyle={{ flexDirection: "row-reverse" }}
                   textColor={"#000000"}
-                  onPress={pickImage}
+                  onPress={async () => {
+                    const image = await pickImage();
+                    if (image) {
+                      setFieldValue("picture", image);
+                    }
+                  }}
                   style={{ flex: 1, marginLeft: 10 }}
                 >
                   Your photo
@@ -136,7 +121,7 @@ export default function SignIn() {
               <TextInput
                 mode="outlined"
                 placeholder="Fullname"
-                style={styles.input}
+                style={defaultStyles.input}
                 outlineColor="transparent"
                 onChangeText={handleChange("fullname")}
                 onBlur={handleBlur("fullname")}
@@ -150,7 +135,7 @@ export default function SignIn() {
                 onBlur={handleBlur("birthdate")}
                 onChange={(date) => setFieldValue("birthdate", date)}
                 value={values.birthdate}
-                style={styles.input}
+                style={defaultStyles.input}
                 outlineColor="transparent"
                 animationType={"none"}
                 disableFullscreenUI
@@ -159,23 +144,59 @@ export default function SignIn() {
               <TextInput
                 mode="outlined"
                 placeholder="Country"
-                style={styles.input}
+                style={defaultStyles.input}
                 outlineColor="transparent"
                 onChangeText={handleChange("country")}
                 onBlur={handleBlur("country")}
                 value={values.country}
               />
+              <Picker
+                mode={"dialog"}
+                placeholder="Gender"
+                style={[
+                  styles.picker,
+                  {
+                    color:
+                      values.gender &&
+                      Object.values(Gender).includes(values.gender)
+                        ? "#000000"
+                        : "#8F8F8F",
+                  },
+                ]}
+                selectionColor={"red"}
+                selectedValue={values.gender}
+                onValueChange={handleChange("gender")}
+                onBlur={handleBlur("gender")}
+                prompt="Options"
+              >
+                <Picker.Item label="Please select an option..." value={""} />
+                <Picker.Item label="Male" value={Gender.Male} />
+                <Picker.Item label="Female" value={Gender.Female} />
+              </Picker>
             </ProgressStep>
             <ProgressStep
-              nextBtnStyle={styles.nextBtnStyle}
+              nextBtnStyle={{
+                ...styles.nextBtnStyle,
+                ...{ borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness },
+              }}
               nextBtnTextStyle={styles.nextBtnTextStyle}
-              previousBtnStyle={styles.previousBtnStyle}
+              previousBtnStyle={{
+                ...styles.previousBtnStyle,
+                ...{ borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness },
+              }}
               previousBtnTextStyle={styles.previousBtnTextStyle}
+              nextBtnDisabled={
+                !values.phone ||
+                !values.email ||
+                !values.biography ||
+                !values.country ||
+                !values.gender
+              }
             >
               <TextInput
                 mode="outlined"
                 placeholder="Phone number"
-                style={styles.input}
+                style={defaultStyles.input}
                 outlineColor="transparent"
                 onChangeText={handleChange("phone")}
                 onBlur={handleBlur("phone")}
@@ -184,7 +205,7 @@ export default function SignIn() {
               <TextInput
                 mode="outlined"
                 placeholder="Email"
-                style={styles.input}
+                style={defaultStyles.input}
                 outlineColor="transparent"
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")}
@@ -193,7 +214,7 @@ export default function SignIn() {
               <TextInput
                 mode="outlined"
                 placeholder="Biography"
-                style={styles.input}
+                style={defaultStyles.input}
                 outlineColor="transparent"
                 onChangeText={handleChange("biography")}
                 onBlur={handleBlur("biography")}
@@ -204,23 +225,40 @@ export default function SignIn() {
                 icon={"download"}
                 contentStyle={{ flexDirection: "row-reverse" }}
                 textColor="#000000"
-                buttonColor={document ? "#74CA72" : "transparent"}
-                onPress={pickDocument}
-                style={styles.button}
+                buttonColor={values.cv ? "#74CA72" : "transparent"}
+                onPress={async () => {
+                  const document = await pickDocument();
+                  if (document) {
+                    setFieldValue("cv", document);
+                  }
+                }}
+                style={defaultStyles.button}
               >
-                {document ? document.name : "Your CV"}
+                {values.cv ? values.cv.name : "Your CV"}
               </Button>
             </ProgressStep>
             <ProgressStep
-              previousBtnStyle={styles.previousBtnStyle}
+              nextBtnStyle={{
+                ...styles.nextBtnStyle,
+                ...{ borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness },
+              }}
+              nextBtnTextStyle={styles.nextBtnTextStyle}
+              previousBtnStyle={{
+                ...styles.previousBtnStyle,
+                ...{ borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness },
+              }}
               previousBtnTextStyle={styles.previousBtnTextStyle}
-              nextBtnDisabled
-              finishBtnText=""
+              finishBtnText="Sign up"
+              onSubmit={handleSubmit}
+              nextBtnDisabled={handleConfirmPassword(
+                values.password,
+                confirmPassword
+              )}
             >
               <TextInput
                 mode="outlined"
                 placeholder="Password"
-                style={styles.input}
+                style={defaultStyles.input}
                 outlineColor="transparent"
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
@@ -235,12 +273,21 @@ export default function SignIn() {
               />
               <TextInput
                 mode="outlined"
-                placeholder="Password"
-                style={styles.input}
-                outlineColor="transparent"
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                value={values.password}
+                placeholder="Confirm password"
+                style={defaultStyles.input}
+                theme={{
+                  colors: {
+                    primary: handleConfirmPassword(
+                      values.password,
+                      confirmPassword
+                    )
+                      ? theme.colors.primary
+                      : "red",
+                  },
+                }}
+                outlineColor={"transparent"}
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
                 secureTextEntry={secure}
                 right={
                   <TextInput.Icon
@@ -249,13 +296,6 @@ export default function SignIn() {
                   />
                 }
               />
-              <Button
-                mode={"contained"}
-                onPress={() => handleSubmit()}
-                style={styles.button}
-              >
-                Sign up
-              </Button>
             </ProgressStep>
           </ProgressSteps>
         )}
@@ -263,3 +303,24 @@ export default function SignIn() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  picker: {
+    marginTop: 10,
+    backgroundColor: "#F6F6F6",
+  },
+  previousBtnStyle: {
+    backgroundColor: "#FFFFFF",
+    borderColor: "#000000",
+    borderWidth: 1,
+  },
+  nextBtnStyle: {
+    backgroundColor: "#007FFF",
+  },
+  previousBtnTextStyle: {
+    color: "#000000",
+  },
+  nextBtnTextStyle: {
+    color: "#FFFFFF",
+  },
+});

@@ -1,4 +1,8 @@
 {
   "welcome": "Bienvenue sur le site de la formation Node.js",
-  "name": "Node.js"
+  "name": "Node.js",
+  "(tabs)": "Ceci est provisoir",
+  "sign-up": "S'inscrire",
+  "sign-in": "Se connecter",
+  "forgot-password": "Mot de passe oublié"
 }

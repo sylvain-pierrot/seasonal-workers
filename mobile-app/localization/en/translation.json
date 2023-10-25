@@ -1,4 +1,8 @@
 {
   "welcome": "Welcome to the world of Node.js",
-  "name": "Node.js"
+  "name": "Node.js",
+  "(tabs)": "This is provisional",
+  "sign-up": "Register",
+  "sign-in": "Log in",
+  "forgot-password": "Forgot password"
 }

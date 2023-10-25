@@ -1,24 +1,25 @@
-import { View, StyleSheet } from "react-native";
-import React from "react";
+import { View } from "react-native";
+import React, { useState } from "react";
 import { router } from "expo-router";
 import { useKeycloak } from "../hooks/useKeycloak";
 import { Button, TextInput } from "react-native-paper";
+import { defaultStyles } from "../constants/Styles";
 
 export default function SignIn() {
   const { signIn } = useKeycloak();
 
   return (
-    <View style={styles.container}>
+    <View style={defaultStyles.container}>
       <TextInput
         mode="outlined"
         placeholder="Email"
-        style={styles.input}
+        style={defaultStyles.input}
         outlineColor="transparent"
       />
       <TextInput
         mode="outlined"
         placeholder="Password"
-        style={styles.input}
+        style={defaultStyles.input}
         outlineColor="transparent"
       />
       <Button
@@ -29,21 +30,21 @@ export default function SignIn() {
           // successful before navigating.
           router.replace("/");
         }}
-        style={styles.button}
+        style={defaultStyles.button}
       >
         Log In
       </Button>
       <Button
         mode={"text"}
-        onPress={() => console.log("Pressed")}
-        style={styles.button}
+        onPress={() => router.push("/forgot-password")}
+        style={defaultStyles.button}
       >
         Forgot yout password?
       </Button>
       <Button
         mode={"outlined"}
         onPress={() => router.push("/sign-up")}
-        style={styles.button}
+        style={defaultStyles.button}
         textColor="#000000"
       >
         Sign Up
