@@ -37,11 +37,17 @@ export default function TabsLayout() {
       screenOptions={{
         headerShown: false,
       }}
+      sceneContainerStyle={{ backgroundColor: "#FFFFFF" }}
       initialRouteName="index"
       tabBar={({ navigation, state, descriptors, insets }) => (
         <BottomNavigation.Bar
           navigationState={state}
           safeAreaInsets={insets}
+          theme={{
+            colors: {
+              onSurface: "#FFFFFF",
+            },
+          }}
           shifting
           onTabPress={({ route, preventDefault }) => {
             const event = navigation.emit({

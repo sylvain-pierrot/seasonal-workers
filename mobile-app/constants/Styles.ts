@@ -5,20 +5,42 @@ export const defaultStyles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 20,
-    marginLeft: 20,
+    marginVertical: 5,
+    marginHorizontal: 25,
+  },
+  pageFull: {
+    flex: 1,
+    marginVertical: 5,
+    marginHorizontal: 25,
+  },
+  pageHeight: {
+    flex: 1,
+    marginVertical: 5,
   },
   text: {
     textAlign: "left",
   },
   input: {
-    marginTop: 10,
     alignSelf: "stretch",
     textAlign: "left",
+  },
+  title: {
+    fontSize: 22,
+    textAlign: "left",
+  },
+  search: {
+    marginVertical: 10,
+    flexDirection: "row-reverse",
+    paddingRight: 15,
+    borderRadius: 5,
   },
   button: {
     marginTop: 20,
     alignSelf: "stretch",
     textAlign: "center",
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

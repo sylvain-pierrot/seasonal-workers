@@ -2,25 +2,35 @@
   "welcome": "Bienvenue sur le site de la formation Node.js",
   "name": "Node.js",
   "(tabs)": {
-    "title": "Ceci est provisoir"
+    "title": "Ceci est provisoir",
+    "jobs": {
+      "title": "Offres d'emploi",
+      "form": {
+        "search": "Recherche"
+      }
+    }
   },
   "sign-up": {
     "title": "S'inscrire",
     "form": {
       "picture": "Votre photo",
       "fullname": "Nom complet",
+      "email": "Email",
+      "email-helper": "Email non valide",
       "birthdate": "Date de naissance",
       "country": "Pays",
+      "country-translation": "fra",
       "gender": {
-        "select": "Veuillez sélectionner une option...",
         "male": "Homme",
         "female": "Femme"
       },
       "phone": "Numéro de téléphone",
-      "biography": "Biographie",
+      "biography": "Parlez-nous de vous...",
       "cv": "Votre CV",
       "password": "Mot de passe",
-      "confirm": "Confirmer le mot de passe"
+      "password-caption": "* Le mot de passe doit comporter des majuscules, des minuscules, des chiffres, des caractères spéciaux et doit être composé d'au moins 8 caractères.",
+      "confirm": "Confirmer le mot de passe",
+      "confirm-helper": "Pas identique"
     },
     "actions": {
       "next": "Suivant",

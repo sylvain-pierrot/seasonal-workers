@@ -2,30 +2,40 @@
   "welcome": "Welcome to the world of Node.js",
   "name": "Node.js",
   "(tabs)": {
-    "title": "This is provisional"
+    "title": "This is provisional",
+    "jobs": {
+      "title": "Job offers",
+      "form": {
+        "search": "Search"
+      }
+    }
   },
   "sign-up": {
     "title": "Register",
     "form": {
       "picture": "Your photo",
       "fullname": "Fullname",
+      "email": "Email",
+      "email-helper": "Email not valid",
       "birthdate": "Birthdate",
       "country": "Country",
+      "country-translation": "common",
       "gender": {
-        "select": "Please select an option...",
         "male": "Male",
         "female": "Female"
       },
       "phone": "Phone number",
-      "biography": "Biography",
+      "biography": "Tell us about yourself...",
       "cv": "Your CV",
       "password": "Password",
-      "confirm": "Confirm password"
+      "password-caption": "* Password should include uppercase, lowercase, digit, special character, and be at least 8 characters long.",
+      "confirm": "Confirm password",
+      "confirm-helper": "Not identical"
     },
     "actions": {
       "next": "Next",
       "previous": "Previous",
-      "finish": "Sing up"
+      "finish": "Sign up"
     }
   },
   "sign-in": {

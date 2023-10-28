@@ -1,43 +1,50 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Dimensions, ScrollView, View } from "react-native";
 import "../../localization/i18n";
-import React from "react";
-import { Button } from "react-native";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Logger } from "../../logger/logger.config";
+import { defaultStyles } from "../../constants/Styles";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { Searchbar, Title } from "react-native-paper";
+import JobOfferCard from "../../components/JobOfferCard";
 
 export default function Home() {
-  const { t, i18n } = useTranslation();
-  const logger = new Logger("App");
+  const { t } = useTranslation();
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const onChangeSearch = (query: string) => setSearchQuery(query);
 
   return (
-    <View style={styles.container}>
-      <Text>{t("welcome")}</Text>
-      <Button
-        color={"red"}
-        title="Log error"
-        onPress={() => logger.error("Language changed")}
+    <View style={defaultStyles.pageFull}>
+      <View style={defaultStyles.row}>
+        <Icon name={"domain"} size={26} style={{ marginRight: 5 }} />
+        <Title>{t("(tabs).jobs.title")}</Title>
+      </View>
+      <Searchbar
+        placeholder={t("(tabs).jobs.form.search")}
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+        placeholderTextColor={"#8F8F8F"}
+        style={defaultStyles.search}
       />
-      <Button
-        color={"blue"}
-        title="Log info"
-        onPress={() => logger.info("Language changed")}
-      />
-      <Button
-        color={"yellow"}
-        title="Log warn"
-        onPress={() => logger.warn("Language changed")}
-      />
-      <Button title="English" onPress={() => i18n.changeLanguage("en")} />
-      <Button title="French" onPress={() => i18n.changeLanguage("fr")} />
+      <ScrollView
+        style={{
+          marginVertical: 10,
+          height: Dimensions.get("window").height / 1.5,
+        }}
+        showsVerticalScrollIndicator={false}
+        scrollEventThrottle={16}
+        // stickyHeaderIndices={[0]}
+        // refreshControl={
+        //   <RefreshControl
+        //     onRefresh={() => getUserData(true)}
+        //     refreshing={refresh}
+        //   />
+        // }
+      >
+        {Array.from({ length: 5 }, (_, index) => (
+          <JobOfferCard key={index} />
+        ))}
+      </ScrollView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

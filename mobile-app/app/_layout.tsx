@@ -1,4 +1,4 @@
-import { Slot, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import {
   IKeycloakConfiguration,
   KeycloakProvider,
@@ -40,7 +40,7 @@ export default function RootLayout() {
             header: (props) => {
               return (
                 <Appbar.Header>
-                  {props.route.name !== "sign-in" && (
+                  {!["sign-in", "(tabs)"].includes(props.route.name) && (
                     <Appbar.BackAction onPress={props.navigation.goBack} />
                   )}
                   <Appbar.Content title={props.options.title} />
@@ -71,7 +71,6 @@ export default function RootLayout() {
             name="forgot-password"
             options={{ title: t("forgot-password.title") }}
           />
-          {/* <Slot /> */}
         </Stack>
       </PaperProvider>
     </KeycloakProvider>

@@ -1,18 +1,26 @@
-import * as ImagePicker from "expo-image-picker";
-import * as DocumentPicker from "expo-document-picker";
 import { Formik } from "formik";
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Avatar, Button, TextInput, useTheme } from "react-native-paper";
+import { RadioButton, TextInput, useTheme, Text } from "react-native-paper";
 //@ts-ignore
 import { ProgressStep, ProgressSteps } from "react-native-progress-steps";
-import { Gender, defaultUser } from "../constants/User";
+import { Gender, defaultUserAuthSignUp } from "../constants/User";
 import { DatePickerInput } from "react-native-paper-dates";
 // import { useKeycloak } from "../hooks/useKeycloak";
-import { Picker } from "@react-native-picker/picker";
 import { defaultStyles } from "../constants/Styles";
-import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
+import CustomTextInput from "../components/CustomTextInput";
+import CustomDocumentPicker from "../components/CustomDocumentPicker";
+import CustomImagePicker from "../components/CustomImagePicker";
+import CustomTextAreaInput from "../components/CustomTextAreaInput";
+import CustomPhoneInput from "../components/CustomPhoneInput";
+import CountryPicker, {
+  TranslationLanguageCode,
+} from "react-native-country-picker-modal";
+
+const expressionEmail: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+const expressionPassword: RegExp =
+  /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 export default function SignUp() {
   // const { signIn } = useKeycloak();
@@ -21,46 +29,35 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const { t, i18n } = useTranslation();
 
-  const pickImage = async (): Promise<ImagePicker.ImagePickerAsset | null> => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [2, 2],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      return result.assets[0];
-    }
-
-    return null;
+  const progressStepNextStyle = {
+    nextBtnStyle: {
+      ...styles.nextBtnStyle,
+      ...{ borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness },
+    },
+    nextBtnTextStyle: styles.nextBtnTextStyle,
+    nextBtnText: t("sign-up.actions.next"),
   };
-  const pickDocument =
-    async (): Promise<DocumentPicker.DocumentPickerAsset | null> => {
-      let result = await DocumentPicker.getDocumentAsync({
-        copyToCacheDirectory: false,
-        multiple: false,
-        type: "application/pdf",
-      });
-
-      if (!result.canceled) {
-        return result.assets[0];
-      }
-
-      return null;
-    };
-
-  const passwordIsConfirm = (pwd: string, cPwd: string) => {
-    return pwd.length > 7 && pwd === cPwd;
+  const progressStepPrevStyle = {
+    previousBtnStyle: {
+      ...styles.previousBtnStyle,
+      ...{ borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness },
+    },
+    previousBtnTextStyle: styles.previousBtnTextStyle,
+    previousBtnText: t("sign-up.actions.previous"),
+  };
+  const handleHelperEmail = (value: string) =>
+    value !== "" && !expressionEmail.test(value);
+  const handleHelperPassword = (value: string) =>
+    value !== "" && !expressionPassword.test(value);
+  const handleHelperConfirmPassword = (value: string, password: string) => {
+    return value !== "" && value !== password;
   };
 
   return (
-    <View style={defaultStyles.container}>
+    <View style={defaultStyles.pageFull}>
       <Formik
-        initialValues={defaultUser}
+        initialValues={defaultUserAuthSignUp}
         onSubmit={(values) => console.log(values)}
-        style={{ flex: 1, flexDirection: "row", alignItems: "center" }}
       >
         {({
           handleChange,
@@ -75,60 +72,40 @@ export default function SignUp() {
             completedProgressBarColor={"#007FFF"}
           >
             <ProgressStep
-              nextBtnStyle={{
-                ...styles.nextBtnStyle,
-                ...{ borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness },
-              }}
-              nextBtnTextStyle={styles.nextBtnTextStyle}
+              {...progressStepNextStyle}
               nextBtnDisabled={
                 !values.picture ||
-                !values.fullname ||
-                !values.birthdate ||
                 !values.country ||
-                !values.gender
+                !values.fullname ||
+                !values.birthdate
               }
-              nextBtnText={t("sign-up.actions.next")}
             >
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <Avatar.Image
-                  size={60}
-                  style={{ backgroundColor: "transparent" }}
-                  source={
-                    values.picture
-                      ? { uri: values.picture.uri }
-                      : require("../assets/images/default_pfp.png")
-                  }
-                />
-                <Button
-                  mode={"outlined"}
-                  icon={"download"}
-                  contentStyle={{ flexDirection: "row-reverse" }}
-                  textColor={"#000000"}
-                  onPress={async () => {
-                    const image = await pickImage();
-                    if (image) {
-                      setFieldValue("picture", image);
-                    }
-                  }}
-                  style={{ flex: 1, marginLeft: 10 }}
-                >
-                  {t("sign-up.form.picture")}
-                </Button>
-              </View>
-              <TextInput
-                mode="outlined"
-                placeholder={t("sign-up.form.fullname")}
-                style={defaultStyles.input}
-                outlineColor="transparent"
-                onChangeText={handleChange("fullname")}
-                onBlur={handleBlur("fullname")}
+              <CustomImagePicker
+                value={values.picture}
+                label={t("sign-up.form.picture")}
+                handleSetValue={(image) => setFieldValue("picture", image)}
+              />
+              <CustomTextInput
                 value={values.fullname}
+                label={t("sign-up.form.fullname")}
+                handleChange={handleChange("fullname")}
+                handleBlur={handleBlur("fullname")}
+              />
+              <CountryPicker
+                countryCode={values.country}
+                withCountryNameButton
+                translation={
+                  t(
+                    "sign-up.form.country-translation"
+                  ) as TranslationLanguageCode
+                }
+                onSelect={(country) => setFieldValue("country", country.cca2)}
+                containerButtonStyle={{
+                  backgroundColor: "#F6F6F6",
+                  padding: 15,
+                  borderRadius: 3,
+                  marginBottom: 4,
+                }}
               />
               <DatePickerInput
                 locale={i18n.language}
@@ -144,161 +121,93 @@ export default function SignUp() {
                 disableFullscreenUI
                 withModal={false}
               />
-              <TextInput
-                mode="outlined"
-                placeholder={t("sign-up.form.country")}
-                style={defaultStyles.input}
-                outlineColor="transparent"
-                onChangeText={handleChange("country")}
-                onBlur={handleBlur("country")}
-                value={values.country}
-              />
-              <Picker
-                mode={"dialog"}
-                placeholder="Gender"
-                style={[
-                  styles.picker,
-                  {
-                    color:
-                      values.gender &&
-                      Object.values(Gender).includes(values.gender)
-                        ? "#000000"
-                        : "#8F8F8F",
-                  },
-                ]}
-                selectionColor={"red"}
-                selectedValue={values.gender}
-                onValueChange={handleChange("gender")}
-                onBlur={handleBlur("gender")}
-                prompt="Options"
-              >
-                <Picker.Item
-                  label={t("sign-up.form.gender.select")}
-                  value={""}
-                />
-                <Picker.Item
-                  label={t("sign-up.form.gender.male")}
-                  value={Gender.Male}
-                />
-                <Picker.Item
-                  label={t("sign-up.form.gender.female")}
-                  value={Gender.Female}
-                />
-              </Picker>
             </ProgressStep>
             <ProgressStep
-              nextBtnStyle={{
-                ...styles.nextBtnStyle,
-                ...{ borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness },
-              }}
-              nextBtnTextStyle={styles.nextBtnTextStyle}
-              previousBtnStyle={{
-                ...styles.previousBtnStyle,
-                ...{ borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness },
-              }}
-              previousBtnTextStyle={styles.previousBtnTextStyle}
+              {...progressStepNextStyle}
+              {...progressStepPrevStyle}
               nextBtnDisabled={
+                !values.cv ||
+                !values.gender ||
                 !values.phone ||
-                !values.email ||
-                !values.biography ||
-                !values.country ||
-                !values.gender
+                !values.biography
               }
-              nextBtnText={t("sign-up.actions.next")}
-              previousBtnText={t("sign-up.actions.previous")}
             >
-              <TextInput
-                mode="outlined"
-                placeholder={t("sign-up.form.phone")}
-                style={defaultStyles.input}
-                outlineColor="transparent"
-                onChangeText={handleChange("phone")}
-                onBlur={handleBlur("phone")}
-                value={values.phone}
+              <CustomDocumentPicker
+                value={values.cv}
+                label={t("sign-up.form.cv")}
+                handleSetValue={(document) => setFieldValue("cv", document)}
               />
-              <TextInput
-                mode="outlined"
-                placeholder="Email"
-                style={defaultStyles.input}
-                outlineColor="transparent"
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
-                value={values.email}
-              />
-              <TextInput
-                mode="outlined"
-                placeholder={t("sign-up.form.biography")}
-                style={defaultStyles.input}
-                outlineColor="transparent"
-                onChangeText={handleChange("biography")}
-                onBlur={handleBlur("biography")}
-                value={values.biography}
-              />
-              <Button
-                mode={"outlined"}
-                icon={"download"}
-                contentStyle={{ flexDirection: "row-reverse" }}
-                textColor="#000000"
-                buttonColor={values.cv ? "#74CA72" : "transparent"}
-                onPress={async () => {
-                  const document = await pickDocument();
-                  if (document) {
-                    setFieldValue("cv", document);
-                  }
-                }}
-                style={defaultStyles.button}
+              <RadioButton.Group
+                onValueChange={handleChange("gender")}
+                value={values.gender}
               >
-                {values.cv ? values.cv.name : t("sign-up.form.cv")}
-              </Button>
+                <View
+                  style={{
+                    ...defaultStyles.row,
+                    ...{ justifyContent: "space-around", marginBottom: 10 },
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text>{t("sign-up.form.gender.male")}</Text>
+                    <RadioButton value={Gender.Male} />
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text>{t("sign-up.form.gender.female")}</Text>
+                    <RadioButton value={Gender.Female} />
+                  </View>
+                </View>
+              </RadioButton.Group>
+              <CustomPhoneInput
+                value={values.phone}
+                label={t("sign-up.form.phone")}
+                handleChange={handleChange("phone")}
+                handleBlur={handleBlur("phone")}
+              />
+              <CustomTextAreaInput
+                value={values.biography}
+                label={t("sign-up.form.biography")}
+                handleChange={handleChange("biography")}
+                handleBlur={handleBlur("biography")}
+              />
             </ProgressStep>
             <ProgressStep
-              nextBtnStyle={{
-                ...styles.nextBtnStyle,
-                ...{ borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness },
-              }}
-              nextBtnTextStyle={styles.nextBtnTextStyle}
-              previousBtnStyle={{
-                ...styles.previousBtnStyle,
-                ...{ borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness },
-              }}
-              previousBtnTextStyle={styles.previousBtnTextStyle}
+              {...progressStepNextStyle}
+              {...progressStepPrevStyle}
+              finishBtnText={t("sign-up.actions.finish")}
               onSubmit={handleSubmit}
               nextBtnDisabled={
-                !passwordIsConfirm(values.password, confirmPassword)
+                handleHelperEmail(values.email) ||
+                handleHelperPassword(values.password) ||
+                handleHelperConfirmPassword(confirmPassword, values.password)
               }
-              finishBtnText={t("sign-up.actions.finish")}
-              previousBtnText={t("sign-up.actions.previous")}
             >
-              <TextInput
-                mode="outlined"
-                placeholder={t("sign-up.form.password")}
-                style={defaultStyles.input}
-                outlineColor="transparent"
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                value={values.password}
-                secureTextEntry={secure}
-                right={
-                  <TextInput.Icon
-                    icon={secure ? "eye" : "eye-off"}
-                    onPress={() => setSecure(!secure)}
-                  />
-                }
+              <CustomTextInput
+                value={values.email}
+                label={t("sign-up.form.email")}
+                handleChange={handleChange("email")}
+                handleBlur={handleBlur("email")}
+                helper
+                helperLabel={t("sign-up.form.email-helper")}
+                handleHelper={handleHelperEmail}
               />
-              <TextInput
-                mode="outlined"
-                placeholder={t("sign-up.form.confirm")}
-                style={defaultStyles.input}
-                theme={{
-                  colors: {
-                    primary: passwordIsConfirm(values.password, confirmPassword)
-                      ? theme.colors.primary
-                      : "red",
-                  },
-                }}
-                outlineColor={"transparent"}
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
+
+              <CustomTextInput
+                value={values.password}
+                label={t("sign-up.form.password")}
+                handleChange={handleChange("password")}
+                handleBlur={handleBlur("password")}
                 secureTextEntry={secure}
                 right={
                   <TextInput.Icon
@@ -306,6 +215,27 @@ export default function SignUp() {
                     onPress={() => setSecure(!secure)}
                   />
                 }
+                helper
+                handleHelper={handleHelperPassword}
+                helperLabel="Incorrect"
+                caption={t("sign-up.form.password-caption")}
+              />
+              <CustomTextInput
+                value={confirmPassword}
+                label={t("sign-up.form.confirm")}
+                handleChange={setConfirmPassword}
+                secureTextEntry={secure}
+                right={
+                  <TextInput.Icon
+                    icon={secure ? "eye" : "eye-off"}
+                    onPress={() => setSecure(!secure)}
+                  />
+                }
+                helper
+                handleHelper={(value) =>
+                  handleHelperConfirmPassword(value, values.password)
+                }
+                helperLabel={t("sign-up.form.confirm-helper")}
               />
             </ProgressStep>
           </ProgressSteps>
