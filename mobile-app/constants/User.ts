@@ -9,7 +9,7 @@ export enum Gender {
   Female = "FEMALE",
 }
 
-export interface UserAuthSignUp {
+export interface User {
   fullname: string;
   birthdate?: Date;
   country: CountryCode;
@@ -22,7 +22,7 @@ export interface UserAuthSignUp {
   picture?: ImagePicker.ImagePickerAsset;
 }
 
-export const defaultUserAuthSignUp: UserAuthSignUp = {
+export const defaultUser: User = {
   fullname: "",
   country: "FR",
   gender: Gender.Male,
@@ -42,4 +42,14 @@ export interface UserAuthSignIn {
 export const defaultUserAuthSignIn: UserAuthSignIn = {
   email: "",
   password: "",
+};
+
+// User Forgot PAssword
+//
+export interface UserForgotPassword {
+  email: string;
+}
+
+export const defaultUserForgotPassword: UserForgotPassword = {
+  email: "",
 };

@@ -4,10 +4,26 @@
   "(tabs)": {
     "title": "Ceci est provisoir",
     "jobs": {
+      "label": "Emplois",
       "title": "Offres d'emploi",
       "form": {
         "search": "Recherche"
       }
+    },
+    "messages": {
+      "label": "Messages",
+      "title": "",
+      "form": {}
+    },
+    "candidatures": {
+      "label": "Candidatures",
+      "title": "",
+      "form": {}
+    },
+    "profile": {
+      "label": "Profil",
+      "title": "",
+      "form": {}
     }
   },
   "sign-up": {

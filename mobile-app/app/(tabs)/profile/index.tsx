@@ -1,21 +1,17 @@
 import { View } from "react-native";
-import "../../localization/i18n";
-import React, { useState } from "react";
+import "../../../localization/i18n";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { defaultStyles } from "../../constants/Styles";
+import { defaultStyles } from "../../../constants/Styles";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import {
-  Avatar,
-  Button,
-  Card,
-  Paragraph,
-  Text,
-  Title,
-} from "react-native-paper";
+import { Avatar, Button, Card, Paragraph, Text } from "react-native-paper";
 import { TabScreen, Tabs, TabsProvider } from "react-native-paper-tabs";
-import ExperienceCard from "../../components/ExperienceCard";
+import ExperienceCard from "../../../components/ExperienceCard";
+import { router } from "expo-router";
 
-export default function Home() {
+const AVATAR = "../../../assets/images/avatar.png";
+
+export default function ProfileScreen() {
   const { t } = useTranslation();
 
   return (
@@ -29,7 +25,7 @@ export default function Home() {
           <Avatar.Image
             {...props}
             style={{ backgroundColor: "transparent" }}
-            source={require("../../assets/images/avatar.png")}
+            source={require(AVATAR)}
           />
         )}
         right={() => (
@@ -52,7 +48,7 @@ export default function Home() {
         This impressive paella is a perfect party dishaa....This impressive
         paella is a perfect party dishaa....
       </Paragraph>
-      <Card.Actions style={{ alignSelf: "center", marginVertical: 20 }}>
+      <Card.Actions style={{ alignSelf: "center", marginTop: 20 }}>
         <Button
           mode={"contained"}
           style={{ backgroundColor: "#F3F3F3", borderRadius: 10 }}
@@ -64,6 +60,7 @@ export default function Home() {
           mode={"contained"}
           style={{ backgroundColor: "#F3F3F3", borderRadius: 10 }}
           textColor="#000000"
+          onPress={() => router.push("/(tabs)/profile/modify")}
         >
           Modify
         </Button>
@@ -77,7 +74,15 @@ export default function Home() {
       </Card.Actions>
 
       <TabsProvider defaultIndex={0}>
-        <Tabs iconPosition={"top"} showTextLabel={false}>
+        <Tabs
+          iconPosition={"top"}
+          showTextLabel={false}
+          style={{
+            borderBottomWidth: 1 / 2,
+            borderBottomColor: "#8F8F8F",
+          }}
+          theme={{ colors: { primary: "#000000" } }}
+        >
           <TabScreen label="Experiences" icon="weather-sunny">
             <View style={defaultStyles.container}>
               <ExperienceCard />

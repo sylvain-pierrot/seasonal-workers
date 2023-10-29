@@ -4,20 +4,32 @@ import { useKeycloak } from "../../hooks/useKeycloak";
 import { BottomNavigation, Text } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { CommonActions } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
-const tabs: {
+interface IPropsTab {
   icon: string;
   name: string;
   label: string;
-}[] = [
-  { icon: "briefcase", name: "index", label: "Jobs" },
-  { icon: "chat", name: "messages", label: "Messages" },
-  { icon: "calendar", name: "candidatures", label: "Candidatures" },
-  { icon: "account", name: "profile", label: "Profile" },
-];
+}
 
 export default function TabsLayout() {
   const { isLoggedIn, isLoading } = useKeycloak();
+  const { t } = useTranslation();
+
+  const tabs: IPropsTab[] = [
+    { icon: "briefcase", name: "index", label: t("(tabs).jobs.label") },
+    { icon: "chat", name: "messages", label: t("(tabs).messages.label") },
+    {
+      icon: "calendar",
+      name: "candidatures",
+      label: t("(tabs).candidatures.label"),
+    },
+    {
+      icon: "account",
+      name: "profile",
+      label: t("(tabs).profile.label"),
+    },
+  ];
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) {
@@ -100,6 +112,7 @@ export default function TabsLayout() {
                 />
               );
             },
+            href: null,
           }}
         />
       ))}

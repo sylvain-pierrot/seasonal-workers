@@ -8,7 +8,9 @@ import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
 import { defaultUserAuthSignIn } from "../constants/User";
 import CustomTextInput from "../components/CustomTextInput";
-import CustomButton from "../components/CustomButton";
+import CustomButtonContained from "../components/buttons/CustomButtonContained";
+import CustomButtonText from "../components/buttons/CustomButtonText";
+import CustomButtonOutlined from "../components/buttons/CustomButtonOutlined";
 
 export default function SignIn() {
   const { t } = useTranslation();
@@ -24,18 +26,19 @@ export default function SignIn() {
           <>
             <CustomTextInput
               value={values.email}
-              label={"Email"}
-              handleChange={handleChange("email")}
-              handleBlur={handleBlur("email")}
+              placeholder={"Email"}
+              onChange={handleChange("email")}
+              onBlur={handleBlur("email")}
+              style={{ marginBottom: 10 }}
             />
             <CustomTextInput
               value={values.password}
-              label={t("sign-in.form.password")}
-              handleChange={handleChange("password")}
-              handleBlur={handleBlur("password")}
+              placeholder={t("sign-in.form.password")}
+              onChange={handleChange("password")}
+              onBlur={handleBlur("password")}
+              style={{ marginBottom: 10 }}
             />
-            <CustomButton
-              mode={"contained"}
+            <CustomButtonContained
               label={t("sign-in.actions.sign-in")}
               onPress={() => {
                 handleSubmit();
@@ -44,20 +47,21 @@ export default function SignIn() {
                 // successful before navigating.
                 router.replace("/");
               }}
+              style={{ marginBottom: 10 }}
             />
           </>
         )}
       </Formik>
 
-      <CustomButton
-        mode={"text"}
+      <CustomButtonText
         label={t("sign-in.actions.forgot")}
         onPress={() => router.push("/forgot-password")}
+        style={{ marginBottom: 10 }}
       />
-      <CustomButton
-        mode={"outlined"}
+      <CustomButtonOutlined
         label={t("sign-in.actions.sign-up")}
         onPress={() => router.push("/sign-up")}
+        style={{ marginBottom: 10, alignSelf: "stretch" }}
       />
     </View>
   );

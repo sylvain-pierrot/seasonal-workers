@@ -1,34 +1,47 @@
-// import { Picker } from "@react-native-picker/picker";
+import { Picker } from "@react-native-picker/picker";
 import React from "react";
+import { NativeSyntheticEvent, TargetedEvent } from "react-native";
+import { useTheme } from "react-native-paper";
 
-const CustomSelectPicker = () => (
-  <>
-    {/* <Picker
+interface IPropsCustomSelectPicker {
+  value: string;
+  placeholder: string;
+  options: {
+    label: string;
+    value: string;
+  }[];
+  onChange: (value: string) => void;
+  onBlur?: (e: NativeSyntheticEvent<TargetedEvent>) => void;
+}
+
+const CustomSelectPicker = ({
+  value,
+  placeholder,
+  options,
+  onChange,
+  onBlur,
+}: IPropsCustomSelectPicker) => {
+  const theme = useTheme();
+
+  return (
+    <Picker
       mode={"dialog"}
-      placeholder="Gender"
-      style={[
-        styles.picker,
-        {
-          color:
-            values.gender && Object.values(Gender).includes(values.gender)
-              ? "#000000"
-              : "#8F8F8F",
-        },
-      ]}
+      placeholder={placeholder}
       selectionColor={"red"}
-      selectedValue={values.gender}
-      onValueChange={handleChange("gender")}
-      onBlur={handleBlur("gender")}
+      selectedValue={value}
+      onValueChange={onChange}
+      onBlur={onBlur}
       prompt="Options"
+      style={{
+        backgroundColor: "#F6F6F6",
+        borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness,
+      }}
     >
-      <Picker.Item label={t("sign-up.form.gender.select")} value={""} />
-      <Picker.Item label={t("sign-up.form.gender.male")} value={Gender.Male} />
-      <Picker.Item
-        label={t("sign-up.form.gender.female")}
-        value={Gender.Female}
-      />
-    </Picker> */}
-  </>
-);
+      {options.map((item, key) => (
+        <Picker.Item key={key} label={item.label} value={item.value} />
+      ))}
+    </Picker>
+  );
+};
 
 export default CustomSelectPicker;

@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Searchbar, Title } from "react-native-paper";
 import JobOfferCard from "../../components/JobOfferCard";
 
-export default function Home() {
+export default function JobsScreen() {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState<string>("");
 

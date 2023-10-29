@@ -24,10 +24,6 @@ export const defaultStyles = StyleSheet.create({
     alignSelf: "stretch",
     textAlign: "left",
   },
-  title: {
-    fontSize: 22,
-    textAlign: "left",
-  },
   search: {
     marginVertical: 10,
     flexDirection: "row-reverse",
@@ -35,12 +31,10 @@ export const defaultStyles = StyleSheet.create({
     borderRadius: 5,
   },
   button: {
-    marginTop: 20,
     alignSelf: "stretch",
     textAlign: "center",
   },
   row: {
     flexDirection: "row",
-    alignItems: "center",
   },
 });

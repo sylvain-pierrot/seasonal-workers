@@ -1,22 +1,26 @@
 import React from "react";
 import * as ImagePicker from "expo-image-picker";
-import { View } from "react-native";
-import { Avatar, Button } from "react-native-paper";
 import { FormikErrors } from "formik";
-import { UserAuthSignUp } from "../constants/User";
+import { User } from "../constants/User";
+import CustomButtonOutlined from "./buttons/CustomButtonOutlined";
+import { TextStyle } from "react-native";
 
 interface IPropsCustomDocumentPicker {
   value?: ImagePicker.ImagePickerAsset;
   label: string;
-  handleSetValue: (
+  reverse?: boolean;
+  style?: TextStyle;
+  onChange: (
     image: ImagePicker.ImagePickerAsset
-  ) => Promise<void | FormikErrors<UserAuthSignUp>>;
+  ) => Promise<void | FormikErrors<User>>;
 }
 
 const CustomImagePicker = ({
   value,
+  style,
   label,
-  handleSetValue,
+  reverse,
+  onChange,
 }: IPropsCustomDocumentPicker) => {
   const pickImage = async (): Promise<ImagePicker.ImagePickerAsset | null> => {
     // No permissions request is necessary for launching the image library
@@ -35,37 +39,18 @@ const CustomImagePicker = ({
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 10,
-      }}
-    >
-      <Avatar.Image
-        size={60}
-        style={{ backgroundColor: "transparent" }}
-        source={
-          value ? { uri: value.uri } : require("../assets/images/avatar.png")
+    <CustomButtonOutlined
+      reverse={reverse}
+      icon={"download"}
+      label={label}
+      style={style}
+      onPress={async () => {
+        const image = await pickImage();
+        if (image) {
+          await onChange(image);
         }
-      />
-      <Button
-        mode={"outlined"}
-        icon={"download"}
-        contentStyle={{ flexDirection: "row-reverse" }}
-        textColor={"#000000"}
-        onPress={async () => {
-          const image = await pickImage();
-          if (image) {
-            await handleSetValue(image);
-          }
-        }}
-        style={{ flex: 1, marginLeft: 10 }}
-      >
-        {label}
-      </Button>
-    </View>
+      }}
+    />
   );
 };
 

@@ -24,7 +24,7 @@ export default function RootLayout() {
     <KeycloakProvider {...keycloakConfiguration}>
       <PaperProvider
         settings={{
-          rippleEffectEnabled: true,
+          rippleEffectEnabled: false,
         }}
         theme={ThemeSW}
       >

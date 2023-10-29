@@ -1,10 +1,16 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { RadioButton, TextInput, useTheme, Text } from "react-native-paper";
+import {
+  RadioButton,
+  TextInput,
+  useTheme,
+  Text,
+  Avatar,
+} from "react-native-paper";
 //@ts-ignore
 import { ProgressStep, ProgressSteps } from "react-native-progress-steps";
-import { Gender, defaultUserAuthSignUp } from "../constants/User";
+import { Gender, defaultUser } from "../constants/User";
 import { DatePickerInput } from "react-native-paper-dates";
 // import { useKeycloak } from "../hooks/useKeycloak";
 import { defaultStyles } from "../constants/Styles";
@@ -17,6 +23,7 @@ import CustomPhoneInput from "../components/CustomPhoneInput";
 import CountryPicker, {
   TranslationLanguageCode,
 } from "react-native-country-picker-modal";
+import CustomCountryPicker from "../components/CustomCountryPicker";
 
 const expressionEmail: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 const expressionPassword: RegExp =
@@ -56,7 +63,7 @@ export default function SignUp() {
   return (
     <View style={defaultStyles.pageFull}>
       <Formik
-        initialValues={defaultUserAuthSignUp}
+        initialValues={defaultUser}
         onSubmit={(values) => console.log(values)}
       >
         {({
@@ -80,32 +87,43 @@ export default function SignUp() {
                 !values.birthdate
               }
             >
-              <CustomImagePicker
-                value={values.picture}
-                label={t("sign-up.form.picture")}
-                handleSetValue={(image) => setFieldValue("picture", image)}
-              />
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: 10,
+                }}
+              >
+                <Avatar.Image
+                  size={60}
+                  style={{ backgroundColor: "transparent" }}
+                  source={
+                    values.picture
+                      ? { uri: values.picture.uri }
+                      : require("../assets/images/avatar.png")
+                  }
+                />
+                <CustomImagePicker
+                  reverse
+                  value={values.picture}
+                  label={t("sign-up.form.picture")}
+                  onChange={(image) => setFieldValue("picture", image)}
+                  style={{ flex: 1, marginLeft: 10 }}
+                />
+              </View>
+
               <CustomTextInput
                 value={values.fullname}
-                label={t("sign-up.form.fullname")}
-                handleChange={handleChange("fullname")}
-                handleBlur={handleBlur("fullname")}
+                placeholder={t("sign-up.form.fullname")}
+                onChange={handleChange("fullname")}
+                onBlur={handleBlur("fullname")}
+                style={{ marginBottom: 10 }}
               />
-              <CountryPicker
+              <CustomCountryPicker
                 countryCode={values.country}
-                withCountryNameButton
-                translation={
-                  t(
-                    "sign-up.form.country-translation"
-                  ) as TranslationLanguageCode
-                }
                 onSelect={(country) => setFieldValue("country", country.cca2)}
-                containerButtonStyle={{
-                  backgroundColor: "#F6F6F6",
-                  padding: 15,
-                  borderRadius: 3,
-                  marginBottom: 4,
-                }}
+                style={{ marginBottom: 4 }}
               />
               <DatePickerInput
                 locale={i18n.language}
@@ -135,7 +153,8 @@ export default function SignUp() {
               <CustomDocumentPicker
                 value={values.cv}
                 label={t("sign-up.form.cv")}
-                handleSetValue={(document) => setFieldValue("cv", document)}
+                onChange={(document) => setFieldValue("cv", document)}
+                style={{ marginBottom: 10 }}
               />
               <RadioButton.Group
                 onValueChange={handleChange("gender")}
@@ -171,15 +190,16 @@ export default function SignUp() {
               </RadioButton.Group>
               <CustomPhoneInput
                 value={values.phone}
-                label={t("sign-up.form.phone")}
-                handleChange={handleChange("phone")}
-                handleBlur={handleBlur("phone")}
+                placeholder={t("sign-up.form.phone")}
+                onChange={handleChange("phone")}
+                onBlur={handleBlur("phone")}
+                style={{ marginBottom: 10 }}
               />
               <CustomTextAreaInput
                 value={values.biography}
-                label={t("sign-up.form.biography")}
-                handleChange={handleChange("biography")}
-                handleBlur={handleBlur("biography")}
+                placeholder={t("sign-up.form.biography")}
+                onChange={handleChange("biography")}
+                onBlur={handleBlur("biography")}
               />
             </ProgressStep>
             <ProgressStep
@@ -195,19 +215,20 @@ export default function SignUp() {
             >
               <CustomTextInput
                 value={values.email}
-                label={t("sign-up.form.email")}
-                handleChange={handleChange("email")}
-                handleBlur={handleBlur("email")}
+                placeholder={t("sign-up.form.email")}
+                onChange={handleChange("email")}
+                onBlur={handleBlur("email")}
                 helper
                 helperLabel={t("sign-up.form.email-helper")}
-                handleHelper={handleHelperEmail}
+                visibleHelper={handleHelperEmail}
+                style={{ marginBottom: 10 }}
               />
 
               <CustomTextInput
                 value={values.password}
-                label={t("sign-up.form.password")}
-                handleChange={handleChange("password")}
-                handleBlur={handleBlur("password")}
+                placeholder={t("sign-up.form.password")}
+                onChange={handleChange("password")}
+                onBlur={handleBlur("password")}
                 secureTextEntry={secure}
                 right={
                   <TextInput.Icon
@@ -216,14 +237,15 @@ export default function SignUp() {
                   />
                 }
                 helper
-                handleHelper={handleHelperPassword}
+                visibleHelper={handleHelperPassword}
                 helperLabel="Incorrect"
                 caption={t("sign-up.form.password-caption")}
+                style={{ marginBottom: 10 }}
               />
               <CustomTextInput
                 value={confirmPassword}
-                label={t("sign-up.form.confirm")}
-                handleChange={setConfirmPassword}
+                placeholder={t("sign-up.form.confirm")}
+                onChange={setConfirmPassword}
                 secureTextEntry={secure}
                 right={
                   <TextInput.Icon
@@ -232,7 +254,7 @@ export default function SignUp() {
                   />
                 }
                 helper
-                handleHelper={(value) =>
+                visibleHelper={(value) =>
                   handleHelperConfirmPassword(value, values.password)
                 }
                 helperLabel={t("sign-up.form.confirm-helper")}

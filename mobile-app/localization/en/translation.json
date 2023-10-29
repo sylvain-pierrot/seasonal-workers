@@ -4,10 +4,26 @@
   "(tabs)": {
     "title": "This is provisional",
     "jobs": {
+      "label": "Jobs",
       "title": "Job offers",
       "form": {
         "search": "Search"
       }
+    },
+    "messages": {
+      "label": "Messages",
+      "title": "",
+      "form": {}
+    },
+    "candidatures": {
+      "label": "Candidatures",
+      "title": "",
+      "form": {}
+    },
+    "profile": {
+      "label": "Profile",
+      "title": "",
+      "form": {}
     }
   },
   "sign-up": {

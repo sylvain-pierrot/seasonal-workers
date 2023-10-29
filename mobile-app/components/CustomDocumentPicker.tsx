@@ -3,20 +3,23 @@ import * as DocumentPicker from "expo-document-picker";
 import { Button } from "react-native-paper";
 import { defaultStyles } from "../constants/Styles";
 import { FormikErrors } from "formik";
-import { UserAuthSignUp } from "../constants/User";
+import { User } from "../constants/User";
+import { TextStyle } from "react-native";
 
 interface IPropsCustomDocumentPicker {
   value?: DocumentPicker.DocumentPickerAsset;
   label: string;
-  handleSetValue: (
+  style?: TextStyle;
+  onChange: (
     document: DocumentPicker.DocumentPickerAsset
-  ) => Promise<void | FormikErrors<UserAuthSignUp>>;
+  ) => Promise<void | FormikErrors<User>>;
 }
 
 const CustomDocumentPicker = ({
   value,
   label,
-  handleSetValue,
+  style,
+  onChange,
 }: IPropsCustomDocumentPicker) => {
   const pickDocument =
     async (): Promise<DocumentPicker.DocumentPickerAsset | null> => {
@@ -43,10 +46,10 @@ const CustomDocumentPicker = ({
       onPress={async () => {
         const document = await pickDocument();
         if (document) {
-          await handleSetValue(document);
+          await onChange(document);
         }
       }}
-      style={{ ...defaultStyles.button, ...{ marginBottom: 10 } }}
+      style={style}
     >
       {value ? value.name : label}
     </Button>
