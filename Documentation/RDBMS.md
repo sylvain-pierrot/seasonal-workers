@@ -74,7 +74,7 @@ erDiagram
     ADDRESS {
         integer address_id
         varchar city
-        integer postal_code
+        integer zip_code
         varchar country
     }
     REFERENT {
