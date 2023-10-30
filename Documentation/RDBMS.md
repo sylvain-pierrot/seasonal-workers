@@ -90,7 +90,7 @@ erDiagram
         varchar recruiter_name
         integer score
         varchar opinion
-        date date
+        date created_at
         feedback_type feedback_type
     }
     BENEFIT o{--}o AD : "BENEFIT_AD"
