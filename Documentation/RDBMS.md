@@ -58,8 +58,8 @@ erDiagram
     }
     USER {
         integer user_id
-        varchar name
         varchar first_name
+        varchar last_name
         varchar email
         varchar password
         gender gender
