@@ -42,6 +42,7 @@ erDiagram
         date start_date
         date end_date
         integer salary
+        varchar currency
         varchar description
         ad_type ad_type
     }
