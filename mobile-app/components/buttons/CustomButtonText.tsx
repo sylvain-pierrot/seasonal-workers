@@ -1,41 +1,52 @@
 import React from "react";
-import { GestureResponderEvent, StyleSheet, TextStyle } from "react-native";
-import { Button, useTheme } from "react-native-paper";
-import { defaultStyles } from "../../constants/Styles";
+import { GestureResponderEvent, TextStyle, ViewStyle } from "react-native";
+import { Button, Text } from "react-native-paper";
+import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
+import { VariantProp } from "react-native-paper/lib/typescript/components/Typography/types";
 
 interface IPropsCustomButtonText {
   label: string;
   textColor?: string;
+  icon?: IconSource;
+  reverse?: boolean;
+  variant?: VariantProp<never>;
   style?: TextStyle;
+  sizeIcon?: number;
+  bold?: boolean;
   onPress?: (e: GestureResponderEvent) => void;
 }
 
 const CustomButtonText = ({
   label,
   textColor,
+  icon,
+  reverse,
+  variant,
   style,
+  sizeIcon,
+  bold,
   onPress,
 }: IPropsCustomButtonText) => {
-  const theme = useTheme();
+  const reverseStyle: ViewStyle = { flexDirection: "row-reverse" };
+  const iconStyle: TextStyle = sizeIcon ? { fontSize: sizeIcon } : {};
+  const boldStyle: TextStyle = bold ? { fontWeight: "bold" } : {};
 
   return (
     <Button
       mode={"text"}
       onPress={onPress}
-      style={{ ...defaultStyles.button, ...styles.text, ...style }}
+      icon={icon}
+      contentStyle={reverse ? reverseStyle : {}}
+      style={style}
       textColor={textColor}
+      labelStyle={iconStyle}
+      compact
     >
-      {label}
+      <Text variant={variant} style={boldStyle}>
+        {label}
+      </Text>
     </Button>
   );
 };
 
 export default CustomButtonText;
-
-const styles = StyleSheet.create({
-  text: {
-    // backgroundColor: "#F3F3F3",
-    // borderRadius: 10,
-    // color: "#000000",
-  },
-});

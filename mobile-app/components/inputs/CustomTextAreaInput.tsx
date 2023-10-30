@@ -5,7 +5,7 @@ import {
   TextStyle,
 } from "react-native";
 import { TextInput } from "react-native-paper";
-import { defaultStyles } from "../constants/Styles";
+import { defaultStyles } from "../../constants/Styles";
 
 export interface IPropsCustomTextAreaInput {
   value: string;

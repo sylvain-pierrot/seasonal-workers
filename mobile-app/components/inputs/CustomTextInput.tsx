@@ -6,7 +6,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { HelperText, TextInput, Text } from "react-native-paper";
-import { defaultStyles } from "../constants/Styles";
+import { defaultStyles } from "../../constants/Styles";
 
 export interface IPropsCustomTextInput {
   value: string;

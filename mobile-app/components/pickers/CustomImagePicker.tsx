@@ -1,8 +1,8 @@
 import React from "react";
 import * as ImagePicker from "expo-image-picker";
 import { FormikErrors } from "formik";
-import { User } from "../constants/User";
-import CustomButtonOutlined from "./buttons/CustomButtonOutlined";
+import { User } from "../../constants/User";
+import CustomButtonOutlined from "../buttons/CustomButtonOutlined";
 import { TextStyle } from "react-native";
 
 interface IPropsCustomDocumentPicker {

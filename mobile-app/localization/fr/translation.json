@@ -1,8 +1,9 @@
 {
-  "welcome": "Bienvenue sur le site de la formation Node.js",
+  "welcome": "Bienvenue",
   "name": "Node.js",
   "(tabs)": {
     "title": "Ceci est provisoir",
+    "connected": "Pour vous",
     "jobs": {
       "label": "Emplois",
       "title": "Offres d'emploi",

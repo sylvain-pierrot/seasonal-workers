@@ -1,10 +1,9 @@
 import { View } from "react-native";
 import React from "react";
 import { router } from "expo-router";
-import { Button, TextInput } from "react-native-paper";
 import { defaultStyles } from "../constants/Styles";
 import { useTranslation } from "react-i18next";
-import CustomTextInput from "../components/CustomTextInput";
+import CustomTextInput from "../components/inputs/CustomTextInput";
 import { Formik } from "formik";
 import { defaultUserForgotPassword } from "../constants/User";
 import CustomButtonContained from "../components/buttons/CustomButtonContained";

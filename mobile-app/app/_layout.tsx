@@ -4,14 +4,21 @@ import {
   KeycloakProvider,
 } from "../providers/KeycloakProvider";
 import AppConfig from "../app.json";
-import React from "react";
-import { Appbar, PaperProvider } from "react-native-paper";
+import React, { useRef } from "react";
+import { Appbar, Menu, PaperProvider } from "react-native-paper";
 import { ThemeSW } from "../constants/Themes";
 import { useTranslation } from "react-i18next";
+import CustomButtonText from "../components/buttons/CustomButtonText";
+import { useKeycloak } from "../hooks/useKeycloak";
+import CustomBottomSheet from "../components/CustomBottomSheet";
+import BottomSheet from "@gorhom/bottom-sheet";
 import { Lang } from "../constants/Lang";
+import CustomTabAppBar from "../components/appBars/CustomTabAppBar";
 
 export default function RootLayout() {
   const { t, i18n } = useTranslation();
+  const { isLoggedIn, isLoading } = useKeycloak();
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   const keycloakConfiguration: IKeycloakConfiguration = {
     clientId: "AGENT_007",
@@ -24,7 +31,7 @@ export default function RootLayout() {
     <KeycloakProvider {...keycloakConfiguration}>
       <PaperProvider
         settings={{
-          rippleEffectEnabled: false,
+          rippleEffectEnabled: true,
         }}
         theme={ThemeSW}
       >
@@ -33,27 +40,24 @@ export default function RootLayout() {
             contentStyle: {
               backgroundColor: "transparent",
             },
-            headerTitleStyle: {
-              fontSize: 30,
-            },
             headerShadowVisible: false,
+            headerShown: !isLoggedIn,
+            animation: "fade",
             header: (props) => {
               return (
-                <Appbar.Header>
-                  {!["sign-in", "(tabs)"].includes(props.route.name) && (
-                    <Appbar.BackAction onPress={props.navigation.goBack} />
-                  )}
-                  <Appbar.Content title={props.options.title} />
-                  <Appbar.Action
-                    color={i18n.language === Lang.En ? "#ab4b52" : "#318ce7"}
-                    icon="translate"
-                    onPress={() => {
-                      i18n.language === Lang.En
-                        ? i18n.changeLanguage(Lang.Fr)
-                        : i18n.changeLanguage(Lang.En);
-                    }}
-                  />
-                </Appbar.Header>
+                <CustomTabAppBar
+                  title={t("welcome")}
+                  icon="chevron-down"
+                  canGoBack={props.navigation.canGoBack}
+                  goBack={props.navigation.goBack}
+                  actions={[
+                    {
+                      icon: "menu",
+                      onPress: () => bottomSheetRef.current?.expand(),
+                    },
+                  ]}
+                  reverse
+                />
               );
             },
           }}
@@ -72,6 +76,24 @@ export default function RootLayout() {
             options={{ title: t("forgot-password.title") }}
           />
         </Stack>
+
+        <CustomBottomSheet ref={bottomSheetRef}>
+          <Menu.Item
+            leadingIcon="translate"
+            title="Langue"
+            theme={{
+              colors: {
+                onSurfaceVariant:
+                  i18n.language === Lang.En ? "#ab4b52" : "#318ce7",
+              },
+            }}
+            onPress={() => {
+              i18n.language === Lang.En
+                ? i18n.changeLanguage(Lang.Fr)
+                : i18n.changeLanguage(Lang.En);
+            }}
+          />
+        </CustomBottomSheet>
       </PaperProvider>
     </KeycloakProvider>
   );

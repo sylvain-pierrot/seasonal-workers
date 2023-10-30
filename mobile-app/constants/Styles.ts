@@ -10,12 +10,12 @@ export const defaultStyles = StyleSheet.create({
   },
   pageFull: {
     flex: 1,
-    marginVertical: 5,
+    marginVertical: 15,
     marginHorizontal: 25,
   },
   pageHeight: {
     flex: 1,
-    marginVertical: 5,
+    marginVertical: 15,
   },
   text: {
     textAlign: "left",

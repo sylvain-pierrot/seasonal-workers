@@ -1,9 +1,9 @@
 import React from "react";
 import * as DocumentPicker from "expo-document-picker";
 import { Button } from "react-native-paper";
-import { defaultStyles } from "../constants/Styles";
+import { defaultStyles } from "../../constants/Styles";
 import { FormikErrors } from "formik";
-import { User } from "../constants/User";
+import { User } from "../../constants/User";
 import { TextStyle } from "react-native";
 
 interface IPropsCustomDocumentPicker {

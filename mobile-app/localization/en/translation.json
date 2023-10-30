@@ -1,8 +1,9 @@
 {
-  "welcome": "Welcome to the world of Node.js",
+  "welcome": "Welcome",
   "name": "Node.js",
   "(tabs)": {
     "title": "This is provisional",
+    "connected": "For you",
     "jobs": {
       "label": "Jobs",
       "title": "Job offers",

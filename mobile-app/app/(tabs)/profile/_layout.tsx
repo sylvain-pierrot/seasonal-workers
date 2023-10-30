@@ -1,41 +1,59 @@
 import { Stack } from "expo-router";
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { Appbar, Text } from "react-native-paper";
+import React, { useRef } from "react";
+import CustomValidateAppBar from "../../../components/appBars/CustomValidateAppBar";
+import CustomTabAppBar from "../../../components/appBars/CustomTabAppBar";
+import CustomBottomSheet from "../../../components/CustomBottomSheet";
+import BottomSheet from "@gorhom/bottom-sheet";
 
 export default function ProfileLayout() {
-  const { t, i18n } = useTranslation();
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   return (
-    <Stack
-      screenOptions={{
-        contentStyle: {
-          backgroundColor: "transparent",
-        },
-        headerShadowVisible: false,
-        header: (props) => {
-          return (
-            <>
-              {!["index"].includes(props.route.name) && (
-                <Appbar.Header
-                  style={{
-                    height: "auto",
-                  }}
-                  statusBarHeight={0}
-                >
-                  <Appbar.BackAction
-                    onPress={props.navigation.goBack}
-                    style={{ margin: 0 }}
+    <>
+      <Stack
+        screenOptions={{
+          contentStyle: {
+            backgroundColor: "transparent",
+          },
+          animation: "slide_from_right",
+          header: (props) => {
+            switch (props.route.name) {
+              case "modify":
+                return (
+                  <CustomValidateAppBar
+                    title={"Modifier le profil"}
+                    onCheck={() => {}}
+                    onClose={props.navigation.goBack}
                   />
-                </Appbar.Header>
-              )}
-            </>
-          );
-        },
-      }}
-    >
-      <Stack.Screen name="index" />
-      <Stack.Screen name="modify" />
-    </Stack>
+                );
+              default:
+                return (
+                  <CustomTabAppBar
+                    title="Franck"
+                    icon="chevron-down"
+                    canGoBack={() =>
+                      props.navigation.canGoBack() &&
+                      props.route.name !== "index"
+                    }
+                    goBack={props.navigation.goBack}
+                    actions={[
+                      {
+                        icon: "menu",
+                        onPress: () => bottomSheetRef.current?.expand(),
+                      },
+                    ]}
+                    reverse
+                  />
+                );
+            }
+          },
+        }}
+      >
+        <Stack.Screen name="index" />
+        <Stack.Screen name="modify" />
+      </Stack>
+
+      <CustomBottomSheet ref={bottomSheetRef} />
+    </>
   );
 }

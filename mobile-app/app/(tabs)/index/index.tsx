@@ -1,11 +1,11 @@
 import { Dimensions, ScrollView, View } from "react-native";
-import "../../localization/i18n";
+import "../../../localization/i18n";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { defaultStyles } from "../../constants/Styles";
+import { defaultStyles } from "../../../constants/Styles";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Searchbar, Title } from "react-native-paper";
-import JobOfferCard from "../../components/JobOfferCard";
+import JobOfferCard from "../../../components/JobOfferCard";
 
 export default function JobsScreen() {
   const { t } = useTranslation();
@@ -15,10 +15,6 @@ export default function JobsScreen() {
 
   return (
     <View style={defaultStyles.pageFull}>
-      <View style={defaultStyles.row}>
-        <Icon name={"domain"} size={26} style={{ marginRight: 5 }} />
-        <Title>{t("(tabs).jobs.title")}</Title>
-      </View>
       <Searchbar
         placeholder={t("(tabs).jobs.form.search")}
         onChangeText={onChangeSearch}

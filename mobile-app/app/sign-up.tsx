@@ -15,15 +15,12 @@ import { DatePickerInput } from "react-native-paper-dates";
 // import { useKeycloak } from "../hooks/useKeycloak";
 import { defaultStyles } from "../constants/Styles";
 import { useTranslation } from "react-i18next";
-import CustomTextInput from "../components/CustomTextInput";
-import CustomDocumentPicker from "../components/CustomDocumentPicker";
-import CustomImagePicker from "../components/CustomImagePicker";
-import CustomTextAreaInput from "../components/CustomTextAreaInput";
-import CustomPhoneInput from "../components/CustomPhoneInput";
-import CountryPicker, {
-  TranslationLanguageCode,
-} from "react-native-country-picker-modal";
-import CustomCountryPicker from "../components/CustomCountryPicker";
+import CustomTextInput from "../components/inputs/CustomTextInput";
+import CustomDocumentPicker from "../components/pickers/CustomDocumentPicker";
+import CustomImagePicker from "../components/pickers/CustomImagePicker";
+import CustomTextAreaInput from "../components/inputs/CustomTextAreaInput";
+import CustomPhoneInput from "../components/inputs/CustomPhoneInput";
+import CustomCountryPicker from "../components/pickers/CustomCountryPicker";
 
 const expressionEmail: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 const expressionPassword: RegExp =

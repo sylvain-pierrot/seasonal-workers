@@ -1,10 +1,11 @@
 import React from "react";
 import { Redirect, Tabs } from "expo-router";
 import { useKeycloak } from "../../hooks/useKeycloak";
-import { BottomNavigation, Text } from "react-native-paper";
+import { Appbar, BottomNavigation, Text } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { CommonActions } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+import CustomButtonText from "../../components/buttons/CustomButtonText";
 
 interface IPropsTab {
   icon: string;
@@ -17,8 +18,16 @@ export default function TabsLayout() {
   const { t } = useTranslation();
 
   const tabs: IPropsTab[] = [
-    { icon: "briefcase", name: "index", label: t("(tabs).jobs.label") },
-    { icon: "chat", name: "messages", label: t("(tabs).messages.label") },
+    {
+      icon: "briefcase",
+      name: "index",
+      label: t("(tabs).jobs.label"),
+    },
+    {
+      icon: "chat",
+      name: "messages",
+      label: t("(tabs).messages.label"),
+    },
     {
       icon: "calendar",
       name: "candidatures",
@@ -46,11 +55,11 @@ export default function TabsLayout() {
 
   return (
     <Tabs
+      initialRouteName="index"
       screenOptions={{
         headerShown: false,
       }}
       sceneContainerStyle={{ backgroundColor: "#FFFFFF" }}
-      initialRouteName="index"
       tabBar={({ navigation, state, descriptors, insets }) => (
         <BottomNavigation.Bar
           navigationState={state}
@@ -112,7 +121,6 @@ export default function TabsLayout() {
                 />
               );
             },
-            href: null,
           }}
         />
       ))}

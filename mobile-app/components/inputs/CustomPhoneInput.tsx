@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 import PhoneInput from "react-native-phone-input";
-import { defaultStyles } from "../constants/Styles";
+import { defaultStyles } from "../../constants/Styles";
 
 interface IPropsCustomPhoneInput {
   value: string;

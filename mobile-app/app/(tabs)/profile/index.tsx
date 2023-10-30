@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import "../../../localization/i18n";
-import React from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { defaultStyles } from "../../../constants/Styles";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -8,11 +8,18 @@ import { Avatar, Button, Card, Paragraph, Text } from "react-native-paper";
 import { TabScreen, Tabs, TabsProvider } from "react-native-paper-tabs";
 import ExperienceCard from "../../../components/ExperienceCard";
 import { router } from "expo-router";
+import BottomSheet from "@gorhom/bottom-sheet";
 
 const AVATAR = "../../../assets/images/avatar.png";
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ["50%"], []);
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log("handleSheetChanges", index);
+  }, []);
+  const [isOpen, setIsOpen] = useState(-1);
 
   return (
     <View style={defaultStyles.pageHeight}>
@@ -53,6 +60,7 @@ export default function ProfileScreen() {
           mode={"contained"}
           style={{ backgroundColor: "#F3F3F3", borderRadius: 10 }}
           textColor="#000000"
+          onPress={() => setIsOpen(0)}
         >
           CV
         </Button>
@@ -114,6 +122,18 @@ export default function ProfileScreen() {
           </TabScreen>
         </Tabs>
       </TabsProvider>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={isOpen}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+        enablePanDownToClose
+        onClose={() => setIsOpen(-1)}
+      >
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text>Awesome 🎉</Text>
+        </View>
+      </BottomSheet>
     </View>
   );
 }
