@@ -68,6 +68,7 @@ erDiagram
         varchar phone
         varchar description
         varchar cv_path
+        varchar picture_path
         date last_auth
         boolean hidden
     }
