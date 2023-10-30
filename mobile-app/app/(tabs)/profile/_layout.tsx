@@ -1,9 +1,9 @@
+import BottomSheet from "@gorhom/bottom-sheet";
 import { Stack } from "expo-router";
 import React, { useRef } from "react";
-import CustomValidateAppBar from "../../../components/appBars/CustomValidateAppBar";
-import CustomTabAppBar from "../../../components/appBars/CustomTabAppBar";
 import CustomBottomSheet from "../../../components/CustomBottomSheet";
-import BottomSheet from "@gorhom/bottom-sheet";
+import CustomTabAppBar from "../../../components/appBars/CustomTabAppBar";
+import CustomValidateAppBar from "../../../components/appBars/CustomValidateAppBar";
 
 export default function ProfileLayout() {
   const bottomSheetRef = useRef<BottomSheet>(null);

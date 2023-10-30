@@ -1,14 +1,14 @@
-import { View } from "react-native";
-import "../../../localization/i18n";
+import BottomSheet from "@gorhom/bottom-sheet";
+import { router } from "expo-router";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { defaultStyles } from "../../../constants/Styles";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { View } from "react-native";
 import { Avatar, Button, Card, Paragraph, Text } from "react-native-paper";
 import { TabScreen, Tabs, TabsProvider } from "react-native-paper-tabs";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import ExperienceCard from "../../../components/ExperienceCard";
-import { router } from "expo-router";
-import BottomSheet from "@gorhom/bottom-sheet";
+import { defaultStyles } from "../../../constants/Styles";
+import "../../../localization/i18n";
 
 const AVATAR = "../../../assets/images/avatar.png";
 

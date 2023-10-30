@@ -1,19 +1,18 @@
+import BottomSheet from "@gorhom/bottom-sheet";
 import { Stack } from "expo-router";
+import React, { useRef } from "react";
+import { useTranslation } from "react-i18next";
+import { Menu, PaperProvider } from "react-native-paper";
+import AppConfig from "../app.json";
+import CustomBottomSheet from "../components/CustomBottomSheet";
+import CustomTabAppBar from "../components/appBars/CustomTabAppBar";
+import { Lang } from "../constants/Lang";
+import { ThemeSW } from "../constants/Themes";
+import { useKeycloak } from "../hooks/useKeycloak";
 import {
   IKeycloakConfiguration,
   KeycloakProvider,
 } from "../providers/KeycloakProvider";
-import AppConfig from "../app.json";
-import React, { useRef } from "react";
-import { Appbar, Menu, PaperProvider } from "react-native-paper";
-import { ThemeSW } from "../constants/Themes";
-import { useTranslation } from "react-i18next";
-import CustomButtonText from "../components/buttons/CustomButtonText";
-import { useKeycloak } from "../hooks/useKeycloak";
-import CustomBottomSheet from "../components/CustomBottomSheet";
-import BottomSheet from "@gorhom/bottom-sheet";
-import { Lang } from "../constants/Lang";
-import CustomTabAppBar from "../components/appBars/CustomTabAppBar";
 
 export default function RootLayout() {
   const { t, i18n } = useTranslation();
@@ -36,12 +35,13 @@ export default function RootLayout() {
         theme={ThemeSW}
       >
         <Stack
+          initialRouteName="(tabs)"
           screenOptions={{
             contentStyle: {
               backgroundColor: "transparent",
             },
             headerShadowVisible: false,
-            headerShown: !isLoggedIn,
+            headerShown: isLoggedIn,
             animation: "fade",
             header: (props) => {
               return (

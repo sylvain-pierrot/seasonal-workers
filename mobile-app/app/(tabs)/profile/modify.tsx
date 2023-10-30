@@ -1,15 +1,15 @@
-import React from "react";
-import { View } from "react-native";
-import { defaultStyles } from "../../../constants/Styles";
-import CustomImagePicker from "../../../components/pickers/CustomImagePicker";
 import { ImagePickerAsset } from "expo-image-picker";
 import { Formik, FormikErrors } from "formik";
-import { Gender, User } from "../../../constants/User";
-import CustomTextInput from "../../../components/inputs/CustomTextInput";
-import CustomPhoneInput from "../../../components/inputs/CustomPhoneInput";
-import CustomSelectPicker from "../../../components/pickers/CustomSelectPicker";
-import { DatePickerInput } from "react-native-paper-dates";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+import { DatePickerInput } from "react-native-paper-dates";
+import CustomPhoneInput from "../../../components/inputs/CustomPhoneInput";
+import CustomTextInput from "../../../components/inputs/CustomTextInput";
+import CustomImagePicker from "../../../components/pickers/CustomImagePicker";
+import CustomSelectPicker from "../../../components/pickers/CustomSelectPicker";
+import { defaultStyles } from "../../../constants/Styles";
+import { Gender, User } from "../../../constants/User";
 
 const userFetch: User = {
   fullname: "Sylvain Pierrot",

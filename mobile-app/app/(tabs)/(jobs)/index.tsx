@@ -1,11 +1,10 @@
-import { Dimensions, ScrollView, View } from "react-native";
-import "../../../localization/i18n";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { defaultStyles } from "../../../constants/Styles";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { Searchbar, Title } from "react-native-paper";
+import { Dimensions, ScrollView, View } from "react-native";
+import { Searchbar } from "react-native-paper";
 import JobOfferCard from "../../../components/JobOfferCard";
+import { defaultStyles } from "../../../constants/Styles";
+import "../../../localization/i18n";
 
 export default function JobsScreen() {
   const { t } = useTranslation();

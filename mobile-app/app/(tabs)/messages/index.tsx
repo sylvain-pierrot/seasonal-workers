@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, View, Platform, StyleSheet } from "react-native";
 import React from "react";
+import { Platform, StyleSheet, Text, View } from "react-native";
 
 export default function MessagesScreen() {
   return (

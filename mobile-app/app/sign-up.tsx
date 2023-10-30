@@ -2,25 +2,25 @@ import { Formik } from "formik";
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import {
+  Avatar,
   RadioButton,
+  Text,
   TextInput,
   useTheme,
-  Text,
-  Avatar,
 } from "react-native-paper";
+import { DatePickerInput } from "react-native-paper-dates";
 //@ts-ignore
 import { ProgressStep, ProgressSteps } from "react-native-progress-steps";
 import { Gender, defaultUser } from "../constants/User";
-import { DatePickerInput } from "react-native-paper-dates";
 // import { useKeycloak } from "../hooks/useKeycloak";
-import { defaultStyles } from "../constants/Styles";
 import { useTranslation } from "react-i18next";
+import CustomPhoneInput from "../components/inputs/CustomPhoneInput";
+import CustomTextAreaInput from "../components/inputs/CustomTextAreaInput";
 import CustomTextInput from "../components/inputs/CustomTextInput";
+import CustomCountryPicker from "../components/pickers/CustomCountryPicker";
 import CustomDocumentPicker from "../components/pickers/CustomDocumentPicker";
 import CustomImagePicker from "../components/pickers/CustomImagePicker";
-import CustomTextAreaInput from "../components/inputs/CustomTextAreaInput";
-import CustomPhoneInput from "../components/inputs/CustomPhoneInput";
-import CustomCountryPicker from "../components/pickers/CustomCountryPicker";
+import { defaultStyles } from "../constants/Styles";
 
 const expressionEmail: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 const expressionPassword: RegExp =

@@ -1,13 +1,13 @@
-import { View } from "react-native";
-import React from "react";
 import { router } from "expo-router";
-import { defaultStyles } from "../constants/Styles";
-import { useTranslation } from "react-i18next";
-import CustomTextInput from "../components/inputs/CustomTextInput";
 import { Formik } from "formik";
-import { defaultUserForgotPassword } from "../constants/User";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 import CustomButtonContained from "../components/buttons/CustomButtonContained";
 import CustomButtonOutlined from "../components/buttons/CustomButtonOutlined";
+import CustomTextInput from "../components/inputs/CustomTextInput";
+import { defaultStyles } from "../constants/Styles";
+import { defaultUserForgotPassword } from "../constants/User";
 
 export default function ForgotPassword() {
   const { t } = useTranslation();
