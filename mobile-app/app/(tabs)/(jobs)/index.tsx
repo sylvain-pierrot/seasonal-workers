@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Dimensions, ScrollView, View } from "react-native";
 import { Searchbar } from "react-native-paper";
-import JobOfferCard from "../../../components/JobOfferCard";
-import { defaultStyles } from "../../../constants/Styles";
+import JobOfferCard from "../../../components/cards/JobOfferCard";
 import "../../../localization/i18n";
+import { ScrollView } from "react-native-gesture-handler";
+import { StyleSheet } from "react-native";
 
 export default function JobsScreen() {
   const { t } = useTranslation();
@@ -13,33 +13,32 @@ export default function JobsScreen() {
   const onChangeSearch = (query: string) => setSearchQuery(query);
 
   return (
-    <View style={defaultStyles.pageFull}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      scrollEventThrottle={16}
+      stickyHeaderIndices={[0]}
+      stickyHeaderHiddenOnScroll
+      style={{ paddingHorizontal: 25 }}
+    >
       <Searchbar
         placeholder={t("(tabs).jobs.form.search")}
         onChangeText={onChangeSearch}
         value={searchQuery}
         placeholderTextColor={"#8F8F8F"}
-        style={defaultStyles.search}
+        style={styles.search}
+        mode={"bar"}
       />
-      <ScrollView
-        style={{
-          marginVertical: 10,
-          height: Dimensions.get("window").height / 1.5,
-        }}
-        showsVerticalScrollIndicator={false}
-        scrollEventThrottle={16}
-        // stickyHeaderIndices={[0]}
-        // refreshControl={
-        //   <RefreshControl
-        //     onRefresh={() => getUserData(true)}
-        //     refreshing={refresh}
-        //   />
-        // }
-      >
-        {Array.from({ length: 5 }, (_, index) => (
-          <JobOfferCard key={index} />
-        ))}
-      </ScrollView>
-    </View>
+      {Array.from({ length: 5 }, (_, index) => (
+        <JobOfferCard key={index} />
+      ))}
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  search: {
+    paddingVertical: 10,
+    flexDirection: "row-reverse",
+    backgroundColor: "#FFF",
+  },
+});

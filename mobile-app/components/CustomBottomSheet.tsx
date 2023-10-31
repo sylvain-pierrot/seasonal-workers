@@ -4,18 +4,15 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import BottomSheet, {
+import {
   BottomSheetBackdrop,
+  BottomSheetModal,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { BottomSheetBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 
-const CustomBottomSheet = forwardRef<BottomSheet, PropsWithChildren>(
+const CustomBottomSheet = forwardRef<BottomSheetModal, PropsWithChildren>(
   ({ children }, ref) => {
-    const snapPoints = useMemo(() => ["30%"], []);
-
-    const handleSheetChanges = useCallback((index: number) => {}, []);
-
     const renderBackdrop = useCallback(
       (props: BottomSheetBackdropProps) => (
         <BottomSheetBackdrop
@@ -28,16 +25,15 @@ const CustomBottomSheet = forwardRef<BottomSheet, PropsWithChildren>(
     );
 
     return (
-      <BottomSheet
+      <BottomSheetModal
         ref={ref}
-        index={-1}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
+        index={0}
         backdropComponent={renderBackdrop}
         enablePanDownToClose
+        enableDynamicSizing
       >
         <BottomSheetView>{children}</BottomSheetView>
-      </BottomSheet>
+      </BottomSheetModal>
     );
   }
 );

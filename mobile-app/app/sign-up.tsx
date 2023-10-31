@@ -79,7 +79,7 @@ export default function SignUp() {
               {...progressStepNextStyle}
               nextBtnDisabled={
                 !values.picture ||
-                !values.country ||
+                !values.countryCode ||
                 !values.fullname ||
                 !values.birthdate
               }
@@ -118,7 +118,7 @@ export default function SignUp() {
                 style={{ marginBottom: 10 }}
               />
               <CustomCountryPicker
-                countryCode={values.country}
+                countryCode={values.countryCode}
                 onSelect={(country) => setFieldValue("country", country.cca2)}
                 style={{ marginBottom: 4 }}
               />

@@ -12,7 +12,7 @@ export enum Gender {
 export interface User {
   fullname: string;
   birthdate?: Date;
-  country: CountryCode;
+  countryCode: CountryCode;
   gender: Gender;
   phone: string;
   email: string;
@@ -24,7 +24,7 @@ export interface User {
 
 export const defaultUser: User = {
   fullname: "",
-  country: "FR",
+  countryCode: "FR",
   gender: Gender.Male,
   phone: "",
   email: "",

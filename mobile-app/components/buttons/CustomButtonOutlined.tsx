@@ -21,14 +21,16 @@ const CustomButtonOutlined = ({
   reverse,
   onPress,
 }: IPropsCustomButtonOutlined) => {
-  const reverseStyle: ViewStyle = { flexDirection: "row-reverse" };
+  const reverseStyle: ViewStyle = reverse
+    ? { flexDirection: "row-reverse" }
+    : { flexDirection: "row" };
 
   return (
     <Button
       mode={"outlined"}
       onPress={onPress}
       icon={icon}
-      contentStyle={reverse ? reverseStyle : {}}
+      contentStyle={reverseStyle}
       style={style}
       textColor={textColor ?? "#000000"}
     >

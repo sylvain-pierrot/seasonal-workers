@@ -1,6 +1,6 @@
 import { Picker } from "@react-native-picker/picker";
 import React from "react";
-import { NativeSyntheticEvent, TargetedEvent } from "react-native";
+import { NativeSyntheticEvent, TargetedEvent, TextStyle } from "react-native";
 import { useTheme } from "react-native-paper";
 
 interface IPropsCustomSelectPicker {
@@ -10,6 +10,7 @@ interface IPropsCustomSelectPicker {
     label: string;
     value: string;
   }[];
+  style?: TextStyle;
   onChange: (value: string) => void;
   onBlur?: (e: NativeSyntheticEvent<TargetedEvent>) => void;
 }
@@ -18,6 +19,7 @@ const CustomSelectPicker = ({
   value,
   placeholder,
   options,
+  style,
   onChange,
   onBlur,
 }: IPropsCustomSelectPicker) => {
@@ -32,10 +34,10 @@ const CustomSelectPicker = ({
       onValueChange={onChange}
       onBlur={onBlur}
       prompt="Options"
-      style={{
+      style={{...{
         backgroundColor: "#F6F6F6",
         borderRadius: (theme.isV3 ? 5 : 1) * theme.roundness,
-      }}
+      }, ...style}}
     >
       {options.map((item, key) => (
         <Picker.Item key={key} label={item.label} value={item.value} />

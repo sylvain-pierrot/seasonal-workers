@@ -1,6 +1,9 @@
-import BottomSheet from "@gorhom/bottom-sheet";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
 import { Stack } from "expo-router";
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Menu, PaperProvider } from "react-native-paper";
 import AppConfig from "../app.json";
@@ -17,7 +20,12 @@ import {
 export default function RootLayout() {
   const { t, i18n } = useTranslation();
   const { isLoggedIn, isLoading } = useKeycloak();
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  const handleExpandBottomSheet = useCallback(
+    () => bottomSheetModalRef.current?.present(),
+    []
+  );
 
   const keycloakConfiguration: IKeycloakConfiguration = {
     clientId: "AGENT_007",
@@ -34,66 +42,71 @@ export default function RootLayout() {
         }}
         theme={ThemeSW}
       >
-        <Stack
-          initialRouteName="(tabs)"
-          screenOptions={{
-            contentStyle: {
-              backgroundColor: "transparent",
-            },
-            headerShadowVisible: false,
-            headerShown: isLoggedIn,
-            animation: "fade",
-            header: (props) => {
-              return (
-                <CustomTabAppBar
-                  title={t("welcome")}
-                  icon="chevron-down"
-                  canGoBack={props.navigation.canGoBack}
-                  goBack={props.navigation.goBack}
-                  actions={[
-                    {
-                      icon: "menu",
-                      onPress: () => bottomSheetRef.current?.expand(),
-                    },
-                  ]}
-                  reverse
-                />
-              );
-            },
-          }}
-        >
-          <Stack.Screen name="(tabs)" options={{ title: t("(tabs).title") }} />
-          <Stack.Screen
-            name="sign-in"
-            options={{ title: t("sign-in.title") }}
-          />
-          <Stack.Screen
-            name="sign-up"
-            options={{ title: t("sign-up.title") }}
-          />
-          <Stack.Screen
-            name="forgot-password"
-            options={{ title: t("forgot-password.title") }}
-          />
-        </Stack>
-
-        <CustomBottomSheet ref={bottomSheetRef}>
-          <Menu.Item
-            leadingIcon="translate"
-            title="Langue"
-            theme={{
-              colors: {
-                onSurfaceVariant:
-                  i18n.language === Lang.En ? "#ab4b52" : "#318ce7",
+        <BottomSheetModalProvider>
+          <Stack
+            initialRouteName="(tabs)"
+            screenOptions={{
+              contentStyle: {
+                backgroundColor: "transparent",
+              },
+              headerShadowVisible: false,
+              headerShown: isLoggedIn,
+              animation: "fade",
+              header: (props) => {
+                return (
+                  <CustomTabAppBar
+                    title={t("welcome")}
+                    icon="chevron-down"
+                    canGoBack={props.navigation.canGoBack}
+                    goBack={props.navigation.goBack}
+                    actions={[
+                      {
+                        icon: "menu",
+                        onPress: () => handleExpandBottomSheet,
+                      },
+                    ]}
+                    reverse
+                  />
+                );
               },
             }}
-            onPress={() => {
-              i18n.language === Lang.En
-                ? i18n.changeLanguage(Lang.Fr)
-                : i18n.changeLanguage(Lang.En);
-            }}
-          />
-        </CustomBottomSheet>
+          >
+            <Stack.Screen
+              name="(tabs)"
+              options={{ title: t("(tabs).title") }}
+            />
+            <Stack.Screen
+              name="sign-in"
+              options={{ title: t("sign-in.title") }}
+            />
+            <Stack.Screen
+              name="sign-up"
+              options={{ title: t("sign-up.title") }}
+            />
+            <Stack.Screen
+              name="forgot-password"
+              options={{ title: t("forgot-password.title") }}
+            />
+          </Stack>
+
+          <CustomBottomSheet ref={bottomSheetModalRef}>
+            <Menu.Item
+              leadingIcon="translate"
+              title="Langue"
+              theme={{
+                colors: {
+                  onSurfaceVariant:
+                    i18n.language === Lang.En ? "#ab4b52" : "#318ce7",
+                },
+              }}
+              onPress={() => {
+                i18n.language === Lang.En
+                  ? i18n.changeLanguage(Lang.Fr)
+                  : i18n.changeLanguage(Lang.En);
+              }}
+            />
+          </CustomBottomSheet>
+        </BottomSheetModalProvider>
       </PaperProvider>
     </KeycloakProvider>
   );

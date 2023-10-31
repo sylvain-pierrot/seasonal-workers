@@ -1,28 +1,24 @@
-import BottomSheet from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Avatar, Button, Card, Paragraph, Text } from "react-native-paper";
 import { TabScreen, Tabs, TabsProvider } from "react-native-paper-tabs";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import ExperienceCard from "../../../components/ExperienceCard";
+import ExperienceCard from "../../../components/cards/ExperienceCard";
 import { defaultStyles } from "../../../constants/Styles";
 import "../../../localization/i18n";
+import { ScrollView } from "react-native-gesture-handler";
+import CustomButtonContained from "../../../components/buttons/CustomButtonContained";
+import AvailabilityCard from "../../../components/cards/AvailabilityCard";
 
 const AVATAR = "../../../assets/images/avatar.png";
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["50%"], []);
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
-  }, []);
-  const [isOpen, setIsOpen] = useState(-1);
 
   return (
-    <View style={defaultStyles.pageHeight}>
+    <>
       <Card.Title
         title="Frank Esteban"
         titleStyle={{ fontWeight: "bold", fontSize: 18 }}
@@ -47,20 +43,21 @@ export default function ProfileScreen() {
               size={18}
               style={{ marginRight: 5, color: "#25DE25" }}
             />
-            <Text>AVAILABLE</Text>
+            <Text variant={"labelMedium"}>AVAILABLE</Text>
           </View>
         )}
+        style={{ marginHorizontal: 10 }}
       />
-      <Paragraph style={{ marginHorizontal: 20 }}>
+      <Paragraph style={{ marginHorizontal: 25 }}>
         This impressive paella is a perfect party dishaa....This impressive
         paella is a perfect party dishaa....
       </Paragraph>
-      <Card.Actions style={{ alignSelf: "center", marginTop: 20 }}>
+      <Card.Actions style={{ alignSelf: "center", marginTop: 15 }}>
         <Button
           mode={"contained"}
           style={{ backgroundColor: "#F3F3F3", borderRadius: 10 }}
           textColor="#000000"
-          onPress={() => setIsOpen(0)}
+          onPress={() => {}}
         >
           CV
         </Button>
@@ -92,48 +89,103 @@ export default function ProfileScreen() {
           theme={{ colors: { primary: "#000000" } }}
         >
           <TabScreen label="Experiences" icon="weather-sunny">
-            <View style={defaultStyles.container}>
+            <ScrollView
+              style={{
+                paddingHorizontal: 25,
+              }}
+              showsVerticalScrollIndicator={false}
+              scrollEventThrottle={16}
+            >
               <ExperienceCard />
-            </View>
+              <ExperienceCard />
+              <ExperienceCard />
+              <ExperienceCard />
+              <CustomButtonContained
+                icon={"plus"}
+                label="Experience"
+                style={{
+                  marginTop: 15,
+                  marginBottom: 20,
+                  backgroundColor: "#EDEDED",
+                }}
+                textColor="#000"
+              />
+            </ScrollView>
           </TabScreen>
           <TabScreen label="Availability" icon="calendar-check-outline">
-            <>
-              <Text>Availability</Text>
-              <Text>Availability</Text>
-              <Text>Availability</Text>
-              <Text>Availability</Text>
-              <Text>Availability</Text>
-              <Text>Availability</Text>
-              <Text>Availability</Text>
-              <Text>Availability</Text>
-              <Text>Availability</Text>
-              <Text>Availability</Text>
-              <Text>Availability</Text>
-              <Text>Availability</Text>
-            </>
+            <ScrollView
+              style={{
+                paddingHorizontal: 25,
+              }}
+              showsVerticalScrollIndicator={false}
+              scrollEventThrottle={16}
+            >
+              <AvailabilityCard />
+              <AvailabilityCard />
+              <AvailabilityCard />
+              <AvailabilityCard />
+              <CustomButtonContained
+                icon={"plus"}
+                label="Availability"
+                style={{
+                  marginTop: 15,
+                  marginBottom: 20,
+                  backgroundColor: "#EDEDED",
+                }}
+                textColor="#000"
+              />
+            </ScrollView>
           </TabScreen>
           <TabScreen label="References" icon="account-check-outline">
-            <Text>References</Text>
+            <ScrollView
+              style={{
+                paddingHorizontal: 25,
+              }}
+              showsVerticalScrollIndicator={false}
+              scrollEventThrottle={16}
+            >
+              <AvailabilityCard />
+              <AvailabilityCard />
+              <AvailabilityCard />
+              <AvailabilityCard />
+              <CustomButtonContained
+                icon={"plus"}
+                label="Reference"
+                style={{
+                  marginTop: 15,
+                  marginBottom: 20,
+                  backgroundColor: "#EDEDED",
+                }}
+                textColor="#000"
+              />
+            </ScrollView>
           </TabScreen>
-          <TabScreen label="Feeback" icon="comment-check-outline">
-            <View style={{ backgroundColor: "black", flex: 1 }}>
-              <Text>Feeback</Text>
-            </View>
+          <TabScreen label="Feebacks" icon="comment-check-outline">
+            <ScrollView
+              style={{
+                paddingHorizontal: 25,
+              }}
+              showsVerticalScrollIndicator={false}
+              scrollEventThrottle={16}
+            >
+              <AvailabilityCard />
+              <AvailabilityCard />
+              <AvailabilityCard />
+              <AvailabilityCard />
+              <CustomButtonContained
+                icon={"plus"}
+                label="Feeback"
+                style={{
+                  marginTop: 15,
+                  marginBottom: 20,
+                  backgroundColor: "#EDEDED",
+                }}
+                textColor="#000"
+              />
+            </ScrollView>
           </TabScreen>
         </Tabs>
       </TabsProvider>
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={isOpen}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        enablePanDownToClose
-        onClose={() => setIsOpen(-1)}
-      >
-        <View style={{ flex: 1, alignItems: "center" }}>
-          <Text>Awesome 🎉</Text>
-        </View>
-      </BottomSheet>
-    </View>
+    </>
   );
 }

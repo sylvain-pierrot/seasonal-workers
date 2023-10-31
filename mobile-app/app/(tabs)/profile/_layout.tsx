@@ -1,12 +1,18 @@
-import BottomSheet from "@gorhom/bottom-sheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { Stack } from "expo-router";
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import CustomBottomSheet from "../../../components/CustomBottomSheet";
 import CustomTabAppBar from "../../../components/appBars/CustomTabAppBar";
 import CustomValidateAppBar from "../../../components/appBars/CustomValidateAppBar";
+import { Menu } from "react-native-paper";
 
 export default function ProfileLayout() {
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  const handleExpandBottomSheet = useCallback(
+    () => bottomSheetModalRef.current?.present(),
+    []
+  );
 
   return (
     <>
@@ -39,7 +45,7 @@ export default function ProfileLayout() {
                     actions={[
                       {
                         icon: "menu",
-                        onPress: () => bottomSheetRef.current?.expand(),
+                        onPress: handleExpandBottomSheet,
                       },
                     ]}
                     reverse
@@ -53,7 +59,38 @@ export default function ProfileLayout() {
         <Stack.Screen name="modify" />
       </Stack>
 
-      <CustomBottomSheet ref={bottomSheetRef} />
+      <CustomBottomSheet ref={bottomSheetModalRef}>
+        <Menu.Item
+          leadingIcon="cog-outline"
+          title="Paramètres et confidentialité"
+          theme={{
+            colors: {
+              onSurfaceVariant: "#000000",
+            },
+          }}
+          onPress={() => {}}
+        />
+        <Menu.Item
+          leadingIcon="history"
+          title="Archives"
+          theme={{
+            colors: {
+              onSurfaceVariant: "#000000",
+            },
+          }}
+          onPress={() => {}}
+        />
+        <Menu.Item
+          leadingIcon="chart-line"
+          title="Votre activité"
+          theme={{
+            colors: {
+              onSurfaceVariant: "#000000",
+            },
+          }}
+          onPress={() => {}}
+        />
+      </CustomBottomSheet>
     </>
   );
 }

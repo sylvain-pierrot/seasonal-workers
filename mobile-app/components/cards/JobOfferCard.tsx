@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Button, Card, Paragraph, Text } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { defaultStyles } from "../constants/Styles";
-import Strong from "./Strong";
+import { defaultStyles } from "../../constants/Styles";
+import Strong from "../Strong";
 
 const JobOfferCard = () => {
   const { t } = useTranslation();
