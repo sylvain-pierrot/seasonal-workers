@@ -87,11 +87,11 @@ erDiagram
     }
     FEEDBACK {
         integer feedback_id
-        varchar recruiter_name
+        varchar createdByUserId
         integer score
         varchar opinion
         date created_at
-        feedback_type feedback_type
+        user_type user_type
     }
     BENEFIT o{--}o AD : "BENEFIT_AD"
     AD o|--}o COMPANY : "REFER"
