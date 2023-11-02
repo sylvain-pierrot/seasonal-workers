@@ -1,6 +1,8 @@
 server:
   port: 8085
 spring:
+  application:
+    name: profile-service
   sql:
     init:
       mode: always
@@ -15,3 +17,8 @@ spring:
       ddl-auto: none
     show-sql: true
     defer-datasource-initialization: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
