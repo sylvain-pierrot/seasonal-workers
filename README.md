@@ -10,10 +10,6 @@ Welcome to the React Native Seasonal Workers App project, developed as part of o
 
 **Note:** You can find an figma prototype of the app [here](https://www.figma.com/file/CkqaUII8RfNxNRs2pIAQil/Seasonal?type=design&node-id=0%3A1&mode=design&t=dnVQFbKSWEO0DaKg-1).
 
-## Backend architecture
-
-The backend of our application is designed with a microservices (MS) architecture to efficiently manage various aspects of the system and will be accessible through an API gateway.
-
 ## Requirements
 
 - [Node.js](https://nodejs.org/en/) v19.0 or higher
@@ -44,3 +40,5 @@ Before running the app, make sure you have an Android emulator running, or a dev
    ```
 
    Once the server is running, you can press `a` to run the app on Android emulator or device.
+
+## Running microservices

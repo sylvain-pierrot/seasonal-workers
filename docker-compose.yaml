@@ -1,6 +1,8 @@
 services:
   keycloak:
     image: quay.io/keycloak/keycloak:22.0.4
+    container_name: keycloak
+    restart: always
     ports:
       - "8080:8080"
     env_file:
@@ -9,8 +11,14 @@ services:
 
   postgres-profile:
     image: postgres:latest
-    container_name: postgres-seasonalworkers-profile
+    container_name: postgres-profile
+    restart: always
     env_file:
       - ./postgres-profile.env
     ports:
       - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
