@@ -40,7 +40,7 @@
 
 This architecture is mainly build with `JAVA 17` and `Spring Boot 3.1.5` . It is composed of 4 microservices : Jobs, Profiles, Offers Recommandations, Ratings #AMODIFIER. All the microservices are connected to a `PostgreSQL` database. The microservices are only accessible through `Spring boot gateway`.
 
-### Communication Protocol
+### Communication Protocols
 
 All communication between clients and internal services are make via the `API Gateway` using secure HTTPS calls. Spring Boot Security is used to verify the authenticity of access tokens in each request. This ensures that only authenticated and authorized users can access the ressource.
 
