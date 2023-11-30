@@ -1,5 +1,6 @@
 server:
   port: 8085
+
 spring:
   application:
     name: profile-service
@@ -24,6 +25,12 @@ spring:
         jwt:
           issuer-uri: http://localhost:8080/realms/seasonnal
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+minio:
+  url: http://localhost:9000
+  accessKey: minio
+  secretKey: minio123
+  put-object-part-size: 5242880 #value in bytes (minimum is 5 MB equivalent)
 
 eureka:
   client:
