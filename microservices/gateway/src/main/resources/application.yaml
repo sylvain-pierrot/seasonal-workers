@@ -24,6 +24,10 @@ spring:
           uri: lb://profile-service
           predicates:
             - Path=/workers/**
+        - id: ads-route
+          uri: lb://ads-service
+          predicates:
+            - Path=/ads/**
 
 eureka:
   client:

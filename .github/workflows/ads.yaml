@@ -1,0 +1,13 @@
+name: CI ads
+
+on:
+  push:
+  pull_request:
+    paths:
+      - "microservices/ads-service/**"
+
+jobs:
+  javaci:
+    uses: "./.github/workflows/java-ci.yaml"
+    with:
+      directory: "microservices/ads-service"

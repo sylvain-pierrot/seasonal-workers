@@ -1,5 +1,4 @@
 package com.seasonalworkers.profile.controller;
-
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,14 +49,50 @@ public class WorkerController {
 		return ResponseEntity.ok(seasonalWorker);
 	}
 
+	@PutMapping("/me/picture")
+	public ResponseEntity<WorkerEntity> savePhoto(@RequestParam("picture") MultipartFile file) throws Exception {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userId = authentication.getName();
+		WorkerEntity worker = workerService.getById(userId);
+
+		String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+		String fileName = UUID.randomUUID().toString() + extension;
+		String folderName = "pictures";
+		String subFolder = "worker-" + userId;
+
+		String fileFullPath = minioStorageService.buildPathString(folderName, subFolder, fileName);
+
+		minioStorageService.proccessFile(file, fileFullPath);
+		worker.setPicturePath(fileFullPath);
+		workerService.update(worker);
+		return ResponseEntity.ok(worker);
+	}
+
+	@PutMapping("/me/cv")
+	public ResponseEntity<WorkerEntity> saveCv(@RequestParam("cv") MultipartFile file) throws Exception {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userId = authentication.getName();
+		WorkerEntity worker = workerService.getById(userId);
+
+		String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+		String fileName = UUID.randomUUID().toString() + extension;
+		String folderName = "cv";
+		String subFolder = "worker-" + userId;
+
+		String fileFullPath = minioStorageService.buildPathString(folderName, subFolder, fileName);
+
+		minioStorageService.proccessFile(file, fileFullPath);
+		worker.setCvPath(fileFullPath);
+		workerService.update(worker);
+		return ResponseEntity.ok(worker);
+	}
+
 	@PostMapping()
-	public ResponseEntity<WorkerEntity> create(@RequestBody @Valid WorkerEntity worker,
-			@RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
+	public ResponseEntity<WorkerEntity> create(@RequestBody @Valid WorkerEntity worker) throws Exception {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userId = authentication.getName();
 		worker.setId(userId);
 		WorkerEntity seasonalWorker = workerService.create(worker);
-		minioStorageService.proccessFile(file);
 		return ResponseEntity.ok(seasonalWorker);
 	}
 

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.seasonalworkers.profile.config.MinioConfig;
 import java.io.InputStream;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -30,27 +29,30 @@ public class MinioStorageService {
                         .build());
     }
 
-    public void proccessFile(MultipartFile file) throws Exception {
+    public void proccessFile(MultipartFile file, String filePath) throws Exception {
         if (file != null) {
+
             try {
-                String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-                String fileName = UUID.randomUUID() + extension;
-                this.save(file, fileName);
+                this.save(file, filePath);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public InputStream getInputStream(UUID uuid, long offset, long length) throws Exception {
+    public InputStream getInputStream(String path, long offset, long length) throws Exception {
         return minioClient.getObject(
                 GetObjectArgs
                         .builder()
                         .bucket(MinioConfig.BUCKET_NAME)
                         .offset(offset)
                         .length(length)
-                        .object(uuid.toString())
+                        .object(path)
                         .build());
+    }
+
+    public String buildPathString(String folderName, String subFolder, String filename) {
+        return folderName + "/" + subFolder + "/" + filename;
     }
 
 }

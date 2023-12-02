@@ -35,6 +35,19 @@ services:
     volumes:
       - postgres_profile_data:/var/lib/postgresql/data
 
+  postgres-ads:
+    image: docker.io/bitnami/postgresql:latest
+    container_name: postgres-ads
+    restart: always
+    environment:
+      - POSTGRESQL_USERNAME=ads
+      - POSTGRESQL_PASSWORD=password
+      - POSTGRESQL_DATABASE=ads
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_ads_data:/var/lib/postgresql/data
+
   minio:
     image: docker.io/bitnami/minio:latest
     container_name: minio-workers
@@ -51,3 +64,4 @@ volumes:
   minio:
   postgres_profile_data:
   postgres_keycloack_data:
+  postgres_ads_data:
