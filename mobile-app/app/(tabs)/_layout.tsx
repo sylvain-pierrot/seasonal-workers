@@ -1,53 +1,104 @@
 import { CommonActions } from "@react-navigation/native";
 import { Redirect, Tabs } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { BottomNavigation, Text } from "react-native-paper";
+import { ActivityIndicator, BottomNavigation } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { useKeycloak } from "../../hooks/useKeycloak";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { setIsAuthenticated } from "../../store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { JwtPayload, jwtDecode } from "jwt-decode";
+import { useAuth } from "../../hooks/useAuth";
+import { useGetSeasonnalProfileQuery } from "../../store/services/users";
 
-interface IPropsTab {
+interface ITab {
   icon: string;
   name: string;
   label: string;
 }
 
 export default function TabsLayout() {
-  const { isLoggedIn, isLoading } = useKeycloak();
   const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { getTokens } = useAuth();
+  const { isAuthenticated } = useSelector(
+    (state: RootState) => state.authReducer
+  );
+  const [skip, setSkip] = useState(true);
+  const { isSuccess, isUninitialized, isFetching, refetch } =
+    useGetSeasonnalProfileQuery(undefined, {
+      skip,
+    });
 
-  const tabs: IPropsTab[] = [
+  useEffect(() => {
+    const fetchAuth = async () => {
+      setIsLoading(true);
+      const tokens = await getTokens();
+
+      if (tokens) {
+        // const { sub, preferred_username, email, given_name, family_name } =
+        //   jwtDecode<JwtPayload & any>(tokens.idToken);
+        const { exp, sub } = jwtDecode<JwtPayload & { sub: string }>(
+          tokens.idToken
+        );
+
+        // if (!exp || Date.now() >= exp * 1000) {
+        // } else {
+        if (isUninitialized) {
+          setSkip(false);
+        } else {
+          refetch();
+        }
+
+        dispatch(setIsAuthenticated({ isAuth: true }));
+        // }
+      }
+      setIsLoading(false);
+    };
+
+    fetchAuth();
+  }, [dispatch, isAuthenticated]);
+
+  const tabs: ITab[] = [
     {
       icon: "briefcase",
       name: "(jobs)",
-      label: t("(tabs).jobs.label"),
+      label: t("auth.pages.jobs.label"),
     },
     {
       icon: "chat",
       name: "messages",
-      label: t("(tabs).messages.label"),
+      label: t("auth.pages.messages.label"),
     },
     {
       icon: "calendar",
       name: "candidatures",
-      label: t("(tabs).candidatures.label"),
+      label: t("auth.pages.candidatures.label"),
     },
     {
       icon: "account",
       name: "profile",
-      label: t("(tabs).profile.label"),
+      label: t("auth.pages.profile.label"),
     },
   ];
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <ActivityIndicator
+        animating={true}
+        color={"#000"}
+        size={"large"}
+        style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+      />
+    );
   }
 
   // Only require authentication within the (app) group's layout as users
   // need to be able to access the (auth) group and sign in again.
-  if (isLoggedIn) {
+  if (!isAuthenticated) {
     // On web, static rendering will stop here as the user is not authenticated
     // in the headless Node process that the pages are rendered in.
     return <Redirect href="/sign-in" />;

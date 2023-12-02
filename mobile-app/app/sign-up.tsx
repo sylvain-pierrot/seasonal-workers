@@ -12,7 +12,6 @@ import { DatePickerInput } from "react-native-paper-dates";
 //@ts-ignore
 import { ProgressStep, ProgressSteps } from "react-native-progress-steps";
 import { Gender, defaultUser } from "../constants/User";
-// import { useKeycloak } from "../hooks/useKeycloak";
 import { useTranslation } from "react-i18next";
 import CustomPhoneInput from "../components/inputs/CustomPhoneInput";
 import CustomTextAreaInput from "../components/inputs/CustomTextAreaInput";
@@ -56,6 +55,30 @@ export default function SignUp() {
   const handleHelperConfirmPassword = (value: string, password: string) => {
     return value !== "" && value !== password;
   };
+
+  // const redirectUri = makeRedirectUri({
+  //   scheme: AppConfig.expo.scheme,
+  // });
+  // const clientId = process.env.EXPO_PUBLIC_OIDC_CLIENT_ID ?? "";
+  // const discovery = useAutoDiscovery(
+  //   process.env.EXPO_PUBLIC_OIDC_DISCOVERY_URL ?? ""
+  // );
+
+  // const handleSignUp = async () => {
+  //   // The default revokeAsync method doesn't work for Keycloak, we need to explicitely invoke the OIDC endSessionEndpoint with the correct parameters
+  //   const logoutUrl = `${discovery?.registrationEndpoint!}?client_id=${clientId}&post_logout_redirect_uri=${redirectUri}&id_token_hint=${
+  //     tokens.idToken
+  //   }`;
+
+  //   const webBrowserAuthSessionResult = await WebBrowser.openAuthSessionAsync(
+  //     logoutUrl,
+  //     redirectUri
+  //   );
+  //   if (webBrowserAuthSessionResult.type === "success") {
+  //     await removeTokens();
+  //     dispatch(setIsAuthenticated({ isAuth: false }));
+  //   }
+  // };
 
   return (
     <View style={defaultStyles.pageFull}>

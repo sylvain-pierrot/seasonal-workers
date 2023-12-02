@@ -1,7 +1,6 @@
 import React from "react";
 import { GestureResponderEvent, TextStyle, ViewStyle } from "react-native";
 import { Button } from "react-native-paper";
-import { defaultStyles } from "../../constants/Styles";
 import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
 
 interface IPropsCustomButtonContained {
@@ -10,6 +9,7 @@ interface IPropsCustomButtonContained {
   style?: TextStyle;
   icon?: IconSource;
   reverse?: boolean;
+  disabled?: boolean;
   onPress?: (e: GestureResponderEvent) => void;
 }
 
@@ -19,6 +19,7 @@ const CustomButtonContained = ({
   style,
   icon,
   reverse,
+  disabled,
   onPress,
 }: IPropsCustomButtonContained) => {
   const reverseStyle: ViewStyle = reverse
@@ -33,6 +34,7 @@ const CustomButtonContained = ({
       contentStyle={reverseStyle}
       style={style}
       textColor={textColor}
+      disabled={disabled}
     >
       {label}
     </Button>

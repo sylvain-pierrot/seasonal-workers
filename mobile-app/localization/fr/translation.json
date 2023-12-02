@@ -1,30 +1,116 @@
 {
-  "welcome": "Bienvenue",
-  "name": "Node.js",
-  "(tabs)": {
-    "title": "Ceci est provisoir",
-    "connected": "Pour vous",
-    "jobs": {
-      "label": "Emplois",
-      "title": "Offres d'emploi",
-      "form": {
-        "search": "Recherche"
+  "fr": "Français",
+  "country-translation": "fra",
+  "no-auth": {
+    "bar": {
+      "title": "Bienvenue",
+      "actions": {
+        "info": {
+          "title": "Bienvenue travailleur saisonnier",
+          "body": "Développée dans le cadre de notre projet scolaire. Cette application mobile est conçue pour répondre aux besoins des travailleurs saisonniers et des employeurs. Elle permet aux travailleurs saisonniers de trouver un emploi et aux employeurs de trouver des travailleurs saisonniers. L'application est disponible en 2 langues, dont le français et l'anglais."
+        }
       }
     },
-    "messages": {
-      "label": "Messages",
-      "title": "",
-      "form": {}
-    },
-    "candidatures": {
-      "label": "Candidatures",
-      "title": "",
-      "form": {}
-    },
-    "profile": {
-      "label": "Profil",
-      "title": "",
-      "form": {}
+    "pages": {
+      "sign-in": {
+        "title": "Se connecter",
+        "form": {
+          "password": "Mot de passe"
+        },
+        "actions": {
+          "forgot": "Mot de passe oublié ?",
+          "sign-in": "Se connecter",
+          "sign-up": "S'inscrire"
+        }
+      },
+      "forgot-password": {
+        "title": "Mot de passe oublié",
+        "actions": {
+          "reset": "Réinitialiser le mot de passe",
+          "sign-in": "Se connecter"
+        }
+      }
+    }
+  },
+  "auth": {
+    "pages": {
+      "jobs": {
+        "label": "Emplois",
+        "title": "Offres d'emploi",
+        "form": {
+          "search": "Recherche"
+        }
+      },
+      "messages": {
+        "label": "Messages",
+        "title": "",
+        "form": {}
+      },
+      "candidatures": {
+        "label": "Candidatures",
+        "title": "",
+        "form": {}
+      },
+      "profile": {
+        "label": "Profil",
+        "title": "",
+        "layout": {
+          "bottom-sheet": {
+            "settings": "Paramètres et confidentialité",
+            "archives": "Archives",
+            "activity": "Votre activité",
+            "logout": "Se déconnecter"
+          }
+        },
+        "index": {
+          "state": {
+            "available": "disponible"
+          },
+          "actions": {
+            "resum": "CV",
+            "modify": "Modifier",
+            "delete": "Supprimer"
+          }
+        },
+        "modify": {
+          "title": "Modifier le profil",
+          "section-1": {
+            "label": "Informations personnelles",
+            "fullname": "Nom complet",
+            "phone": "Téléphone",
+            "gender": {
+              "label": "Genre",
+              "male": "Homme",
+              "female": "Femme"
+            },
+            "birthdate": "Date de naissance"
+          },
+          "section-2": "Sécurité"
+        }
+      }
+    }
+  },
+  "components": {
+    "cards": {
+      "job": {
+        "start": "Début",
+        "end": "Fin",
+        "salary": "Salaire",
+        "apply": "Postuler"
+      },
+      "experience": {
+        "company": "Entreprise",
+        "start": "Début",
+        "end": "Fin"
+      },
+      "availablility": {
+        "start": "Début",
+        "end": "Fin"
+      },
+      "referent": {
+        "phone": "Télphone",
+        "company": "Entreprise"
+      }
     }
   },
   "sign-up": {
@@ -53,24 +139,6 @@
       "next": "Suivant",
       "previous": "Précédent",
       "finish": "S'inscrire"
-    }
-  },
-  "sign-in": {
-    "title": "Se connecter",
-    "form": {
-      "password": "Mot de passe"
-    },
-    "actions": {
-      "forgot": "Mot de passe oublié ?",
-      "sign-in": "Se connecter",
-      "sign-up": "S'inscrire"
-    }
-  },
-  "forgot-password": {
-    "title": "Mot de passe oublié",
-    "actions": {
-      "reset": "Réinitialiser le mot de passe",
-      "sign-in": "Se connecter"
     }
   }
 }

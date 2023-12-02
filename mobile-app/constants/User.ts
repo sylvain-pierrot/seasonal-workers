@@ -32,18 +32,6 @@ export const defaultUser: User = {
   biography: "",
 };
 
-// User Auth SignIn
-//
-export interface UserAuthSignIn {
-  email: string;
-  password: string;
-}
-
-export const defaultUserAuthSignIn: UserAuthSignIn = {
-  email: "",
-  password: "",
-};
-
 // User Forgot PAssword
 //
 export interface UserForgotPassword {

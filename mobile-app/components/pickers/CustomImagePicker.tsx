@@ -1,13 +1,17 @@
 import React from "react";
 import * as ImagePicker from "expo-image-picker";
 import { FormikErrors } from "formik";
-import { User } from "../../constants/User";
 import CustomButtonOutlined from "../buttons/CustomButtonOutlined";
 import { TextStyle } from "react-native";
+import CustomButtonText from "../buttons/CustomButtonText";
+import { User } from "../../store/services/types";
 
 interface IPropsCustomDocumentPicker {
+  mode?: "text" | "outlined" | "contained";
   value?: ImagePicker.ImagePickerAsset;
   label: string;
+  textColor?: string;
+  disableIcon?: boolean;
   reverse?: boolean;
   style?: TextStyle;
   onChange: (
@@ -16,9 +20,12 @@ interface IPropsCustomDocumentPicker {
 }
 
 const CustomImagePicker = ({
+  mode = "outlined",
   value,
   style,
   label,
+  textColor,
+  disableIcon,
   reverse,
   onChange,
 }: IPropsCustomDocumentPicker) => {
@@ -39,18 +46,38 @@ const CustomImagePicker = ({
   };
 
   return (
-    <CustomButtonOutlined
-      reverse={reverse}
-      icon={"download"}
-      label={label}
-      style={style}
-      onPress={async () => {
-        const image = await pickImage();
-        if (image) {
-          await onChange(image);
-        }
-      }}
-    />
+    <>
+      {mode === "outlined" && (
+        <CustomButtonOutlined
+          reverse={reverse}
+          icon={disableIcon ? undefined : "download"}
+          label={label}
+          style={style}
+          textColor={textColor}
+          onPress={async () => {
+            const image = await pickImage();
+            if (image) {
+              await onChange(image);
+            }
+          }}
+        />
+      )}
+      {mode === "text" && (
+        <CustomButtonText
+          reverse={reverse}
+          icon={disableIcon ? undefined : "download"}
+          label={label}
+          style={style}
+          textColor={textColor}
+          onPress={async () => {
+            const image = await pickImage();
+            if (image) {
+              await onChange(image);
+            }
+          }}
+        />
+      )}
+    </>
   );
 };
 

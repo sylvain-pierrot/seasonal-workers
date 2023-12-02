@@ -3,42 +3,36 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { Stack } from "expo-router";
-import React, { useCallback, useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Menu, PaperProvider } from "react-native-paper";
-import AppConfig from "../app.json";
+import { Menu, PaperProvider, Portal, Text, Modal } from "react-native-paper";
 import CustomBottomSheet from "../components/CustomBottomSheet";
 import CustomTabAppBar from "../components/appBars/CustomTabAppBar";
 import { Lang } from "../constants/Lang";
 import { ThemeSW } from "../constants/Themes";
-import { useKeycloak } from "../hooks/useKeycloak";
-import {
-  IKeycloakConfiguration,
-  KeycloakProvider,
-} from "../providers/KeycloakProvider";
+import { Provider as StoreProvider } from "react-redux";
+import store from "../store";
+import { decode, encode } from "base-64";
+import { Buffer } from "buffer";
+
+// Overwrite for jwt-decode on react native
+global.Buffer = Buffer;
+global.atob = decode;
+global.btoa = encode;
 
 export default function RootLayout() {
   const { t, i18n } = useTranslation();
-  const { isLoggedIn, isLoading } = useKeycloak();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const [visible, setVisible] = useState(false);
 
-  const handleExpandBottomSheet = useCallback(
-    () => bottomSheetModalRef.current?.present(),
-    []
-  );
-
-  const keycloakConfiguration: IKeycloakConfiguration = {
-    clientId: "AGENT_007",
-    realm: "myrealm",
-    url: "http://localhost:8080",
-    scheme: AppConfig.expo.scheme,
-  };
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
 
   return (
-    <KeycloakProvider {...keycloakConfiguration}>
+    <StoreProvider store={store}>
       <PaperProvider
         settings={{
-          rippleEffectEnabled: true,
+          rippleEffectEnabled: false,
         }}
         theme={ThemeSW}
       >
@@ -50,24 +44,45 @@ export default function RootLayout() {
                 backgroundColor: "transparent",
               },
               headerShadowVisible: false,
-              headerShown: isLoggedIn,
               animation: "fade",
               header: (props) => {
-                return (
-                  <CustomTabAppBar
-                    title={t("welcome")}
-                    icon="chevron-down"
-                    canGoBack={props.navigation.canGoBack}
-                    goBack={props.navigation.goBack}
-                    actions={[
-                      {
-                        icon: "menu",
-                        onPress: () => handleExpandBottomSheet,
-                      },
-                    ]}
-                    reverse
-                  />
-                );
+                if (
+                  ["sign-in", "sign-up", "forgot-password"].includes(
+                    props.route.name
+                  )
+                ) {
+                  return (
+                    <CustomTabAppBar
+                      title={t("no-auth.bar.title")}
+                      icon="chevron-down"
+                      mode={"menu"}
+                      titleItems={[
+                        {
+                          title: t(i18n.language),
+                          icon: "translate",
+                          onPress: () => {
+                            const newLanguage =
+                              i18n.language === "en" ? "fr" : "en";
+                            i18n.changeLanguage(newLanguage);
+                          },
+                        },
+                      ]}
+                      canGoBack={() =>
+                        props.route.name !== "sign-in" ||
+                        props.navigation.canGoBack()
+                      }
+                      goBack={props.navigation.goBack}
+                      onPress={() => {}}
+                      actions={[
+                        {
+                          icon: "information-outline",
+                          onPress: showModal,
+                        },
+                      ]}
+                      reverse
+                    />
+                  );
+                }
               },
             }}
           >
@@ -89,6 +104,34 @@ export default function RootLayout() {
             />
           </Stack>
 
+          <Portal>
+            <Modal
+              visible={visible}
+              onDismiss={hideModal}
+              contentContainerStyle={{
+                backgroundColor: "white",
+                paddingHorizontal: 30,
+                paddingVertical: 40,
+                marginHorizontal: 20,
+                borderRadius: 30,
+              }}
+            >
+              <Text
+                variant={"titleLarge"}
+                style={{
+                  color: "#007FFF",
+                  textAlign: "center",
+                  marginBottom: 15,
+                }}
+              >
+                {t("no-auth.bar.actions.info.title")}
+              </Text>
+              <Text variant={"bodyMedium"} style={{ textAlign: "justify" }}>
+                {t("no-auth.bar.actions.info.body")}
+              </Text>
+            </Modal>
+          </Portal>
+
           <CustomBottomSheet ref={bottomSheetModalRef}>
             <Menu.Item
               leadingIcon="translate"
@@ -108,6 +151,6 @@ export default function RootLayout() {
           </CustomBottomSheet>
         </BottomSheetModalProvider>
       </PaperProvider>
-    </KeycloakProvider>
+    </StoreProvider>
   );
 }

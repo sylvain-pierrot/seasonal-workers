@@ -14,7 +14,7 @@ export default function MessagesLayout() {
           return (
             <CustomTabAppBar
               title="Messages"
-              icon="chevron-down"
+              icon="chat-processing-outline"
               canGoBack={() =>
                 props.navigation.canGoBack() && props.route.name !== "index"
               }

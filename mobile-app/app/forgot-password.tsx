@@ -28,16 +28,16 @@ export default function ForgotPassword() {
               style={{ marginBottom: 10 }}
             />
             <CustomButtonContained
-              label={t("forgot-password.actions.reset")}
+              label={t("no-auth.pages.forgot-password.actions.reset")}
               onPress={() => handleSubmit()}
-              style={{ marginBottom: 10 }}
+              style={{ marginBottom: 10, alignSelf: "stretch" }}
             />
           </>
         )}
       </Formik>
 
       <CustomButtonOutlined
-        label={t("forgot-password.actions.sign-in")}
+        label={t("no-auth.pages.forgot-password.actions.sign-in")}
         onPress={() => router.push("/sign-in")}
         style={{ alignSelf: "stretch" }}
       />

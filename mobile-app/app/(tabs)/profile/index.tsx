@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import React from "react";
+import React, { Key, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Avatar, Button, Card, Paragraph, Text } from "react-native-paper";
@@ -8,27 +8,101 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import ExperienceCard from "../../../components/cards/ExperienceCard";
 import { defaultStyles } from "../../../constants/Styles";
 import "../../../localization/i18n";
-import { ScrollView } from "react-native-gesture-handler";
-import CustomButtonContained from "../../../components/buttons/CustomButtonContained";
+import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import AvailabilityCard from "../../../components/cards/AvailabilityCard";
+import ReferentCard from "../../../components/cards/ReferentCard";
+import FeedbackCard from "../../../components/cards/FeedbackCard";
+import { useSelector } from "react-redux";
+import { useGetAllExperiencesQuery } from "../../../store/services/experiences";
+import { selectUserFormat } from "../../../store/slices/userSlice";
+import { useGetAllAvailabilitiesQuery } from "../../../store/services/availabilities";
+import CustomButtonOutlined from "../../../components/buttons/CustomButtonOutlined";
+import { useGetAllReferentsQuery } from "../../../store/services/referents";
+import {
+  Availability,
+  Experience,
+  Feedback,
+  Referent,
+} from "../../../store/services/types";
+import { useGetAllFeedbacksQuery } from "../../../store/services/feedbacks";
 
 const AVATAR = "../../../assets/images/avatar.png";
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
+  const user = useSelector(selectUserFormat);
+  const [skipAvailabilities, setSkipAvailabilities] = useState(true);
+  const [skipReferences, setSkipReferences] = useState(true);
+  const [skipFeedbacks, setSkipFeedbacks] = useState(true);
+  const experiences = useGetAllExperiencesQuery(undefined);
+  const availabilities = useGetAllAvailabilitiesQuery(undefined, {
+    skip: skipAvailabilities,
+  });
+  const referents = useGetAllReferentsQuery(undefined, {
+    skip: skipReferences,
+  });
+  const feedbacks = useGetAllFeedbacksQuery(undefined, {
+    skip: skipFeedbacks,
+  });
+
+  const tabs = [
+    {
+      label: "Experiences",
+      icon: "weather-sunny",
+      query: experiences,
+      renderListCard: () =>
+        experiences.data &&
+        experiences.data.map((value, key) => (
+          <ExperienceCard key={key} {...value} />
+        )),
+    },
+    {
+      label: "Availability",
+      icon: "calendar-check-outline",
+      query: availabilities,
+      renderListCard: () =>
+        availabilities.data &&
+        availabilities.data.map((value, key) => (
+          <AvailabilityCard key={key} {...value} />
+        )),
+    },
+    {
+      label: "References",
+      icon: "account-check-outline",
+      query: referents,
+      renderListCard: () =>
+        referents.data &&
+        referents.data.map((value, key) => (
+          <ReferentCard key={key} {...value} style={{ marginTop: 10 }} />
+        )),
+    },
+    {
+      label: "Feebacks",
+      icon: "comment-check-outline",
+      query: feedbacks,
+      renderListCard: () =>
+        feedbacks.data &&
+        feedbacks.data.map((value, key) => (
+          <FeedbackCard key={key} {...value} style={{ marginTop: 10 }} />
+        )),
+    },
+  ];
 
   return (
     <>
       <Card.Title
-        title="Frank Esteban"
-        titleStyle={{ fontWeight: "bold", fontSize: 18 }}
+        title={`${user.first_name} ${user.last_name}`}
+        titleVariant={"titleMedium"}
+        titleStyle={{ marginLeft: 20 }}
         subtitle="Waiter"
-        subtitleStyle={{ color: "#78858F" }}
+        subtitleStyle={{ color: "#78858F", marginLeft: 20 }}
+        subtitleVariant={"labelMedium"}
         left={(props) => (
           <Avatar.Image
             {...props}
             style={{ backgroundColor: "transparent" }}
             source={require(AVATAR)}
+            size={64}
           />
         )}
         right={() => (
@@ -43,42 +117,69 @@ export default function ProfileScreen() {
               size={18}
               style={{ marginRight: 5, color: "#25DE25" }}
             />
-            <Text variant={"labelMedium"}>AVAILABLE</Text>
+            <Text variant={"labelMedium"}>
+              {t("auth.pages.profile.index.state.available").toUpperCase()}
+            </Text>
           </View>
         )}
         style={{ marginHorizontal: 10 }}
       />
-      <Paragraph style={{ marginHorizontal: 25 }}>
-        This impressive paella is a perfect party dishaa....This impressive
-        paella is a perfect party dishaa....
-      </Paragraph>
-      <Card.Actions style={{ alignSelf: "center", marginTop: 15 }}>
+      <Paragraph style={{ marginHorizontal: 25 }}>{user.description}</Paragraph>
+      <Card.Actions style={{ paddingLeft: 0 }}>
         <Button
-          mode={"contained"}
-          style={{ backgroundColor: "#F3F3F3", borderRadius: 10 }}
+          mode={"text"}
+          style={{
+            flex: 1,
+            backgroundColor: "#F3F3F3",
+            borderRadius: 10,
+          }}
+          compact
           textColor="#000000"
           onPress={() => {}}
         >
-          CV
+          {t("auth.pages.profile.index.actions.resum")}
         </Button>
         <Button
-          mode={"contained"}
-          style={{ backgroundColor: "#F3F3F3", borderRadius: 10 }}
+          mode={"text"}
+          style={{
+            flex: 1,
+            backgroundColor: "#F3F3F3",
+            borderRadius: 10,
+          }}
+          compact
           textColor="#000000"
           onPress={() => router.push("/(tabs)/profile/modify")}
         >
-          Modify
+          {t("auth.pages.profile.index.actions.modify")}
         </Button>
         <Button
-          mode={"contained"}
-          style={{ backgroundColor: "#F3F3F3", borderRadius: 10 }}
+          mode={"text"}
+          style={{ flex: 1, backgroundColor: "#F3F3F3", borderRadius: 10 }}
+          compact
           textColor="#FF0000"
         >
-          Delete
+          {t("auth.pages.profile.index.actions.delete")}
         </Button>
       </Card.Actions>
 
-      <TabsProvider defaultIndex={0}>
+      <TabsProvider
+        defaultIndex={0}
+        onChangeIndex={(index) => {
+          switch (index) {
+            case 1:
+              setSkipAvailabilities(false);
+              break;
+            case 2:
+              setSkipReferences(false);
+              break;
+            case 3:
+              setSkipFeedbacks(false);
+              break;
+            default:
+              break;
+          }
+        }}
+      >
         <Tabs
           iconPosition={"top"}
           showTextLabel={false}
@@ -88,102 +189,35 @@ export default function ProfileScreen() {
           }}
           theme={{ colors: { primary: "#000000" } }}
         >
-          <TabScreen label="Experiences" icon="weather-sunny">
-            <ScrollView
-              style={{
-                paddingHorizontal: 25,
-              }}
-              showsVerticalScrollIndicator={false}
-              scrollEventThrottle={16}
-            >
-              <ExperienceCard />
-              <ExperienceCard />
-              <ExperienceCard />
-              <ExperienceCard />
-              <CustomButtonContained
-                icon={"plus"}
-                label="Experience"
-                style={{
-                  marginTop: 15,
-                  marginBottom: 20,
-                  backgroundColor: "#EDEDED",
-                }}
-                textColor="#000"
-              />
-            </ScrollView>
-          </TabScreen>
-          <TabScreen label="Availability" icon="calendar-check-outline">
-            <ScrollView
-              style={{
-                paddingHorizontal: 25,
-              }}
-              showsVerticalScrollIndicator={false}
-              scrollEventThrottle={16}
-            >
-              <AvailabilityCard />
-              <AvailabilityCard />
-              <AvailabilityCard />
-              <AvailabilityCard />
-              <CustomButtonContained
-                icon={"plus"}
-                label="Availability"
-                style={{
-                  marginTop: 15,
-                  marginBottom: 20,
-                  backgroundColor: "#EDEDED",
-                }}
-                textColor="#000"
-              />
-            </ScrollView>
-          </TabScreen>
-          <TabScreen label="References" icon="account-check-outline">
-            <ScrollView
-              style={{
-                paddingHorizontal: 25,
-              }}
-              showsVerticalScrollIndicator={false}
-              scrollEventThrottle={16}
-            >
-              <AvailabilityCard />
-              <AvailabilityCard />
-              <AvailabilityCard />
-              <AvailabilityCard />
-              <CustomButtonContained
-                icon={"plus"}
-                label="Reference"
-                style={{
-                  marginTop: 15,
-                  marginBottom: 20,
-                  backgroundColor: "#EDEDED",
-                }}
-                textColor="#000"
-              />
-            </ScrollView>
-          </TabScreen>
-          <TabScreen label="Feebacks" icon="comment-check-outline">
-            <ScrollView
-              style={{
-                paddingHorizontal: 25,
-              }}
-              showsVerticalScrollIndicator={false}
-              scrollEventThrottle={16}
-            >
-              <AvailabilityCard />
-              <AvailabilityCard />
-              <AvailabilityCard />
-              <AvailabilityCard />
-              <CustomButtonContained
-                icon={"plus"}
-                label="Feeback"
-                style={{
-                  marginTop: 15,
-                  marginBottom: 20,
-                  backgroundColor: "#EDEDED",
-                }}
-                textColor="#000"
-              />
-            </ScrollView>
-          </TabScreen>
+          {tabs.map((tab, key) => (
+            <TabScreen key={key} label={tab.label} icon={tab.icon}>
+              <ScrollView
+                overScrollMode={"never"}
+                nestedScrollEnabled
+                directionalLockEnabled
+                showsVerticalScrollIndicator={false}
+                scrollEventThrottle={16}
+                stickyHeaderHiddenOnScroll
+                style={{ paddingHorizontal: 25, flex: 1 }}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={tab.query.isLoading || tab.query.isFetching}
+                    onRefresh={tab.query.refetch}
+                    colors={["#007FFF"]}
+                  />
+                }
+              >
+                <CustomButtonOutlined
+                  icon={"plus"}
+                  label={tab.label}
+                  style={{
+                    marginTop: 15,
+                  }}
+                />
+                {!tab.query.isLoading && tab.renderListCard()}
+              </ScrollView>
+            </TabScreen>
+          ))}
         </Tabs>
       </TabsProvider>
     </>

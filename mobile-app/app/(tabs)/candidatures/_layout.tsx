@@ -14,7 +14,7 @@ export default function CandidaturesLayout() {
           return (
             <CustomTabAppBar
               title="Candidatures"
-              icon="chevron-down"
+              icon="file-cabinet"
               canGoBack={() =>
                 props.navigation.canGoBack() && props.route.name !== "index"
               }

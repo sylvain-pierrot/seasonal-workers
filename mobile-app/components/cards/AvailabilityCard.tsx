@@ -4,15 +4,28 @@ import { Card, Text } from "react-native-paper";
 import Strong from "../Strong";
 import CustomTextIcon from "../CustomTextIcon";
 
-const AvailabilityCard = () => {
+interface IPropsAvailabilityCard {
+  title: string;
+  category?: string;
+  start_date: string;
+  end_date: string;
+  // [key: string]: any;
+}
+
+const AvailabilityCard = ({
+  title,
+  category,
+  start_date,
+  end_date,
+}: IPropsAvailabilityCard) => {
   const { t } = useTranslation();
 
   return (
     <Card mode={"contained"} style={{ backgroundColor: "transparent" }}>
       <Card.Title
-        title="Hôtellerie Restauration"
+        title={title}
         titleVariant={"titleMedium"}
-        subtitle={"CUISINIER"}
+        subtitle={category}
         subtitleVariant={"labelMedium"}
         subtitleStyle={{ color: "#818181" }}
         style={{
@@ -21,10 +34,12 @@ const AvailabilityCard = () => {
       />
       <Card.Content>
         <Text variant={"bodyMedium"}>
-          <Strong>Debut</Strong>: 12-09-2023
+          <Strong>{t("components.cards.availablility.start")}</Strong>
+          {`: ${start_date}`}
         </Text>
         <Text variant={"bodyMedium"}>
-          <Strong>Fin</Strong>: 12-09-2023
+          <Strong>{t("components.cards.availablility.end")}</Strong>{" "}
+          {`: ${end_date}`}
         </Text>
         <CustomTextIcon
           icon="circle-medium"

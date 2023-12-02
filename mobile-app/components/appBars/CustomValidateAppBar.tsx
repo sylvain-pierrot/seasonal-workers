@@ -1,14 +1,22 @@
-import { Appbar, Text, useTheme } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Appbar,
+  Icon,
+  Text,
+  useTheme,
+} from "react-native-paper";
 import React from "react";
 
 interface IPropsCustomAppBar {
   title: string;
-  onCheck: () => void;
+  isLoading: boolean;
+  onCheck: () => Promise<void>;
   onClose: () => void;
 }
 
 const CustomValidateAppBar = ({
   title,
+  isLoading,
   onCheck,
   onClose,
 }: IPropsCustomAppBar) => {
@@ -29,9 +37,17 @@ const CustomValidateAppBar = ({
       />
       <Appbar.Content title={<Text variant={"titleMedium"}>{title}</Text>} />
       <Appbar.Action
-        icon={"check"}
-        iconColor={theme.colors.primary}
-        size={30}
+        icon={() =>
+          isLoading ? (
+            <ActivityIndicator
+              animating={true}
+              color={theme.colors.primary}
+              size={"small"}
+            />
+          ) : (
+            <Icon source={"check"} size={30} color={theme.colors.primary} />
+          )
+        }
         onPress={onCheck}
       />
     </Appbar.Header>

@@ -24,9 +24,7 @@ const CustomCountryPicker = ({
     <CountryPicker
       countryCode={countryCode}
       withCountryNameButton
-      translation={
-        t("sign-up.form.country-translation") as TranslationLanguageCode
-      }
+      translation={t("country-translation") as TranslationLanguageCode}
       onSelect={onSelect}
       containerButtonStyle={{ ...styles.buttonStyle, ...style }}
     />

@@ -1,0 +1,21 @@
+{
+  "/api": "/api",
+  "/api/company": "/company",
+  "/api/company/:id": "/company/:id",
+  "/api/job-offers": "/jobOffers",
+  "/api/job-offers/:id": "/jobOffers/:id",
+  "/api/jobs": "/jobs",
+  "/api/jobs/categories": "/jobsCategories",
+  "/api/users": "/users/3341a5ef-7f41-418c-8077-a33786c1b4df",
+  "/api/users/availabilities": "/usersAvailabilities",
+  "/api/users/availabilities/:id": "/usersAvailabilities/:id",
+  "/api/users/experiences": "/usersExperiences",
+  "/api/users/experiences/:id": "/usersExperiences/:id",
+  "/api/users/feedbacks": "/usersFeedbacks",
+  "/api/users/feedbacks/:id": "/usersFeedbacks/:id",
+  "/api/users/referents": "/usersReferents",
+  "/api/users/referents/:id": "usersReferents/:id",
+  "/api/users/media": "/usersMedia",
+  "/api/users/media/cv": "/usersMediaCv",
+  "/api/users/media/picture": "/usersMediaPicture"
+}

@@ -3,13 +3,26 @@ import { useTranslation } from "react-i18next";
 import { Card, Text } from "react-native-paper";
 import Strong from "../Strong";
 
-const ExperienceCard = () => {
+interface IPropsExperienceCard {
+  title: string;
+  company?: string;
+  start_date: string;
+  end_date: string;
+  // [key: string]: any;
+}
+
+const ExperienceCard = ({
+  title,
+  company,
+  start_date,
+  end_date,
+}: IPropsExperienceCard) => {
   const { t } = useTranslation();
 
   return (
     <Card mode={"contained"} style={{ backgroundColor: "transparent" }}>
       <Card.Title
-        title="Serveur hotel 4 étoiles"
+        title={title}
         titleVariant={"titleMedium"}
         style={{
           alignItems: "flex-end",
@@ -17,13 +30,15 @@ const ExperienceCard = () => {
       />
       <Card.Content>
         <Text variant={"bodyMedium"}>
-          <Strong>Company</Strong>: Nasa
+          <Strong>{t("components.cards.experience.company")}</Strong>: {company}
         </Text>
         <Text variant={"bodyMedium"}>
-          <Strong>Debut</Strong>: 12-09-2023
+          <Strong>{t("components.cards.experience.start")}</Strong>
+          {`: ${start_date}`}
         </Text>
         <Text variant={"bodyMedium"}>
-          <Strong>Fin</Strong>: 12-09-2023
+          <Strong>{t("components.cards.experience.end")}</Strong>
+          {`: ${end_date}`}
         </Text>
       </Card.Content>
     </Card>

@@ -5,14 +5,35 @@ import { Button, Card, Paragraph, Text } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { defaultStyles } from "../../constants/Styles";
 import Strong from "../Strong";
+import { formatTimeElapsed, formatTimeElapsedFrench } from "../../utils";
 
-const JobOfferCard = () => {
-  const { t } = useTranslation();
+interface IPropsJobOfferCard {
+  title: string;
+  category: string;
+  start_date: string;
+  end_date: string;
+  salary: number;
+  description: string;
+  publication_date: string;
+  onApply: () => void;
+}
+
+const JobOfferCard = ({
+  title,
+  category,
+  start_date,
+  end_date,
+  salary,
+  description,
+  publication_date,
+  onApply,
+}: IPropsJobOfferCard) => {
+  const { t, i18n } = useTranslation();
 
   return (
     <Card mode={"contained"} style={{ marginBottom: 20 }}>
       <Card.Title
-        title="Hotel"
+        title={category}
         titleStyle={{
           fontSize: 18,
         }}
@@ -30,32 +51,38 @@ const JobOfferCard = () => {
               size={18}
               style={{ marginRight: 5 }}
             />
-            <Text>42 min ago</Text>
+            <Text>
+              {i18n.language === "en"
+                ? formatTimeElapsed(publication_date)
+                : formatTimeElapsedFrench(publication_date)}
+            </Text>
           </View>
         )}
       />
       <Card.Content>
         <Text variant={"titleMedium"} style={{ marginBottom: 5 }}>
-          Serveur hotel 4 étoiles
+          {title}
         </Text>
         <Text variant={"bodyMedium"}>
-          <Strong>Debut</Strong> : 12-09-2023
+          <Strong>{t("components.cards.job.start")}</Strong>
+          {`: ${start_date}`}
         </Text>
         <Text variant={"bodyMedium"}>
-          <Strong>Fin</Strong>: 12-09-2023
+          <Strong>{t("components.cards.job.end")}</Strong>
+          {`: ${end_date}`}
         </Text>
         <Text variant={"bodyMedium"}>
-          <Strong>Salary</Strong> : 3000 €
+          <Strong>{t("components.cards.job.salary")}</Strong>
+          {`: ${salary} €`}
         </Text>
-        <Paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididun...
-        </Paragraph>
+        <Paragraph>{description}</Paragraph>
       </Card.Content>
       <Card.Actions
         style={{ alignSelf: "flex-start", marginBottom: 16, marginTop: 5 }}
       >
-        <Button mode={"contained"}>Apply</Button>
+        <Button mode={"contained"} onPress={onApply}>
+          {t("components.cards.job.apply")}
+        </Button>
       </Card.Actions>
     </Card>
   );

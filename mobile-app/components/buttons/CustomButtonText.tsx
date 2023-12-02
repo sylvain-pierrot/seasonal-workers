@@ -36,13 +36,13 @@ const CustomButtonText = ({
       mode={"text"}
       onPress={onPress}
       icon={icon}
+      textColor={textColor}
       contentStyle={reverse ? reverseStyle : {}}
       style={style}
-      textColor={textColor}
       labelStyle={iconStyle}
       compact
     >
-      <Text variant={variant} style={boldStyle}>
+      <Text variant={variant} style={{ ...boldStyle, ...{ color: textColor } }}>
         {label}
       </Text>
     </Button>
