@@ -1,0 +1,209 @@
+{
+  "api": {
+    "version": "v1"
+  },
+  "company": [
+    {
+      "id": 1
+    }
+  ],
+  "jobOffers": [
+    {
+      "id": 1
+    }
+  ],
+  "jobs": [
+    {
+      "id": 1,
+      "title": "Ski Instructor",
+      "category": "Recreation",
+      "start_date": "2023-12-01T00:00:00.000Z",
+      "end_date": "2024-02-28T00:00:00.000Z",
+      "salary": 3500,
+      "description": "Share your love for skiing and teach others on the slopes. Seasonal position during the winter months at a popular ski resort.",
+      "publication_date": "2023-11-15T12:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "title": "Beach Lifeguard",
+      "category": "Safety",
+      "start_date": "2023-06-01T00:00:00.000Z",
+      "end_date": "2023-08-30T00:00:00.000Z",
+      "salary": 3200,
+      "description": "Ensure beach safety as a lifeguard during the summer season. Enjoy the sun, sand, and ocean while keeping beachgoers safe.",
+      "publication_date": "2023-05-15T10:30:00.000Z"
+    },
+    {
+      "id": 3,
+      "title": "Tour Guide - National Parks",
+      "category": "Tourism",
+      "start_date": "2023-05-01T00:00:00.000Z",
+      "end_date": "2023-09-30T00:00:00.000Z",
+      "salary": 3800,
+      "description": "Lead tours in beautiful national parks. Share your passion for nature and wildlife with visitors. Seasonal position during the peak tourism months.",
+      "publication_date": "2023-04-20T15:45:00.000Z"
+    },
+    {
+      "id": 4,
+      "title": "Festival Event Coordinator",
+      "category": "Events",
+      "start_date": "2023-07-01T00:00:00.000Z",
+      "end_date": "2023-08-31T00:00:00.000Z",
+      "salary": 4000,
+      "description": "Coordinate and manage events for summer festivals. Join a dynamic team and contribute to the success of vibrant community celebrations.",
+      "publication_date": "2023-06-15T09:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "title": "Christmas Market Vendor",
+      "category": "Retail",
+      "start_date": "2023-11-15T00:00:00.000Z",
+      "end_date": "2023-12-24T00:00:00.000Z",
+      "salary": 3000,
+      "description": "Set up a booth at the Christmas market and sell festive goods. Join the holiday spirit and engage with customers during the festive season.",
+      "publication_date": "2023-10-01T14:20:00.000Z"
+    }
+  ],
+  "jobsCategories": [
+    {
+      "id": 1
+    }
+  ],
+  "users": [
+    {
+      "id": "3341a5ef-7f41-418c-8077-a33786c1b4df",
+      "username": "Monsieurjojo",
+      "email": "pierrot.sylvain14@gmail.com",
+      "first_name": "Sylvain",
+      "last_name": "Pierrot",
+      "gender": "MALE",
+      "birthdate": "2010-03-11T23:00:00.000Z",
+      "country_code": "FR",
+      "phone": "+33778556136",
+      "description": "I'm dedicated, hardworking, and ready to contribute my skills to projects requiring a reliable and motivated individual.",
+      "work_state": "available",
+      "country": "AD"
+    }
+  ],
+  "usersAvailabilities": [
+    {
+      "id": 1,
+      "title": "Full-time",
+      "category": "Programming",
+      "start_date": "2020-01-01",
+      "end_date": "2022-12-31"
+    },
+    {
+      "id": 2,
+      "title": "Part-time",
+      "category": "Design",
+      "start_date": "2023-01-01",
+      "end_date": "2023-06-30"
+    },
+    {
+      "id": 3,
+      "title": "Freelance",
+      "category": "Writing",
+      "start_date": "2022-03-15",
+      "end_date": "2022-12-31"
+    },
+    {
+      "id": 4,
+      "title": "Internship",
+      "category": "Marketing",
+      "start_date": "2021-06-01",
+      "end_date": "2021-12-31"
+    }
+  ],
+  "usersExperiences": [
+    {
+      "id": 1,
+      "title": "Software Developer",
+      "company": "ABC Tech",
+      "start_date": "2020-01-01",
+      "end_date": "2022-12-31"
+    },
+    {
+      "id": 2,
+      "title": "Frontend Developer",
+      "company": "XYZ Solutions",
+      "start_date": "2023-01-01",
+      "end_date": "2023-01-21"
+    },
+    {
+      "id": 3,
+      "title": "UX Designer",
+      "company": "DesignCo",
+      "start_date": "2018-05-15",
+      "end_date": "2019-12-31"
+    }
+  ],
+  "usersFeedbacks": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "advice": "Great service!",
+      "rating": 5,
+      "publication_date": "2023-12-01"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "advice": "Very professional!",
+      "rating": 4,
+      "publication_date": "2023-12-02"
+    },
+    {
+      "id": 3,
+      "name": "Bob Johnson",
+      "advice": "Prompt and efficient!",
+      "rating": 4,
+      "publication_date": "2023-05-03"
+    }
+  ],
+  "usersReferents": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "company": "ABC Tech",
+      "phone": "+1234567890",
+      "email": "john.doe@example.com"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "company": "XYZ Solutions",
+      "phone": "+9876543210",
+      "email": "jane.smith@example.com"
+    },
+    {
+      "id": 3,
+      "name": "Bob Johnson",
+      "company": "DesignCo",
+      "phone": "+1122334455",
+      "email": "bob.johnson@example.com"
+    },
+    {
+      "id": 4,
+      "name": "Alice Brown",
+      "company": "Tech Innovations",
+      "phone": "+9988776655",
+      "email": "alice.brown@example.com"
+    }
+  ],
+  "usersMedia": [
+    {
+      "id": 1
+    }
+  ],
+  "usersMediaCv": [
+    {
+      "id": 1
+    }
+  ],
+  "usersMediaPicture": [
+    {
+      "id": 1
+    }
+  ]
+}

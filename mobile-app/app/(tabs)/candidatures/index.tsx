@@ -1,12 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, View, Platform, StyleSheet } from "react-native";
 import React from "react";
+import { Platform, StyleSheet, Text, View } from "react-native";
 
-export default function MessagesScreen() {
+export default function CandidaturesScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Modal</Text>
       <View style={styles.separator} />
+      <Text style={styles.title}>Prote</Text>
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
