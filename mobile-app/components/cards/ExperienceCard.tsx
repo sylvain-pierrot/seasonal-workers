@@ -2,13 +2,14 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Text } from "react-native-paper";
 import Strong from "../Strong";
+import { ViewStyle } from "react-native";
 
 interface IPropsExperienceCard {
   title: string;
-  company?: string;
+  company: string;
   start_date: string;
   end_date: string;
-  // [key: string]: any;
+  style?: ViewStyle;
 }
 
 const ExperienceCard = ({
@@ -16,16 +17,21 @@ const ExperienceCard = ({
   company,
   start_date,
   end_date,
+  style,
 }: IPropsExperienceCard) => {
   const { t } = useTranslation();
 
   return (
-    <Card mode={"contained"} style={{ backgroundColor: "transparent" }}>
+    <Card
+      mode={"contained"}
+      style={{ ...{ backgroundColor: "transparent" }, ...style }}
+    >
       <Card.Title
         title={title}
         titleVariant={"titleMedium"}
         style={{
           alignItems: "flex-end",
+          minHeight: 0,
         }}
       />
       <Card.Content>

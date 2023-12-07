@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import React, { Key, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Avatar, Button, Card, Paragraph, Text } from "react-native-paper";
@@ -18,12 +18,6 @@ import { selectUserFormat } from "../../../store/slices/userSlice";
 import { useGetAllAvailabilitiesQuery } from "../../../store/services/availabilities";
 import CustomButtonOutlined from "../../../components/buttons/CustomButtonOutlined";
 import { useGetAllReferentsQuery } from "../../../store/services/referents";
-import {
-  Availability,
-  Experience,
-  Feedback,
-  Referent,
-} from "../../../store/services/types";
 import { useGetAllFeedbacksQuery } from "../../../store/services/feedbacks";
 
 const AVATAR = "../../../assets/images/avatar.png";
@@ -50,40 +44,44 @@ export default function ProfileScreen() {
       label: "Experiences",
       icon: "weather-sunny",
       query: experiences,
+      goCreate: () => router.push("/(tabs)/profile/experience"),
       renderListCard: () =>
         experiences.data &&
         experiences.data.map((value, key) => (
-          <ExperienceCard key={key} {...value} />
+          <ExperienceCard key={key} {...value} style={{ marginTop: 20 }} />
         )),
     },
     {
       label: "Availability",
       icon: "calendar-check-outline",
       query: availabilities,
+      goCreate: () => router.push("/(tabs)/profile/experience"),
       renderListCard: () =>
         availabilities.data &&
         availabilities.data.map((value, key) => (
-          <AvailabilityCard key={key} {...value} />
+          <AvailabilityCard key={key} {...value} style={{ marginTop: 20 }} />
         )),
     },
     {
       label: "References",
       icon: "account-check-outline",
       query: referents,
+      goCreate: () => router.push("/(tabs)/profile/experience"),
       renderListCard: () =>
         referents.data &&
         referents.data.map((value, key) => (
-          <ReferentCard key={key} {...value} style={{ marginTop: 10 }} />
+          <ReferentCard key={key} {...value} style={{ marginTop: 20 }} />
         )),
     },
     {
       label: "Feebacks",
       icon: "comment-check-outline",
       query: feedbacks,
+      goCreate: () => router.push("/(tabs)/profile/experience"),
       renderListCard: () =>
         feedbacks.data &&
         feedbacks.data.map((value, key) => (
-          <FeedbackCard key={key} {...value} style={{ marginTop: 10 }} />
+          <FeedbackCard key={key} {...value} style={{ marginTop: 20 }} />
         )),
     },
   ];
@@ -213,6 +211,7 @@ export default function ProfileScreen() {
                   style={{
                     marginTop: 15,
                   }}
+                  onPress={tab.goCreate}
                 />
                 {!tab.query.isLoading && tab.renderListCard()}
               </ScrollView>

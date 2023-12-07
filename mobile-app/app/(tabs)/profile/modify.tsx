@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Dimensions, View } from "react-native";
 import { DatePickerInput } from "react-native-paper-dates";
@@ -15,8 +15,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useUpdateSeasonnalProfileMutation } from "../../../store/services/users";
 import { useSelector } from "react-redux";
 import { selectUserFormat } from "../../../store/slices/userSlice";
-import { useLocalSearchParams, useNavigation } from "expo-router";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation } from "expo-router";
 import CustomValidateAppBar from "../../../components/appBars/CustomValidateAppBar";
 
 const AVATAR = "../../../assets/images/avatar.png";

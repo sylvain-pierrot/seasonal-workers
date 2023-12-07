@@ -3,13 +3,14 @@ import { useTranslation } from "react-i18next";
 import { Card, Text } from "react-native-paper";
 import Strong from "../Strong";
 import CustomTextIcon from "../CustomTextIcon";
+import { ViewStyle } from "react-native";
 
 interface IPropsAvailabilityCard {
   title: string;
-  category?: string;
+  category: string;
   start_date: string;
   end_date: string;
-  // [key: string]: any;
+  style?: ViewStyle;
 }
 
 const AvailabilityCard = ({
@@ -17,11 +18,15 @@ const AvailabilityCard = ({
   category,
   start_date,
   end_date,
+  style,
 }: IPropsAvailabilityCard) => {
   const { t } = useTranslation();
 
   return (
-    <Card mode={"contained"} style={{ backgroundColor: "transparent" }}>
+    <Card
+      mode={"contained"}
+      style={{ ...{ backgroundColor: "transparent" }, ...style }}
+    >
       <Card.Title
         title={title}
         titleVariant={"titleMedium"}
@@ -30,6 +35,8 @@ const AvailabilityCard = ({
         subtitleStyle={{ color: "#818181" }}
         style={{
           alignItems: "flex-end",
+          paddingTop: 10,
+          minHeight: 0,
         }}
       />
       <Card.Content>

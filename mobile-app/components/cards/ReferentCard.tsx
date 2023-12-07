@@ -31,6 +31,8 @@ const ReferentCard = ({
         titleVariant={"titleMedium"}
         style={{
           alignItems: "flex-end",
+          paddingTop: 10,
+          minHeight: 0,
         }}
       />
       <Card.Content>

@@ -34,6 +34,8 @@ const FeedbackCard = ({
         titleVariant={"titleMedium"}
         style={{
           justifyContent: "center",
+          paddingTop: 10,
+          minHeight: 0,
         }}
         right={() => (
           <View

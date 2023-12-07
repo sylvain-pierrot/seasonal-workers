@@ -102,34 +102,49 @@ export default function ProfileLayout() {
             backgroundColor: "transparent",
           },
           animation: "slide_from_right",
+          // animationDuration: 100,
           header: (props) => {
-            if (props.route.name === "index") {
-              return (
-                <CustomTabAppBar
-                  title={user.username}
-                  icon="chevron-down"
-                  canGoBack={() =>
-                    props.navigation.canGoBack() && props.route.name !== "index"
-                  }
-                  goBack={props.navigation.goBack}
-                  actions={[
-                    {
-                      icon: "menu",
-                      onPress: handleExpandBottomSheet,
-                    },
-                  ]}
-                  onPress={() => {
-                    console.log("TEST");
-                  }}
-                  reverse
-                />
-              );
+            switch (props.route.name) {
+              case "index":
+                return (
+                  <CustomTabAppBar
+                    title={user.username}
+                    icon="chevron-down"
+                    canGoBack={() =>
+                      props.navigation.canGoBack() &&
+                      props.route.name !== "index"
+                    }
+                    goBack={props.navigation.goBack}
+                    actions={[
+                      {
+                        icon: "menu",
+                        onPress: handleExpandBottomSheet,
+                      },
+                    ]}
+                    onPress={() => {
+                      console.log("TEST");
+                    }}
+                    reverse
+                  />
+                );
+              case "experience":
+                return (
+                  <CustomTabAppBar
+                    title={"Create experience"}
+                    canGoBack={() =>
+                      props.navigation.canGoBack() &&
+                      props.route.name !== "index"
+                    }
+                    goBack={props.navigation.goBack}
+                  />
+                );
             }
           },
         }}
       >
         <Stack.Screen name="index" />
         <Stack.Screen name="modify" />
+        <Stack.Screen name="experience" />
       </Stack>
 
       <CustomBottomSheet ref={bottomSheetModalRef}>
