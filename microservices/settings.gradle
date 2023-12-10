@@ -1,0 +1,5 @@
+rootProject.name = 'microservices'
+include 'ads-service'
+include 'gateway'
+include 'profile-service'
+include 'protobuf'
