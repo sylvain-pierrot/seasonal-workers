@@ -27,13 +27,21 @@ Before running the app, make sure you have an Android emulator running, or a dev
    export ANDROID_HOME=$HOME/Android/Sdk
    ```
 
-2. Install dependencies from `package_lock.json`:
+2. Modify `.env.development`
+
+   ```bash
+   EXPO_PUBLIC_API_URL="<YOUR_BASE_URL>/api"
+   EXPO_PUBLIC_OIDC_DISCOVERY_URL="<YOUR_BASE_URL>/realms/<YOUR_REALM>"
+   EXPO_PUBLIC_OIDC_CLIENT_ID="<YOUR_CLIENT>"
+   ```
+
+3. Install dependencies from `package_lock.json`:
 
    ```bash
    npm ci
    ```
 
-3. Then run the app:
+4. Then run the app:
 
    ```bash
    npm start

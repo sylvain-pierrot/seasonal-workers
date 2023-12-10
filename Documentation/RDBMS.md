@@ -42,6 +42,7 @@ erDiagram
         date start_date
         date end_date
         integer salary
+        varchar currency
         varchar description
         ad_type ad_type
     }
@@ -58,8 +59,8 @@ erDiagram
     }
     USER {
         integer user_id
-        varchar name
         varchar first_name
+        varchar last_name
         varchar email
         varchar password
         gender gender
@@ -68,13 +69,14 @@ erDiagram
         varchar phone
         varchar description
         varchar cv_path
+        varchar picture_path
         date last_auth
         boolean hidden
     }
     ADDRESS {
         integer address_id
         varchar city
-        integer postal_code
+        integer zip_code
         varchar country
     }
     REFERENT {
@@ -85,11 +87,11 @@ erDiagram
     }
     FEEDBACK {
         integer feedback_id
-        varchar recruiter_name
+        varchar createdByUserId
         integer score
         varchar opinion
-        date date
-        feedback_type feedback_type
+        date created_at
+        user_type user_type
     }
     BENEFIT o{--}o AD : "BENEFIT_AD"
     AD o|--}o COMPANY : "REFER"

@@ -1,4 +1,144 @@
 {
-  "welcome": "Welcome to the world of Node.js",
-  "name": "Node.js"
+  "en": "English",
+  "country-translation": "common",
+  "no-auth": {
+    "bar": {
+      "title": "Welcome",
+      "actions": {
+        "info": {
+          "title": "Welcome to Seasonal Workers",
+          "body": "Developed as part of our school project. This mobile application is designed to meet the needs of seasonal workers and employers. It allows seasonal workers to find a job and employers to find seasonal workers. The application is availbale in 2 languages, including English, French."
+        }
+      }
+    },
+    "pages": {
+      "sign-in": {
+        "title": "Log in",
+        "form": {
+          "password": "Password"
+        },
+        "actions": {
+          "forgot": "Forgot yout password?",
+          "sign-in": "Log in",
+          "sign-up": "Sign up"
+        }
+      },
+      "forgot-password": {
+        "title": "Forgot password",
+        "actions": {
+          "reset": "Reset Password",
+          "sign-in": "Log in"
+        }
+      }
+    }
+  },
+  "auth": {
+    "pages": {
+      "jobs": {
+        "label": "Jobs",
+        "title": "Job offers",
+        "form": {
+          "search": "Search"
+        }
+      },
+      "messages": {
+        "label": "Messages",
+        "title": "",
+        "form": {}
+      },
+      "candidatures": {
+        "label": "Candidatures",
+        "title": "",
+        "form": {}
+      },
+      "profile": {
+        "label": "Profile",
+        "title": "",
+        "layout": {
+          "bottom-sheet": {
+            "settings": "Settings and privacy",
+            "archives": "Registry",
+            "activity": "Your activity",
+            "logout": "Disconnect"
+          }
+        },
+        "index": {
+          "state": {
+            "available": "available"
+          },
+          "actions": {
+            "resum": "Resum",
+            "modify": "Modify",
+            "delete": "Delete"
+          }
+        },
+        "modify": {
+          "title": "Edit profile",
+          "section-1": {
+            "title": "Personal informations",
+            "fullname": "Fullname",
+            "phone": "Phone",
+            "gender": {
+              "label": "Gender",
+              "male": "Male",
+              "female": "Female"
+            },
+            "birthdate": "Birthdate"
+          },
+          "section-2": "Security"
+        }
+      }
+    }
+  },
+  "components": {
+    "cards": {
+      "job": {
+        "start": "Start",
+        "end": "End",
+        "salary": "Salary",
+        "apply": "Apply"
+      },
+      "experience": {
+        "company": "Company",
+        "start": "Start",
+        "end": "End"
+      },
+      "availablility": {
+        "start": "Start",
+        "end": "End"
+      },
+      "referent": {
+        "phone": "Phone",
+        "company": "Company"
+      }
+    }
+  },
+  "sign-up": {
+    "title": "Register",
+    "form": {
+      "picture": "Your photo",
+      "fullname": "Fullname",
+      "email": "Email",
+      "email-helper": "Email not valid",
+      "birthdate": "Birthdate",
+      "country": "Country",
+      "country-translation": "common",
+      "gender": {
+        "male": "Male",
+        "female": "Female"
+      },
+      "phone": "Phone number",
+      "biography": "Tell us about yourself...",
+      "cv": "Your CV",
+      "password": "Password",
+      "password-caption": "* Password should include uppercase, lowercase, digit, special character, and be at least 8 characters long.",
+      "confirm": "Confirm password",
+      "confirm-helper": "Not identical"
+    },
+    "actions": {
+      "next": "Next",
+      "previous": "Previous",
+      "finish": "Sign up"
+    }
+  }
 }

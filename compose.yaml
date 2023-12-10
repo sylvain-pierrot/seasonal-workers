@@ -1,0 +1,8 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.4
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./keycloak.template.env
+    command: start-dev
