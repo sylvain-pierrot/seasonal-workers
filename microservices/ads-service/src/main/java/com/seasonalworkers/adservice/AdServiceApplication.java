@@ -1,13 +1,13 @@
-package com.seasonalworkers.profile;
+package com.seasonalworkers.adservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProfileApplication {
+public class AdServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProfileApplication.class, args);
+		SpringApplication.run(AdServiceApplication.class, args);
 	}
 
 }

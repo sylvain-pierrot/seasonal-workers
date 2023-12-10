@@ -12,39 +12,30 @@ services:
 
   postgresql-keycloak:
     image: docker.io/bitnami/postgresql:latest
-    container_name: postgresql
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
       - POSTGRESQL_USERNAME=bn_keycloak
       - POSTGRESQL_DATABASE=bitnami_keycloak
-    ports:
-      - "5432:5432"
     volumes:
       - "postgres_keycloack_data:/bitnami/postgresql"
 
   postgres-profile:
     image: docker.io/bitnami/postgresql:latest
-    container_name: postgres-profile
     restart: always
     environment:
       - POSTGRESQL_USERNAME=profile
       - POSTGRESQL_PASSWORD=password
       - POSTGRESQL_DATABASE=seasonalProfile
-    ports:
-      - "5433:5432"
     volumes:
       - postgres_profile_data:/var/lib/postgresql/data
 
   postgres-ads:
     image: docker.io/bitnami/postgresql:latest
-    container_name: postgres-ads
     restart: always
     environment:
       - POSTGRESQL_USERNAME=ads
       - POSTGRESQL_PASSWORD=password
       - POSTGRESQL_DATABASE=ads
-    ports:
-      - "5434:5432"
     volumes:
       - postgres_ads_data:/var/lib/postgresql/data
 
@@ -59,15 +50,25 @@ services:
       MINIO_ROOT_PASSWORD: minio123
     volumes:
       - minio:/data
-      
-  nats:
-    image: docker.io/nats:latest
-    container_name: nats
+
+  profile-service:
+    build:
+      context: ./microservices
+      args:
+        - SERVICE_NAME=profile-service
+    container_name: profile-service
+    restart: always
     ports:
-      - 4222:4222
-      - 8222:8222
-    volumes:
-      - nats:/data
+      - 8081:8081
+
+  # nats:
+  #   image: docker.io/nats:latest
+  #   container_name: nats
+  #   ports:
+  #     - 4222:4222
+  #     - 8222:8222
+  #   volumes:
+  #     - nats:/data
 
 volumes:
   minio:
