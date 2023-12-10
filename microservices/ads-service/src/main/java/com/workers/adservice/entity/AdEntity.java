@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,37 +26,40 @@ public class AdEntity {
     private UUID adId;
 
     @Column(name = "user_id")
-    @NotBlank(message = "User id is mandatory")
     private String userId;
 
     @Column(name = "job_id")
-    @NotBlank(message = "Job id is mandatory")
+    @NotNull(message = "Job id is mandatory")
     private UUID jobId;
 
+    @Column(name = "title")
+    @NotBlank(message = "Title is mandatory")
+    private String title;
+
     @Column(name = "start_date")
-    @NotBlank(message = "Start date is mandatory")
+    @NotNull(message = "Start date is mandatory")
     private Date startDate;
 
     @Column(name = "end_date")
-    @NotBlank(message = "End date is mandatory")
+    @NotNull(message = "Start date is mandatory")
     private Date endDate;
 
     @Column(name = "salary")
-    @NotBlank(message = "Salary is mandatory")
+    @NotNull(message = "Salary is mandatory")
     private Integer salary;
 
-    @Column(name = "currency")
-    @NotBlank(message = "Currency is mandatory")
-    private String currency;
+    // @Column(name = "currency")
+    // @NotBlank(message = "Currency is mandatory")
+    // private String currency;
 
     @Column(name = "description")
     @NotBlank(message = "Description is mandatory")
     private String description;
 
-    @Column(name = "ad_type")
-    @NotBlank(message = "Ad type is mandatory")
-    private String adType;
+    // @Column(name = "ad_type")
+    // private String adType;
 
     @Column(name = "address_id")
+    @NotNull(message = "Address id is mandatory")
     private UUID addressId;
 }

@@ -18,7 +18,6 @@ public class AdService {
     }
 
     public AdEntity createAvailability(AdEntity adEntity) {
-        adEntity.setAdType("AVAILABILITY");
         return adRepository.save(adEntity);
     }
 

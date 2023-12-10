@@ -59,9 +59,19 @@ services:
       MINIO_ROOT_PASSWORD: minio123
     volumes:
       - minio:/data
+      
+  nats:
+    image: docker.io/nats:latest
+    container_name: nats
+    ports:
+      - 4222:4222
+      - 8222:8222
+    volumes:
+      - nats:/data
 
 volumes:
   minio:
+  nats:
   postgres_profile_data:
   postgres_keycloack_data:
   postgres_ads_data:

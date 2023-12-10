@@ -10,4 +10,4 @@ jobs:
   javaci:
     uses: "./.github/workflows/java-ci.yaml"
     with:
-      directory: "microservices/profile-service"
+      directory: "/microservices/profile-service"

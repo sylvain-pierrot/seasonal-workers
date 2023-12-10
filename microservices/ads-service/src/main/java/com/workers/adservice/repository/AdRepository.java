@@ -10,4 +10,5 @@ import com.workers.adservice.entity.AdEntity;
 @Repository
 public interface AdRepository extends JpaRepository<AdEntity, UUID> {
 
+
 }

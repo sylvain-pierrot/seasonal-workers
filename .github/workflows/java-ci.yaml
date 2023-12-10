@@ -1,4 +1,4 @@
-name: JAVA CI
+name: JAVA CI Workflow on ${{ inputs.directory }} directory
 
 on:
   workflow_call:
