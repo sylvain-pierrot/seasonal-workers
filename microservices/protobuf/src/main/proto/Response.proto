@@ -1,5 +1,5 @@
 syntax = "proto3";
-package protobuf;
+package com.seasonalworkers.proto;
 
 message Error {
 	string error_message = 1;
