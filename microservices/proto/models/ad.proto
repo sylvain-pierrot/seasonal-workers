@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+message Ad {
+  int32 ad_id = 1;
+  string title = 2;
+  repeated string category = 3;
+  message Date {
+    string start_date = 1;
+    string end_date = 2;
+  }
+
+  message Salary {
+    int32 amount = 1;
+    string currency = 2;
+  }
+
+  string description = 4;
+
+  enum AdType {
+    EXPERIENCE = 0;
+    AVAILABILITY = 1;
+  }
+  // Type d'annonce
+  AdType ad_type = 5;
+}
+

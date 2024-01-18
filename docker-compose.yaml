@@ -15,55 +15,55 @@ services:
     volumes:
       - "postgres_keycloack_data:/bitnami/postgresql"
 
-  postgres-profile:
-    image: docker.io/bitnami/postgresql:latest
-    restart: always
-    env_file:
-      - ./postgres-profile.template.env
-    volumes:
-      - postgres_profile_data:/var/lib/postgresql/data
-
-  postgres-ads:
-    image: docker.io/bitnami/postgresql:latest
-    restart: always
-    env_file:
-      - ./postgres-ads.template.env
-    volumes:
-      - postgres_ads_data:/var/lib/postgresql/data
-
-  minio:
-    image: docker.io/bitnami/minio:latest
-    container_name: minio-workers
-    ports:
-      - 9000:9000
-      - 9001:9001
-    env_file:
-      - ./minio.template.env
-    volumes:
-      - minio:/data
-
-  profile-service:
-    build:
-      context: ./microservices
-      args:
-        - SERVICE_NAME=profile-service
-    container_name: profile-service
-    restart: always
-    ports:
-      - 8081:8081
-
-  # nats:
-  #   image: docker.io/nats:latest
-  #   container_name: nats
-  #   ports:
-  #     - 4222:4222
-  #     - 8222:8222
+  # postgres-profile:
+  #   image: docker.io/bitnami/postgresql:latest
+  #   restart: always
+  #   env_file:
+  #     - ./postgres-profile.template.env
   #   volumes:
-  #     - nats:/data
+  #     - postgres_profile_data:/var/lib/postgresql/data
+
+  # postgres-ads:
+  #   image: docker.io/bitnami/postgresql:latest
+  #   restart: always
+  #   env_file:
+  #     - ./postgres-ads.template.env
+  #   volumes:
+  #     - postgres_ads_data:/var/lib/postgresql/data
+
+  # minio:
+  #   image: docker.io/bitnami/minio:latest
+  #   container_name: minio-workers
+  #   ports:
+  #     - 9000:9000
+  #     - 9001:9001
+  #   env_file:
+  #     - ./minio.template.env
+  #   volumes:
+  #     - minio:/data
+
+  # profile-service:
+  #   build:
+  #     context: ./microservices
+  #     args:
+  #       - SERVICE_NAME=profile-service
+  #   container_name: profile-service
+  #   restart: always
+  #   ports:
+  #     - 8081:8081
+
+  nats:
+    image: docker.io/nats:latest
+    container_name: nats
+    ports:
+      - 4222:4222
+      - 8222:8222
+    volumes:
+      - nats:/data
 
 volumes:
-  minio:
+  # minio:
   nats:
-  postgres_profile_data:
+  # postgres_profile_data:
   postgres_keycloack_data:
-  postgres_ads_data:
+  # postgres_ads_data:

@@ -1,0 +1,23 @@
+syntax = "proto3";
+package com.seasonalworkers.proto.services;
+
+import "models/profile.proto";
+
+// Get an employer
+message GetEmployerRequest {
+  string id = 1;
+}
+message GetProfileResponse {
+  // models.Profile employer = 1;
+}
+
+// // Get multiple employers
+// message GetMultipleEmployersRequest {
+//   repeated string ids = 1;
+// }
+
+// message GetMultipleEmployersResponse {
+//   repeated models.Employer employers = 1;
+// }s
+
+

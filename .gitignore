@@ -2,3 +2,5 @@ keycloack.env
 postgres-profile.env
 postgres-keycloack.env
 .idea
+./microservices/generated/rust/*.bin
+./microservices/generated/typescript/*.ts
