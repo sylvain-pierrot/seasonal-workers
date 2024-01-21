@@ -10,7 +10,7 @@ export class AppController {
   @Roles({
     roles: ['realm:app-user'],
   })
-  getAd(@Body() data: Ad): Promise<any> {
+  getAd(@Body() data: any): Promise<any> {
     return this.appService.getAd(data);
   }
 }

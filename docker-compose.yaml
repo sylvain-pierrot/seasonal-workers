@@ -4,14 +4,14 @@ services:
     ports:
       - "8080:8080"
     env_file:
-      - ./keycloak.template.env
+      - .env/keycloak.template.env
     depends_on:
       - postgresql-keycloak
 
   postgresql-keycloak:
     image: docker.io/bitnami/postgresql:latest
     env_file:
-      - ./postgres-keycloak.template.env
+      - .env/postgres-keycloak.template.env
     volumes:
       - "postgres_keycloack_data:/bitnami/postgresql"
 
@@ -19,7 +19,7 @@ services:
   #   image: docker.io/bitnami/postgresql:latest
   #   restart: always
   #   env_file:
-  #     - ./postgres-profile.template.env
+  #     - .env/postgres-profile.template.env
   #   volumes:
   #     - postgres_profile_data:/var/lib/postgresql/data
 
@@ -27,7 +27,7 @@ services:
   #   image: docker.io/bitnami/postgresql:latest
   #   restart: always
   #   env_file:
-  #     - ./postgres-ads.template.env
+  #     - .env/postgres-ads.template.env
   #   volumes:
   #     - postgres_ads_data:/var/lib/postgresql/data
 
@@ -38,7 +38,7 @@ services:
   #     - 9000:9000
   #     - 9001:9001
   #   env_file:
-  #     - ./minio.template.env
+  #     - .env/minio.template.env
   #   volumes:
   #     - minio:/data
 
