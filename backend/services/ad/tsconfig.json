@@ -16,6 +16,13 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@app/*": ["src/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@services/*": ["src/services/*"],
+      "@config/*": ["src/config/*"],
+      "@proto/*": ["proto_generated/*"]
+    }
   }
 }

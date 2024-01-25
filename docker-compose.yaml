@@ -23,13 +23,16 @@ services:
   #   volumes:
   #     - postgres_profile_data:/var/lib/postgresql/data
 
-  # postgres-ads:
-  #   image: docker.io/bitnami/postgresql:latest
-  #   restart: always
-  #   env_file:
-  #     - .env/postgres-ads.template.env
-  #   volumes:
-  #     - postgres_ads_data:/var/lib/postgresql/data
+  postgres-ads:
+    image: docker.io/bitnami/postgresql:latest
+    restart: always
+    env_file:
+      - .env/postgres-ads.template.env
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_ads_data:/var/lib/postgresql/data
+      - ./backend/services/ad/sql/init-db.sql:/docker-entrypoint-initdb.d/initdb.sql:ro
 
   # minio:
   #   image: docker.io/bitnami/minio:latest
@@ -66,4 +69,4 @@ volumes:
   nats:
   # postgres_profile_data:
   postgres_keycloack_data:
-  # postgres_ads_data:
+  postgres_ads_data:

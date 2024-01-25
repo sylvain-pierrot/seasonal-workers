@@ -10,7 +10,14 @@ export const NatsClientConfig: ClientsModuleAsyncOptions = [
       options: {
         servers: [configService.get<string>('NATS_HOST')],
         package: configService.get<string>('NATS_PACKAGE'),
-        protoPath: configService.get<string>('NATS_PROTO_PATH'),
+        json: false,
+        serializer: {
+          serialize: (data: any) => data.toString(),
+        },
+        deserializer: {
+          deserialize: (data: any) => data.toString(),
+        },
+        preserveBuffers: true,
       },
     }),
   },

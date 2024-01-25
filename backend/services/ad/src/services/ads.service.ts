@@ -10,7 +10,6 @@ export class AdService {
 
   getAd(data: any): any {
     const ad = [{ data: data }];
-
     return ad;
   }
 }

@@ -16,7 +16,6 @@ jobs:
         working-directory: ${{ inputs.directory }}
     steps:
       - uses: actions/checkout@v4
-
       - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
@@ -31,7 +30,7 @@ jobs:
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
         continue-on-error: true
-        
+
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:

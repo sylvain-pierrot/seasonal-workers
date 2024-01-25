@@ -1,26 +1,51 @@
 syntax = "proto3";
 
-message Ad {
-  int32 ad_id = 1;
-  string title = 2;
-  repeated string category = 3;
-  message Date {
-    string start_date = 1;
-    string end_date = 2;
-  }
-
-  message Salary {
-    int32 amount = 1;
-    string currency = 2;
-  }
-
-  string description = 4;
-
-  enum AdType {
-    EXPERIENCE = 0;
-    AVAILABILITY = 1;
-  }
-  // Type d'annonce
-  AdType ad_type = 5;
+enum AdTypeEnum {
+  EXPERIENCE = 0;
+  AVAILABILITY = 1;
 }
 
+enum CountryEnum {
+  FRANCE = 0;
+  GERMANY = 1;
+  SPAIN = 2;
+  ITALY = 3;
+  UNITED_KINGDOM = 4;
+  UNITED_STATES = 5;
+}
+
+enum SalaireCurrencyEnum {
+  EU = 0;
+  DOLLAR = 1;
+}
+
+message Address {
+  string city = 1;
+  string zip_code = 2;
+  CountryEnum country = 3;
+}
+
+message DateRange {
+  string start_date = 1;
+  string end_date = 2;
+}
+
+message JobCategory {
+  string category = 1;
+  string sub_category = 2;
+}
+
+
+message Ad {
+  string id = 1;
+  string title = 2;
+  string user_id = 3;
+  DateRange date_range = 4;
+  double salarsalary_amounty_amount = 5;
+  SalaireCurrencyEnum salary_currency = 6;
+  Address address = 7;
+  string description = 8;
+  AdTypeEnum ad_type = 9;
+  JobCategory job_category = 10;
+
+}
