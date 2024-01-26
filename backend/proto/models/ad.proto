@@ -41,7 +41,7 @@ message Ad {
   string title = 2;
   string user_id = 3;
   DateRange date_range = 4;
-  double salarsalary_amounty_amount = 5;
+  double salary_amount = 5;
   SalaireCurrencyEnum salary_currency = 6;
   Address address = 7;
   string description = 8;
