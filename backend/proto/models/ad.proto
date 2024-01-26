@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package ad;
+
 enum AdTypeEnum {
   EXPERIENCE = 0;
   AVAILABILITY = 1;

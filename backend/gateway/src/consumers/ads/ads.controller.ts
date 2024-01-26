@@ -1,8 +1,8 @@
-import { Ad } from '@proto/ad';
-import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AppService } from '@services/ads/ads.service';
-import { Public, Roles } from 'nest-keycloak-connect';
-import { AdDto } from '@app/dto/ad';
+import { Public } from 'nest-keycloak-connect';
+import { AdDto } from './ads.dto';
+import { Ad } from '@app/proto_generated/ad';
 
 @Controller()
 export class AppController {
@@ -12,18 +12,7 @@ export class AppController {
   //   roles: ['realm:app-user'],
   // })
   @Public()
-  postAd(
-    @Body(
-      new ValidationPipe({
-        transform: true,
-        enableDebugMessages: true,
-        skipMissingProperties: false,
-        skipUndefinedProperties: false,
-        stopAtFirstError: true,
-      }),
-    )
-    message: AdDto,
-  ): Promise<any> {
-    return this.appService.postAd(message);
+  postAd(@Body() message: AdDto): Promise<Ad> {
+    return this.appService.postAd(message, 'ADS.post');
   }
 }

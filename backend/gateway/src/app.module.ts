@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from '@services/ads/ads.controller';
 import { AppService } from '@services/ads/ads.service';
-import { ClientsModule } from '@nestjs/microservices';
+// import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
 import {
   AuthGuard,
@@ -11,7 +11,7 @@ import {
 } from 'nest-keycloak-connect';
 import { APP_GUARD } from '@nestjs/core';
 import { KeycloakConnectConfig } from '@config/KeycloakConnectModule';
-import { NatsClientConfig } from '@config/NatsClientsModule';
+import { NatsModule } from './nats/nats.module';
 
 @Module({
   imports: [
@@ -19,8 +19,8 @@ import { NatsClientConfig } from '@config/NatsClientsModule';
       isGlobal: true,
       envFilePath: ['.env'],
     }),
+    NatsModule,
     KeycloakConnectModule.registerAsync(KeycloakConnectConfig),
-    ClientsModule.registerAsync(NatsClientConfig),
   ],
   controllers: [AppController],
   providers: [
