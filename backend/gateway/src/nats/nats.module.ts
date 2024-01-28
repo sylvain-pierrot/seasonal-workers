@@ -1,14 +1,14 @@
-import { Module, OnApplicationBootstrap } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { NatsService } from './nats.service';
 
 @Module({
   providers: [NatsService],
   exports: [NatsService],
 })
-export class NatsModule implements OnApplicationBootstrap {
+export class NatsModule implements OnModuleInit {
   constructor(private readonly natsService: NatsService) {}
 
-  async onApplicationBootstrap() {
+  async onModuleInit() {
     await this.natsService.connect();
   }
 }

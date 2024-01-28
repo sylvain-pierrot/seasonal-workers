@@ -5,11 +5,12 @@ import { NatsConnection, connect } from 'nats';
 @Injectable()
 export class NatsService {
   natsClient: NatsConnection;
-  private readonly configService: ConfigService;
+
+  constructor(private readonly configService: ConfigService) {}
 
   async connect() {
     this.natsClient = await connect({
-      servers: ['nats://localhost:4222'],
+      servers: [this.configService.get<string>('NATS_HOST')],
       timeout: 1000,
     });
   }
