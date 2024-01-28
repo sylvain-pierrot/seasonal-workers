@@ -80,7 +80,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ${{ env.DOCKERFILE_CONTEXT }}
-          file: ${{ env.DOCKERFILE_CONTEXT }}/{{ env.DOCKERFILE_FILE }}
+          file: ${{ env.DOCKERFILE_CONTEXT }}/${{ env.DOCKERFILE_FILE }}
           target: ${{ env.DOCKERFILE_TARGET }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
