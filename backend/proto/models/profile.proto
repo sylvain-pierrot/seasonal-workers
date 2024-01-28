@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+message Profile {
+  string id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string email = 4;
+  string gender = 5;
+  string nationality = 6;
+  string phone = 7;
+  string description = 8;
+  string cv_path = 9;
+  string picure_path = 10; 
+  bool deleted = 11;
+}

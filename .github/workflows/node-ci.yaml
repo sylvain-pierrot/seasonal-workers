@@ -1,0 +1,42 @@
+name: Node CI Workflow on ${{ inputs.directory }} directory
+
+on:
+  workflow_call:
+    inputs:
+      directory:
+        description: "Directory to change to"
+        type: string
+        required: true
+jobs:
+  security:
+    name: Synk Security Scan
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.directory }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: "npm"
+          cache-dependency-path: ${{ inputs.directory }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        continue-on-error: true
+
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --file=/package.json  --sarif-file-output=snyk.sarif
+
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk.sarif
