@@ -1,6 +1,6 @@
 FROM node:18-alpine AS build
 
-RUN apk add --no-cache protoc=24.4-r1
+RUN apk add --no-cache protoc=24.4-r0
 
 WORKDIR /app
 
