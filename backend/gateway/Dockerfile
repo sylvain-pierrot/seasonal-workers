@@ -1,6 +1,6 @@
 FROM node:18-alpine AS build
 
-RUN apk add protoc
+RUN apk add --no-cache protoc=24.4-r1
 
 WORKDIR /app
 
@@ -16,10 +16,10 @@ RUN npm run build
 
 FROM node:18-alpine AS runner
 
-USER node
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
 
-COPY --chown=node:node --from=build /app/node_modules ./node_modules
-COPY --chown=node:node --from=build /app/dist ./dist
+USER node
 
 ENV PORT_GATEWAY=3000
 ENV NATS_HOST=nats://127.0.0.1:4222
