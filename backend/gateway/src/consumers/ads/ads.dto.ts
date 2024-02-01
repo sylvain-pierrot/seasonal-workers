@@ -6,13 +6,15 @@ import {
   DateRange,
   JobCategory,
   SalaireCurrencyEnum,
-} from '@app/proto_generated/ad';
+} from '@proto/models/ads';
 import {
   IsNumber,
   ValidateNested,
   IsString,
   IsNotEmpty,
   IsEnum,
+  IsUUID,
+  IsDateString,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -25,10 +27,10 @@ class JobCategoryDto {
 }
 
 class DateRangeDto {
-  @IsString()
+  @IsDateString()
   startDate: string;
 
-  @IsString()
+  @IsDateString()
   endDate: string;
 }
 
@@ -58,7 +60,7 @@ export class AdDto implements Ad {
   title: string;
 
   @IsNotEmpty()
-  @IsString()
+  @IsUUID()
   userId: string;
 
   @IsNotEmpty()

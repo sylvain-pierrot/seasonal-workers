@@ -1,0 +1,15 @@
+syntax = "proto3";
+import "services/ads.proto";
+
+// Message that contains a generic request
+message Request {
+  string request_id = 1;
+
+  oneof request {
+    services.GetExperiencesRequest get_experiences_request = 2;
+    services.GetExperienceRequest get_experience_request = 3;
+    services.CreateExperienceRequest create_experience_request = 4;
+    services.UpdateExperienceRequest update_experience_request = 5;
+    services.DeleteExperienceRequest delete_experience_request = 6;
+  }
+} 

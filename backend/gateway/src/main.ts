@@ -10,7 +10,7 @@ async function bootstrap() {
   });
   const configService = app.get(ConfigService);
   const port = configService.get('PORT_GATEWAY');
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api/ads');
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(port);
   logger.log(`API Gateway listen on ${port}`);

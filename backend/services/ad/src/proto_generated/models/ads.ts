@@ -2,7 +2,7 @@
 import { util, configure, Writer, Reader } from 'protobufjs/minimal';
 import * as Long from 'long';
 
-export const protobufPackage = '';
+export const protobufPackage = 'models';
 
 export enum AdTypeEnum {
   EXPERIENCE = 0,
@@ -145,7 +145,7 @@ export interface Ad {
   title: string;
   userId: string;
   dateRange: DateRange | undefined;
-  salarsalaryAmountyAmount: number;
+  salaryAmount: number;
   salaryCurrency: SalaireCurrencyEnum;
   address: Address | undefined;
   description: string;
@@ -392,7 +392,7 @@ const baseAd: object = {
   id: '',
   title: '',
   userId: '',
-  salarsalaryAmountyAmount: 0,
+  salaryAmount: 0,
   salaryCurrency: 0,
   description: '',
   adType: 0,
@@ -412,8 +412,8 @@ export const Ad = {
     if (message.dateRange !== undefined) {
       DateRange.encode(message.dateRange, writer.uint32(34).fork()).ldelim();
     }
-    if (message.salarsalaryAmountyAmount !== 0) {
-      writer.uint32(41).double(message.salarsalaryAmountyAmount);
+    if (message.salaryAmount !== 0) {
+      writer.uint32(41).double(message.salaryAmount);
     }
     if (message.salaryCurrency !== 0) {
       writer.uint32(48).int32(message.salaryCurrency);
@@ -456,7 +456,7 @@ export const Ad = {
           message.dateRange = DateRange.decode(reader, reader.uint32());
           break;
         case 5:
-          message.salarsalaryAmountyAmount = reader.double();
+          message.salaryAmount = reader.double();
           break;
         case 6:
           message.salaryCurrency = reader.int32() as any;
@@ -503,15 +503,10 @@ export const Ad = {
     } else {
       message.dateRange = undefined;
     }
-    if (
-      object.salarsalaryAmountyAmount !== undefined &&
-      object.salarsalaryAmountyAmount !== null
-    ) {
-      message.salarsalaryAmountyAmount = Number(
-        object.salarsalaryAmountyAmount,
-      );
+    if (object.salaryAmount !== undefined && object.salaryAmount !== null) {
+      message.salaryAmount = Number(object.salaryAmount);
     } else {
-      message.salarsalaryAmountyAmount = 0;
+      message.salaryAmount = 0;
     }
     if (object.salaryCurrency !== undefined && object.salaryCurrency !== null) {
       message.salaryCurrency = salaireCurrencyEnumFromJSON(
@@ -552,8 +547,8 @@ export const Ad = {
       (obj.dateRange = message.dateRange
         ? DateRange.toJSON(message.dateRange)
         : undefined);
-    message.salarsalaryAmountyAmount !== undefined &&
-      (obj.salarsalaryAmountyAmount = message.salarsalaryAmountyAmount);
+    message.salaryAmount !== undefined &&
+      (obj.salaryAmount = message.salaryAmount);
     message.salaryCurrency !== undefined &&
       (obj.salaryCurrency = salaireCurrencyEnumToJSON(message.salaryCurrency));
     message.address !== undefined &&
@@ -593,13 +588,10 @@ export const Ad = {
     } else {
       message.dateRange = undefined;
     }
-    if (
-      object.salarsalaryAmountyAmount !== undefined &&
-      object.salarsalaryAmountyAmount !== null
-    ) {
-      message.salarsalaryAmountyAmount = object.salarsalaryAmountyAmount;
+    if (object.salaryAmount !== undefined && object.salaryAmount !== null) {
+      message.salaryAmount = object.salaryAmount;
     } else {
-      message.salarsalaryAmountyAmount = 0;
+      message.salaryAmount = 0;
     }
     if (object.salaryCurrency !== undefined && object.salaryCurrency !== null) {
       message.salaryCurrency = object.salaryCurrency;

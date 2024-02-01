@@ -21,7 +21,8 @@
       "@app/*": ["src/*"],
       "@config/*": ["src/config/*"],
       "@services/*": ["src/consumers/*"],
-      "@proto/*": ["src/proto_generated/*"]
+      "@proto/*": ["src/proto_generated/*"],
+      "@nats/*": ["src/nats/*"]
     }
   },
   "include": ["src/**/*.ts"]

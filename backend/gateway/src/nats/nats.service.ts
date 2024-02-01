@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { NatsConnection, connect } from 'nats';
+import { NatsConnection, Service, ServiceGroup, connect } from 'nats';
 
 @Injectable()
 export class NatsService {

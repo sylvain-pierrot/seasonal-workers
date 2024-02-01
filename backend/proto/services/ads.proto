@@ -1,0 +1,42 @@
+syntax = "proto3";
+import "models/ads.proto";
+
+package services;
+
+message CreateExperienceRequest {
+  models.Ad ad = 1;
+}
+message CreateExperienceResponse {
+  string id = 1;
+}
+
+message GetExperiencesRequest {
+  string id = 1;
+}
+message GetExperiencesResponse {
+  repeated models.Ad ads = 1;
+}
+
+message GetExperienceRequest {
+  string id = 1;
+}
+message GetExperienceResponse {
+  models.Ad ad = 1;
+}
+
+message UpdateExperienceRequest {
+  string id = 1;
+  models.Ad ad = 2;
+}
+message UpdateExperienceResponse {
+  string id = 1;
+}
+
+message DeleteExperienceRequest {
+  string id = 1;
+  models.Ad ad = 2;
+}
+
+message DeleteExperienceResponse {
+  string id = 1;
+}

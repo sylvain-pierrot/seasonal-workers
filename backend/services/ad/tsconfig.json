@@ -22,7 +22,8 @@
       "@controllers/*": ["src/controllers/*"],
       "@services/*": ["src/services/*"],
       "@config/*": ["src/config/*"],
-      "@proto/*": ["proto_generated/*"]
+      "@proto/*": ["src/proto_generated/*"],
+      "@nats/*": ["src/nats/*"]
     }
   }
 }
