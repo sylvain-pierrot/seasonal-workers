@@ -7,6 +7,13 @@ import {
   CreateExperienceRequest,
   UpdateExperienceRequest,
   DeleteExperienceRequest,
+  CreateAvailabilityRequest,
+  GetAvailabilitiesRequest,
+  DeleteAvailabilityRequest,
+  UpdateAvailabilityRequest,
+  CreateJobOfferRequest,
+  GetJobOffersRecommendationRequest,
+  GetJobOfferRequest,
 } from './services/ads';
 
 export const protobufPackage = '';
@@ -19,6 +26,15 @@ export interface Request {
   createExperienceRequest: CreateExperienceRequest | undefined;
   updateExperienceRequest: UpdateExperienceRequest | undefined;
   deleteExperienceRequest: DeleteExperienceRequest | undefined;
+  createAvailabilityRequest: CreateAvailabilityRequest | undefined;
+  getAvailabilitiesRequest: GetAvailabilitiesRequest | undefined;
+  deleteAvailabilityRequest: DeleteAvailabilityRequest | undefined;
+  updateAvailabilityRequest: UpdateAvailabilityRequest | undefined;
+  createJobOfferRequest: CreateJobOfferRequest | undefined;
+  getJobOffersRecommendationRequest:
+    | GetJobOffersRecommendationRequest
+    | undefined;
+  getJobOfferRequest: GetJobOfferRequest | undefined;
 }
 
 const baseRequest: object = { requestId: '' };
@@ -56,6 +72,48 @@ export const Request = {
       DeleteExperienceRequest.encode(
         message.deleteExperienceRequest,
         writer.uint32(50).fork(),
+      ).ldelim();
+    }
+    if (message.createAvailabilityRequest !== undefined) {
+      CreateAvailabilityRequest.encode(
+        message.createAvailabilityRequest,
+        writer.uint32(58).fork(),
+      ).ldelim();
+    }
+    if (message.getAvailabilitiesRequest !== undefined) {
+      GetAvailabilitiesRequest.encode(
+        message.getAvailabilitiesRequest,
+        writer.uint32(66).fork(),
+      ).ldelim();
+    }
+    if (message.deleteAvailabilityRequest !== undefined) {
+      DeleteAvailabilityRequest.encode(
+        message.deleteAvailabilityRequest,
+        writer.uint32(74).fork(),
+      ).ldelim();
+    }
+    if (message.updateAvailabilityRequest !== undefined) {
+      UpdateAvailabilityRequest.encode(
+        message.updateAvailabilityRequest,
+        writer.uint32(82).fork(),
+      ).ldelim();
+    }
+    if (message.createJobOfferRequest !== undefined) {
+      CreateJobOfferRequest.encode(
+        message.createJobOfferRequest,
+        writer.uint32(90).fork(),
+      ).ldelim();
+    }
+    if (message.getJobOffersRecommendationRequest !== undefined) {
+      GetJobOffersRecommendationRequest.encode(
+        message.getJobOffersRecommendationRequest,
+        writer.uint32(98).fork(),
+      ).ldelim();
+    }
+    if (message.getJobOfferRequest !== undefined) {
+      GetJobOfferRequest.encode(
+        message.getJobOfferRequest,
+        writer.uint32(106).fork(),
       ).ldelim();
     }
     return writer;
@@ -97,6 +155,46 @@ export const Request = {
           break;
         case 6:
           message.deleteExperienceRequest = DeleteExperienceRequest.decode(
+            reader,
+            reader.uint32(),
+          );
+          break;
+        case 7:
+          message.createAvailabilityRequest = CreateAvailabilityRequest.decode(
+            reader,
+            reader.uint32(),
+          );
+          break;
+        case 8:
+          message.getAvailabilitiesRequest = GetAvailabilitiesRequest.decode(
+            reader,
+            reader.uint32(),
+          );
+          break;
+        case 9:
+          message.deleteAvailabilityRequest = DeleteAvailabilityRequest.decode(
+            reader,
+            reader.uint32(),
+          );
+          break;
+        case 10:
+          message.updateAvailabilityRequest = UpdateAvailabilityRequest.decode(
+            reader,
+            reader.uint32(),
+          );
+          break;
+        case 11:
+          message.createJobOfferRequest = CreateJobOfferRequest.decode(
+            reader,
+            reader.uint32(),
+          );
+          break;
+        case 12:
+          message.getJobOffersRecommendationRequest =
+            GetJobOffersRecommendationRequest.decode(reader, reader.uint32());
+          break;
+        case 13:
+          message.getJobOfferRequest = GetJobOfferRequest.decode(
             reader,
             reader.uint32(),
           );
@@ -166,6 +264,77 @@ export const Request = {
     } else {
       message.deleteExperienceRequest = undefined;
     }
+    if (
+      object.createAvailabilityRequest !== undefined &&
+      object.createAvailabilityRequest !== null
+    ) {
+      message.createAvailabilityRequest = CreateAvailabilityRequest.fromJSON(
+        object.createAvailabilityRequest,
+      );
+    } else {
+      message.createAvailabilityRequest = undefined;
+    }
+    if (
+      object.getAvailabilitiesRequest !== undefined &&
+      object.getAvailabilitiesRequest !== null
+    ) {
+      message.getAvailabilitiesRequest = GetAvailabilitiesRequest.fromJSON(
+        object.getAvailabilitiesRequest,
+      );
+    } else {
+      message.getAvailabilitiesRequest = undefined;
+    }
+    if (
+      object.deleteAvailabilityRequest !== undefined &&
+      object.deleteAvailabilityRequest !== null
+    ) {
+      message.deleteAvailabilityRequest = DeleteAvailabilityRequest.fromJSON(
+        object.deleteAvailabilityRequest,
+      );
+    } else {
+      message.deleteAvailabilityRequest = undefined;
+    }
+    if (
+      object.updateAvailabilityRequest !== undefined &&
+      object.updateAvailabilityRequest !== null
+    ) {
+      message.updateAvailabilityRequest = UpdateAvailabilityRequest.fromJSON(
+        object.updateAvailabilityRequest,
+      );
+    } else {
+      message.updateAvailabilityRequest = undefined;
+    }
+    if (
+      object.createJobOfferRequest !== undefined &&
+      object.createJobOfferRequest !== null
+    ) {
+      message.createJobOfferRequest = CreateJobOfferRequest.fromJSON(
+        object.createJobOfferRequest,
+      );
+    } else {
+      message.createJobOfferRequest = undefined;
+    }
+    if (
+      object.getJobOffersRecommendationRequest !== undefined &&
+      object.getJobOffersRecommendationRequest !== null
+    ) {
+      message.getJobOffersRecommendationRequest =
+        GetJobOffersRecommendationRequest.fromJSON(
+          object.getJobOffersRecommendationRequest,
+        );
+    } else {
+      message.getJobOffersRecommendationRequest = undefined;
+    }
+    if (
+      object.getJobOfferRequest !== undefined &&
+      object.getJobOfferRequest !== null
+    ) {
+      message.getJobOfferRequest = GetJobOfferRequest.fromJSON(
+        object.getJobOfferRequest,
+      );
+    } else {
+      message.getJobOfferRequest = undefined;
+    }
     return message;
   },
 
@@ -191,6 +360,37 @@ export const Request = {
     message.deleteExperienceRequest !== undefined &&
       (obj.deleteExperienceRequest = message.deleteExperienceRequest
         ? DeleteExperienceRequest.toJSON(message.deleteExperienceRequest)
+        : undefined);
+    message.createAvailabilityRequest !== undefined &&
+      (obj.createAvailabilityRequest = message.createAvailabilityRequest
+        ? CreateAvailabilityRequest.toJSON(message.createAvailabilityRequest)
+        : undefined);
+    message.getAvailabilitiesRequest !== undefined &&
+      (obj.getAvailabilitiesRequest = message.getAvailabilitiesRequest
+        ? GetAvailabilitiesRequest.toJSON(message.getAvailabilitiesRequest)
+        : undefined);
+    message.deleteAvailabilityRequest !== undefined &&
+      (obj.deleteAvailabilityRequest = message.deleteAvailabilityRequest
+        ? DeleteAvailabilityRequest.toJSON(message.deleteAvailabilityRequest)
+        : undefined);
+    message.updateAvailabilityRequest !== undefined &&
+      (obj.updateAvailabilityRequest = message.updateAvailabilityRequest
+        ? UpdateAvailabilityRequest.toJSON(message.updateAvailabilityRequest)
+        : undefined);
+    message.createJobOfferRequest !== undefined &&
+      (obj.createJobOfferRequest = message.createJobOfferRequest
+        ? CreateJobOfferRequest.toJSON(message.createJobOfferRequest)
+        : undefined);
+    message.getJobOffersRecommendationRequest !== undefined &&
+      (obj.getJobOffersRecommendationRequest =
+        message.getJobOffersRecommendationRequest
+          ? GetJobOffersRecommendationRequest.toJSON(
+              message.getJobOffersRecommendationRequest,
+            )
+          : undefined);
+    message.getJobOfferRequest !== undefined &&
+      (obj.getJobOfferRequest = message.getJobOfferRequest
+        ? GetJobOfferRequest.toJSON(message.getJobOfferRequest)
         : undefined);
     return obj;
   },
@@ -251,6 +451,77 @@ export const Request = {
       );
     } else {
       message.deleteExperienceRequest = undefined;
+    }
+    if (
+      object.createAvailabilityRequest !== undefined &&
+      object.createAvailabilityRequest !== null
+    ) {
+      message.createAvailabilityRequest = CreateAvailabilityRequest.fromPartial(
+        object.createAvailabilityRequest,
+      );
+    } else {
+      message.createAvailabilityRequest = undefined;
+    }
+    if (
+      object.getAvailabilitiesRequest !== undefined &&
+      object.getAvailabilitiesRequest !== null
+    ) {
+      message.getAvailabilitiesRequest = GetAvailabilitiesRequest.fromPartial(
+        object.getAvailabilitiesRequest,
+      );
+    } else {
+      message.getAvailabilitiesRequest = undefined;
+    }
+    if (
+      object.deleteAvailabilityRequest !== undefined &&
+      object.deleteAvailabilityRequest !== null
+    ) {
+      message.deleteAvailabilityRequest = DeleteAvailabilityRequest.fromPartial(
+        object.deleteAvailabilityRequest,
+      );
+    } else {
+      message.deleteAvailabilityRequest = undefined;
+    }
+    if (
+      object.updateAvailabilityRequest !== undefined &&
+      object.updateAvailabilityRequest !== null
+    ) {
+      message.updateAvailabilityRequest = UpdateAvailabilityRequest.fromPartial(
+        object.updateAvailabilityRequest,
+      );
+    } else {
+      message.updateAvailabilityRequest = undefined;
+    }
+    if (
+      object.createJobOfferRequest !== undefined &&
+      object.createJobOfferRequest !== null
+    ) {
+      message.createJobOfferRequest = CreateJobOfferRequest.fromPartial(
+        object.createJobOfferRequest,
+      );
+    } else {
+      message.createJobOfferRequest = undefined;
+    }
+    if (
+      object.getJobOffersRecommendationRequest !== undefined &&
+      object.getJobOffersRecommendationRequest !== null
+    ) {
+      message.getJobOffersRecommendationRequest =
+        GetJobOffersRecommendationRequest.fromPartial(
+          object.getJobOffersRecommendationRequest,
+        );
+    } else {
+      message.getJobOffersRecommendationRequest = undefined;
+    }
+    if (
+      object.getJobOfferRequest !== undefined &&
+      object.getJobOfferRequest !== null
+    ) {
+      message.getJobOfferRequest = GetJobOfferRequest.fromPartial(
+        object.getJobOfferRequest,
+      );
+    } else {
+      message.getJobOfferRequest = undefined;
     }
     return message;
   },

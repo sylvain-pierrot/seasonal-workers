@@ -1,5 +1,5 @@
 import { AdEntity } from '@app/entities/ads.entity';
-import { Ad } from '@app/proto_generated/models/ads';
+import { Ad, DateRange } from '@app/proto_generated/models/ads';
 import { Response } from '@app/proto_generated/Response';
 
 export const convertProtoToAdEntity = (ad: Ad): AdEntity => {
@@ -49,11 +49,12 @@ export const convertAdEntityToProto = (ad: AdEntity): Ad => {
 export const returnResponseError = (
   requestId: string,
   error: Error,
+  statusCode: number | undefined = 400,
 ): Uint8Array => {
   const response = Response.fromPartial({
     requestId,
     error: {
-      errorCode: 400,
+      errorCode: statusCode,
       errorMessage: error.message,
     },
   });
@@ -61,10 +62,26 @@ export const returnResponseError = (
   return encoded;
 };
 
-export enum NatsMethodRequested {
+export const returnResponse = (requestData: Response): Uint8Array => {
+  const response = Response.fromPartial(requestData);
+  const encoded = Response.encode(response).finish();
+  return encoded;
+};
+
+export const isValideDateRange = (dateRange: DateRange): boolean => {
+  const startDate = new Date(dateRange.startDate);
+  const endDate = new Date(dateRange.endDate);
+  if (startDate < new Date()) {
+    return false;
+  }
+  return startDate < endDate;
+};
+
+export enum NatsEndpoint {
   CREATE = 'create',
   FIND = 'find',
   FIND_ONE = 'findOne',
   UPDATE = 'update',
   REMOVE = 'remove',
+  RECOMMANDATION = 'recommendation',
 }

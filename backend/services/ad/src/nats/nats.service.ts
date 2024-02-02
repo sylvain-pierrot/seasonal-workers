@@ -7,6 +7,7 @@ export class NatsService {
   natsClient: NatsConnection;
   experience: ServiceGroup;
   availability: ServiceGroup;
+  job: ServiceGroup;
   private privateService: Service;
   private readonly configService: ConfigService;
 
@@ -23,6 +24,7 @@ export class NatsService {
     });
 
     this.experience = this.privateService.addGroup('ADS.experiences');
-    this.availability = this.privateService.addGroup('ADS.availability');
+    this.availability = this.privateService.addGroup('ADS.availabilities');
+    this.job = this.privateService.addGroup('ADS.jobs');
   }
 }

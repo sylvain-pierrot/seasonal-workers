@@ -12,6 +12,7 @@ import { NatsModule } from './nats/nats.module';
 import { ExperiencesController } from './consumers/ads/controllers/experiences.controller';
 import { AdsService } from './consumers/ads/ads.service';
 import { AvailabilityController } from './consumers/ads/controllers/availability.controller';
+import { JobOffersController } from './consumers/ads/controllers/job-offers.controller';
 
 @Module({
   imports: [
@@ -22,7 +23,11 @@ import { AvailabilityController } from './consumers/ads/controllers/availability
     NatsModule,
     KeycloakConnectModule.registerAsync(KeycloakConnectConfig),
   ],
-  controllers: [ExperiencesController, AvailabilityController],
+  controllers: [
+    ExperiencesController,
+    AvailabilityController,
+    JobOffersController,
+  ],
   providers: [
     AdsService,
     {

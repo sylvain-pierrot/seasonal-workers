@@ -3,10 +3,12 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 DROP TYPE IF EXISTS ad_type_enum;
 DROP TYPE IF EXISTS country_enum;
 DROP TYPE IF EXISTS salaire_currency_enum;
+DROP TYPE IF EXISTS job_offer_status_enum;
 
 CREATE TYPE ad_type_enum AS ENUM ('experience', 'availability', 'jobOffer');
 CREATE TYPE country_enum AS ENUM ('france', 'germany', 'spain', 'italy', 'united_kingdom', 'united_states');
 CREATE TYPE salaire_currency_enum AS ENUM ('EU', 'DOLLAR');
+CREATE TYPE job_offer_status_enum AS ENUM ('pending', 'accepted', 'refused');
 
 CREATE TABLE IF NOT EXISTS ad (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -22,7 +24,8 @@ CREATE TABLE IF NOT EXISTS ad (
     zip_code VARCHAR(255),
     country country_enum,
     description VARCHAR(255),
-    ad_type ad_type_enum
+    ad_type ad_type_enum,
+    UNIQUE(user_id, title, start_date, end_date, ad_type)
 );
 
 CREATE TABLE IF NOT EXISTS Jobs (
@@ -37,6 +40,17 @@ CREATE TABLE IF NOT EXISTS JobCategories (
   category_title VARCHAR(255) NOT NULL,
   UNIQUE(category_title)
 );
+
+CREATE TABLE IF NOT EXISTS JobOfferStatus (
+  status_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  worker_id UUID NOT NULL,
+  offer_id UUID NOT NULL,
+  status job_offer_status_enum NOT NULL,
+  UNIQUE(worker_id,offer_id)
+);
+
+ALTER TABLE JobOfferStatus ADD FOREIGN KEY (offer_id) REFERENCES ad (id);
 
 ALTER TABLE Jobs ADD FOREIGN KEY ("category") REFERENCES JobCategories ("category_id");
 

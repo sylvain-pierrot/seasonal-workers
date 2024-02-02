@@ -35,7 +35,6 @@ export class ExperiencesController {
         ad: message,
       },
     };
-
     return this.appService.performRequest(
       requestType,
       NatsSubjects.EXPERIENCE_CREATE,
@@ -94,13 +93,13 @@ export class ExperiencesController {
     @AuthenticatedUser()
     user: any,
     @Body()
-    message: AdDto,
+    message: any,
   ): Promise<Response> {
     const requestType: Request = {
       requestId: uuidv4(),
       deleteExperienceRequest: {
         id: user.sub,
-        ad: message,
+        experienceId: message.experience_id,
       },
     };
     return this.appService.performRequest(

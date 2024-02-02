@@ -2,33 +2,33 @@ import { Controller, OnApplicationBootstrap } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { NatsService } from '@app/nats/nats.service';
 import { NatsError, ServiceMsg } from 'nats';
-import { ExperienceService } from '@app/services/experiences.service';
+import { AvailabilityService } from '@app/services/availability.service';
 import { Request } from '@proto/Request';
 import { NatsEndpoint, returnResponseError } from '@app/utils/utils';
 
 @Controller()
-export class ExperiencesController implements OnApplicationBootstrap {
-  private logger = new Logger(ExperiencesController.name);
+export class AvailabilitiesController implements OnApplicationBootstrap {
+  private logger = new Logger(AvailabilitiesController.name);
   constructor(
     private natsService: NatsService,
-    private experienceService: ExperienceService,
+    private availabilityService: AvailabilityService,
   ) {}
 
   async onApplicationBootstrap() {
-    await this.handleCreateExperience();
-    await this.handleGetExperiences();
-    await this.handleUpdateExperience();
-    await this.handleDeleteExperience();
+    await this.handleCreateAvailability();
+    await this.handleGetAvailabilities();
+    await this.handleUpdateAvailabilitiy();
+    await this.handleDeleteAvailabilitiy();
   }
 
-  async handleCreateExperience(): Promise<void> {
-    this.natsService.experience.addEndpoint(
+  async handleCreateAvailability(): Promise<void> {
+    this.natsService.availability.addEndpoint(
       NatsEndpoint.CREATE,
       async (error: NatsError, request: ServiceMsg) => {
         try {
           const decodedRequest = Request.decode(request.data);
           const encodedResponse =
-            await this.experienceService.CreateExperience(decodedRequest);
+            await this.availabilityService.CreateAvailability(decodedRequest);
           request.respond(encodedResponse);
         } catch (e) {
           const decoded = Request.decode(request.data);
@@ -39,55 +39,66 @@ export class ExperiencesController implements OnApplicationBootstrap {
     );
   }
 
-  async handleGetExperiences(): Promise<void> {
-    this.natsService.experience.addEndpoint(
+  async handleGetAvailabilities(): Promise<void> {
+    this.natsService.availability.addEndpoint(
       NatsEndpoint.FIND,
       async (error, request: any) => {
         try {
           const decodedRequest = Request.decode(request.data);
           const response =
-            await this.experienceService.getAllExperiences(decodedRequest);
+            await this.availabilityService.getAvailabilities(decodedRequest);
           return request.respond(response);
         } catch (e) {
-          this.logger.error(`Error GET experiences: ${e}`);
           const decoded = Request.decode(request.data);
-          const encodedError = returnResponseError(decoded.requestId, e);
+          const encodedError = returnResponseError(
+            decoded.requestId,
+            e,
+            e.status,
+          );
           request.respond(encodedError);
         }
       },
     );
   }
 
-  async handleUpdateExperience(): Promise<void> {
-    this.natsService.experience.addEndpoint(
+  async handleUpdateAvailabilitiy(): Promise<void> {
+    this.natsService.availability.addEndpoint(
       NatsEndpoint.UPDATE,
       async (error, request: any) => {
         try {
           const decodedRequest = Request.decode(request.data);
           const response =
-            await this.experienceService.updateExperience(decodedRequest);
+            await this.availabilityService.updateAvailability(decodedRequest);
           return request.respond(response);
         } catch (e) {
           const decoded = Request.decode(request.data);
-          const encodedError = returnResponseError(decoded.requestId, e);
+          const encodedError = returnResponseError(
+            decoded.requestId,
+            e,
+            e.status,
+          );
           request.respond(encodedError);
         }
       },
     );
   }
 
-  async handleDeleteExperience(): Promise<void> {
-    this.natsService.experience.addEndpoint(
+  async handleDeleteAvailabilitiy(): Promise<void> {
+    this.natsService.availability.addEndpoint(
       NatsEndpoint.REMOVE,
       async (error, request: any) => {
         try {
           const decodedRequest = Request.decode(request.data);
           const response =
-            await this.experienceService.deleteExperience(decodedRequest);
+            await this.availabilityService.deleteAvailability(decodedRequest);
           return request.respond(response);
         } catch (e) {
           const decoded = Request.decode(request.data);
-          const encodedError = returnResponseError(decoded.requestId, e);
+          const encodedError = returnResponseError(
+            decoded.requestId,
+            e,
+            e.status,
+          );
           request.respond(encodedError);
         }
       },

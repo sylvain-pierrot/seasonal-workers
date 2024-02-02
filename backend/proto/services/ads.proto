@@ -34,9 +34,68 @@ message UpdateExperienceResponse {
 
 message DeleteExperienceRequest {
   string id = 1;
-  models.Ad ad = 2;
+  string experience_id = 2;
 }
 
 message DeleteExperienceResponse {
   string id = 1;
 }
+
+message CreateAvailabilityRequest {
+  models.Ad availability = 1;
+}
+
+message CreateAvailabilityResponse {
+  string id = 1;
+}
+
+message GetAvailabilitiesRequest {
+  string id = 1;
+}
+
+message GetAvailabilitiesResponse {
+  repeated models.Ad ads = 1;
+}
+
+message UpdateAvailabilityRequest {
+  string id = 1;
+  models.Ad availability = 2;
+}
+
+message UpdateAvailabilityResponse {
+  string id = 1;
+}
+
+message DeleteAvailabilityRequest {
+  string id = 1;
+  string availability_id = 2;
+}
+
+message DeleteAvailabilityResponse {
+  string id = 1;
+}
+
+message CreateJobOfferRequest {
+  models.Ad job_offer = 1;
+}
+
+message CreateJobOfferRequestResponse {
+  string offer_id = 1;
+}
+
+message GetJobOfferRequest  {
+  string offer_id = 1;
+}
+
+message GetJobOfferResponse {
+  models.Ad job_offer = 1;
+}
+
+message GetJobOffersRecommendationRequest {
+  string user_id = 1;
+}  
+
+message GetJobOffersRecommendationResponse {
+  repeated models.Ad job_offers = 1;
+}  
+

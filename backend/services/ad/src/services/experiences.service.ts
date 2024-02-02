@@ -1,7 +1,7 @@
 import { AdEntity } from '@app/entities/ads.entity';
 import { AdTypeEnum } from '@proto/models/ads';
 import { AdsRepository } from '@app/repositories/ads.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '@proto/Request';
@@ -11,8 +11,8 @@ import {
   convertProtoToAdEntity,
 } from '@app/utils/utils';
 @Injectable()
-export class AdService {
-  private logger = new Logger(AdService.name);
+export class ExperienceService {
+  private logger = new Logger(ExperienceService.name);
 
   constructor(
     @InjectRepository(AdEntity)
@@ -21,6 +21,7 @@ export class AdService {
 
   async CreateExperience(request: Request): Promise<Uint8Array> {
     const ad = request.createExperienceRequest.ad;
+    ad.id = null;
     ad.adType = AdTypeEnum.EXPERIENCE;
     ad.salaryAmount = null;
     ad.salaryCurrency = null;
@@ -54,28 +55,31 @@ export class AdService {
     return encodedResponse;
   }
 
-  async getExperienceById(request: Request): Promise<Uint8Array> {
-    const id = request.getExperienceRequest.id;
-    const experience = await this.adsRepository.findOne({ where: { id } });
-    const response = Response.fromPartial({
-      requestId: request.requestId,
-      getExperienceResponse: {
-        ad: convertAdEntityToProto(experience),
-      },
-    });
-    const encodedResponse = Response.encode(response).finish();
-    return encodedResponse;
-  }
-
   async updateExperience(request: Request): Promise<Uint8Array> {
     const ad = request.updateExperienceRequest.ad;
+    const adId = request.updateExperienceRequest.ad.id;
     const id = request.updateExperienceRequest.id;
+
     const entity = convertProtoToAdEntity(ad);
-    const update = await this.adsRepository.update(id, entity);
+    const updated = await this.adsRepository.update(
+      {
+        id: adId,
+        ad_type: AdTypeEnum.EXPERIENCE,
+        user_id: id,
+      },
+      entity,
+    );
+
+    if (updated.affected === 0) {
+      throw new NotFoundException(
+        'Impossible to update experience not found or already updated',
+      );
+    }
+
     const response = Response.fromPartial({
       requestId: request.requestId,
       updateExperienceResponse: {
-        id: update.raw.id,
+        id: adId,
       },
     });
     const encodedResponse = Response.encode(response).finish();
@@ -83,12 +87,23 @@ export class AdService {
   }
 
   async deleteExperience(request: Request): Promise<Uint8Array> {
-    const id = request.deleteExperienceRequest.id;
-    const deleteExperience = await this.adsRepository.delete(id);
+    const id = request.deleteExperienceRequest.experienceId;
+    const userId = request.deleteExperienceRequest.id;
+    const deleted = await this.adsRepository.delete({
+      id: id,
+      ad_type: AdTypeEnum.EXPERIENCE,
+      user_id: userId,
+    });
+
+    if (deleted.affected === 0) {
+      throw new NotFoundException(
+        'Impossible to delete experience not found or already deleted',
+      );
+    }
     const response = Response.fromPartial({
       requestId: request.requestId,
       deleteExperienceResponse: {
-        id: deleteExperience.raw.id,
+        id: id,
       },
     });
     const encodedResponse = Response.encode(response).finish();

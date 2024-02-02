@@ -1,10 +1,17 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import {
+  CreateAvailabilityResponse,
   CreateExperienceResponse,
+  CreateJobOfferRequestResponse,
+  DeleteAvailabilityResponse,
   DeleteExperienceResponse,
+  GetAvailabilitiesResponse,
   GetExperienceResponse,
   GetExperiencesResponse,
+  GetJobOfferResponse,
+  GetJobOffersRecommendationResponse,
+  UpdateAvailabilityResponse,
   UpdateExperienceResponse,
 } from "./services/ads";
 
@@ -23,6 +30,13 @@ export interface Response {
   createExperienceResponse?: CreateExperienceResponse | undefined;
   updateExperienceResponse?: UpdateExperienceResponse | undefined;
   deleteExperienceResponse?: DeleteExperienceResponse | undefined;
+  createAvailabilityResponse?: CreateAvailabilityResponse | undefined;
+  getAvailabilitiesResponse?: GetAvailabilitiesResponse | undefined;
+  updateAvailabilityResponse?: UpdateAvailabilityResponse | undefined;
+  deleteAvailabilityResponse?: DeleteAvailabilityResponse | undefined;
+  createJobOfferResponse?: CreateJobOfferRequestResponse | undefined;
+  getJobOffersRecommendationResponse?: GetJobOffersRecommendationResponse | undefined;
+  getJobOfferResponse?: GetJobOfferResponse | undefined;
 }
 
 function createBaseError(): Error {
@@ -108,6 +122,13 @@ function createBaseResponse(): Response {
     createExperienceResponse: undefined,
     updateExperienceResponse: undefined,
     deleteExperienceResponse: undefined,
+    createAvailabilityResponse: undefined,
+    getAvailabilitiesResponse: undefined,
+    updateAvailabilityResponse: undefined,
+    deleteAvailabilityResponse: undefined,
+    createJobOfferResponse: undefined,
+    getJobOffersRecommendationResponse: undefined,
+    getJobOfferResponse: undefined,
   };
 }
 
@@ -133,6 +154,28 @@ export const Response = {
     }
     if (message.deleteExperienceResponse !== undefined) {
       DeleteExperienceResponse.encode(message.deleteExperienceResponse, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.createAvailabilityResponse !== undefined) {
+      CreateAvailabilityResponse.encode(message.createAvailabilityResponse, writer.uint32(66).fork()).ldelim();
+    }
+    if (message.getAvailabilitiesResponse !== undefined) {
+      GetAvailabilitiesResponse.encode(message.getAvailabilitiesResponse, writer.uint32(74).fork()).ldelim();
+    }
+    if (message.updateAvailabilityResponse !== undefined) {
+      UpdateAvailabilityResponse.encode(message.updateAvailabilityResponse, writer.uint32(82).fork()).ldelim();
+    }
+    if (message.deleteAvailabilityResponse !== undefined) {
+      DeleteAvailabilityResponse.encode(message.deleteAvailabilityResponse, writer.uint32(90).fork()).ldelim();
+    }
+    if (message.createJobOfferResponse !== undefined) {
+      CreateJobOfferRequestResponse.encode(message.createJobOfferResponse, writer.uint32(98).fork()).ldelim();
+    }
+    if (message.getJobOffersRecommendationResponse !== undefined) {
+      GetJobOffersRecommendationResponse.encode(message.getJobOffersRecommendationResponse, writer.uint32(106).fork())
+        .ldelim();
+    }
+    if (message.getJobOfferResponse !== undefined) {
+      GetJobOfferResponse.encode(message.getJobOfferResponse, writer.uint32(114).fork()).ldelim();
     }
     return writer;
   },
@@ -193,6 +236,58 @@ export const Response = {
 
           message.deleteExperienceResponse = DeleteExperienceResponse.decode(reader, reader.uint32());
           continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.createAvailabilityResponse = CreateAvailabilityResponse.decode(reader, reader.uint32());
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.getAvailabilitiesResponse = GetAvailabilitiesResponse.decode(reader, reader.uint32());
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.updateAvailabilityResponse = UpdateAvailabilityResponse.decode(reader, reader.uint32());
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.deleteAvailabilityResponse = DeleteAvailabilityResponse.decode(reader, reader.uint32());
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.createJobOfferResponse = CreateJobOfferRequestResponse.decode(reader, reader.uint32());
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.getJobOffersRecommendationResponse = GetJobOffersRecommendationResponse.decode(
+            reader,
+            reader.uint32(),
+          );
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.getJobOfferResponse = GetJobOfferResponse.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -221,6 +316,27 @@ export const Response = {
       deleteExperienceResponse: isSet(object.deleteExperienceResponse)
         ? DeleteExperienceResponse.fromJSON(object.deleteExperienceResponse)
         : undefined,
+      createAvailabilityResponse: isSet(object.createAvailabilityResponse)
+        ? CreateAvailabilityResponse.fromJSON(object.createAvailabilityResponse)
+        : undefined,
+      getAvailabilitiesResponse: isSet(object.getAvailabilitiesResponse)
+        ? GetAvailabilitiesResponse.fromJSON(object.getAvailabilitiesResponse)
+        : undefined,
+      updateAvailabilityResponse: isSet(object.updateAvailabilityResponse)
+        ? UpdateAvailabilityResponse.fromJSON(object.updateAvailabilityResponse)
+        : undefined,
+      deleteAvailabilityResponse: isSet(object.deleteAvailabilityResponse)
+        ? DeleteAvailabilityResponse.fromJSON(object.deleteAvailabilityResponse)
+        : undefined,
+      createJobOfferResponse: isSet(object.createJobOfferResponse)
+        ? CreateJobOfferRequestResponse.fromJSON(object.createJobOfferResponse)
+        : undefined,
+      getJobOffersRecommendationResponse: isSet(object.getJobOffersRecommendationResponse)
+        ? GetJobOffersRecommendationResponse.fromJSON(object.getJobOffersRecommendationResponse)
+        : undefined,
+      getJobOfferResponse: isSet(object.getJobOfferResponse)
+        ? GetJobOfferResponse.fromJSON(object.getJobOfferResponse)
+        : undefined,
     };
   },
 
@@ -246,6 +362,29 @@ export const Response = {
     }
     if (message.deleteExperienceResponse !== undefined) {
       obj.deleteExperienceResponse = DeleteExperienceResponse.toJSON(message.deleteExperienceResponse);
+    }
+    if (message.createAvailabilityResponse !== undefined) {
+      obj.createAvailabilityResponse = CreateAvailabilityResponse.toJSON(message.createAvailabilityResponse);
+    }
+    if (message.getAvailabilitiesResponse !== undefined) {
+      obj.getAvailabilitiesResponse = GetAvailabilitiesResponse.toJSON(message.getAvailabilitiesResponse);
+    }
+    if (message.updateAvailabilityResponse !== undefined) {
+      obj.updateAvailabilityResponse = UpdateAvailabilityResponse.toJSON(message.updateAvailabilityResponse);
+    }
+    if (message.deleteAvailabilityResponse !== undefined) {
+      obj.deleteAvailabilityResponse = DeleteAvailabilityResponse.toJSON(message.deleteAvailabilityResponse);
+    }
+    if (message.createJobOfferResponse !== undefined) {
+      obj.createJobOfferResponse = CreateJobOfferRequestResponse.toJSON(message.createJobOfferResponse);
+    }
+    if (message.getJobOffersRecommendationResponse !== undefined) {
+      obj.getJobOffersRecommendationResponse = GetJobOffersRecommendationResponse.toJSON(
+        message.getJobOffersRecommendationResponse,
+      );
+    }
+    if (message.getJobOfferResponse !== undefined) {
+      obj.getJobOfferResponse = GetJobOfferResponse.toJSON(message.getJobOfferResponse);
     }
     return obj;
   },
@@ -277,6 +416,33 @@ export const Response = {
       (object.deleteExperienceResponse !== undefined && object.deleteExperienceResponse !== null)
         ? DeleteExperienceResponse.fromPartial(object.deleteExperienceResponse)
         : undefined;
+    message.createAvailabilityResponse =
+      (object.createAvailabilityResponse !== undefined && object.createAvailabilityResponse !== null)
+        ? CreateAvailabilityResponse.fromPartial(object.createAvailabilityResponse)
+        : undefined;
+    message.getAvailabilitiesResponse =
+      (object.getAvailabilitiesResponse !== undefined && object.getAvailabilitiesResponse !== null)
+        ? GetAvailabilitiesResponse.fromPartial(object.getAvailabilitiesResponse)
+        : undefined;
+    message.updateAvailabilityResponse =
+      (object.updateAvailabilityResponse !== undefined && object.updateAvailabilityResponse !== null)
+        ? UpdateAvailabilityResponse.fromPartial(object.updateAvailabilityResponse)
+        : undefined;
+    message.deleteAvailabilityResponse =
+      (object.deleteAvailabilityResponse !== undefined && object.deleteAvailabilityResponse !== null)
+        ? DeleteAvailabilityResponse.fromPartial(object.deleteAvailabilityResponse)
+        : undefined;
+    message.createJobOfferResponse =
+      (object.createJobOfferResponse !== undefined && object.createJobOfferResponse !== null)
+        ? CreateJobOfferRequestResponse.fromPartial(object.createJobOfferResponse)
+        : undefined;
+    message.getJobOffersRecommendationResponse =
+      (object.getJobOffersRecommendationResponse !== undefined && object.getJobOffersRecommendationResponse !== null)
+        ? GetJobOffersRecommendationResponse.fromPartial(object.getJobOffersRecommendationResponse)
+        : undefined;
+    message.getJobOfferResponse = (object.getJobOfferResponse !== undefined && object.getJobOfferResponse !== null)
+      ? GetJobOfferResponse.fromPartial(object.getJobOfferResponse)
+      : undefined;
     return message;
   },
 };

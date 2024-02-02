@@ -6,6 +6,7 @@ export const protobufPackage = "models";
 export enum AdTypeEnum {
   EXPERIENCE = 0,
   AVAILABILITY = 1,
+  JOB_OFFER = 2,
   UNRECOGNIZED = -1,
 }
 
@@ -17,6 +18,9 @@ export function adTypeEnumFromJSON(object: any): AdTypeEnum {
     case 1:
     case "AVAILABILITY":
       return AdTypeEnum.AVAILABILITY;
+    case 2:
+    case "JOB_OFFER":
+      return AdTypeEnum.JOB_OFFER;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -30,6 +34,8 @@ export function adTypeEnumToJSON(object: AdTypeEnum): string {
       return "EXPERIENCE";
     case AdTypeEnum.AVAILABILITY:
       return "AVAILABILITY";
+    case AdTypeEnum.JOB_OFFER:
+      return "JOB_OFFER";
     case AdTypeEnum.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

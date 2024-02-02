@@ -13,7 +13,7 @@ import {
   IsString,
   IsNotEmpty,
   IsEnum,
-  IsUUID,
+  IsEmpty,
   IsDateString,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -51,16 +51,13 @@ export class AdDto implements Ad {
   @Type(() => JobCategoryDto)
   jobCategory: JobCategory;
 
-  @IsNotEmpty()
-  @IsString()
   id: string;
 
   @IsNotEmpty()
   @IsString()
   title: string;
 
-  @IsNotEmpty()
-  @IsUUID()
+  @IsEmpty()
   userId: string;
 
   @IsNotEmpty()

@@ -7,6 +7,7 @@ export const protobufPackage = 'models';
 export enum AdTypeEnum {
   EXPERIENCE = 0,
   AVAILABILITY = 1,
+  JOB_OFFER = 2,
   UNRECOGNIZED = -1,
 }
 
@@ -18,6 +19,9 @@ export function adTypeEnumFromJSON(object: any): AdTypeEnum {
     case 1:
     case 'AVAILABILITY':
       return AdTypeEnum.AVAILABILITY;
+    case 2:
+    case 'JOB_OFFER':
+      return AdTypeEnum.JOB_OFFER;
     case -1:
     case 'UNRECOGNIZED':
     default:
@@ -31,6 +35,8 @@ export function adTypeEnumToJSON(object: AdTypeEnum): string {
       return 'EXPERIENCE';
     case AdTypeEnum.AVAILABILITY:
       return 'AVAILABILITY';
+    case AdTypeEnum.JOB_OFFER:
+      return 'JOB_OFFER';
     default:
       return 'UNKNOWN';
   }
@@ -119,6 +125,44 @@ export function salaireCurrencyEnumToJSON(object: SalaireCurrencyEnum): string {
       return 'EU';
     case SalaireCurrencyEnum.DOLLAR:
       return 'DOLLAR';
+    default:
+      return 'UNKNOWN';
+  }
+}
+
+export enum JobOfferStatusEnum {
+  PENDING = 0,
+  APPROVED = 1,
+  REJECTED = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function jobOfferStatusEnumFromJSON(object: any): JobOfferStatusEnum {
+  switch (object) {
+    case 0:
+    case 'PENDING':
+      return JobOfferStatusEnum.PENDING;
+    case 1:
+    case 'APPROVED':
+      return JobOfferStatusEnum.APPROVED;
+    case 2:
+    case 'REJECTED':
+      return JobOfferStatusEnum.REJECTED;
+    case -1:
+    case 'UNRECOGNIZED':
+    default:
+      return JobOfferStatusEnum.UNRECOGNIZED;
+  }
+}
+
+export function jobOfferStatusEnumToJSON(object: JobOfferStatusEnum): string {
+  switch (object) {
+    case JobOfferStatusEnum.PENDING:
+      return 'PENDING';
+    case JobOfferStatusEnum.APPROVED:
+      return 'APPROVED';
+    case JobOfferStatusEnum.REJECTED:
+      return 'REJECTED';
     default:
       return 'UNKNOWN';
   }

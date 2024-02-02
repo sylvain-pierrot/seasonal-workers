@@ -11,5 +11,13 @@ message Request {
     services.CreateExperienceRequest create_experience_request = 4;
     services.UpdateExperienceRequest update_experience_request = 5;
     services.DeleteExperienceRequest delete_experience_request = 6;
+    services.CreateAvailabilityRequest create_availability_request = 7;
+    services.GetAvailabilitiesRequest get_availabilities_request = 8;
+    services.DeleteAvailabilityRequest delete_availability_request = 9;
+    services.UpdateAvailabilityRequest update_availability_request = 10;
+    services.CreateJobOfferRequest create_job_offer_request = 11;
+    services.GetJobOffersRecommendationRequest get_job_offers_recommendation_request = 12;
+    services.GetJobOfferRequest get_job_offer_request = 13;
+
   }
 } 

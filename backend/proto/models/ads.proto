@@ -5,6 +5,7 @@ package models;
 enum AdTypeEnum {
   EXPERIENCE = 0;
   AVAILABILITY = 1;
+  JOB_OFFER = 2;
 }
 
 enum CountryEnum {
@@ -19,6 +20,12 @@ enum CountryEnum {
 enum SalaireCurrencyEnum {
   EU = 0;
   DOLLAR = 1;
+}
+
+enum JobOfferStatusEnum {
+  PENDING = 0;
+  APPROVED = 1;
+  REJECTED = 2;
 }
 
 message Address {

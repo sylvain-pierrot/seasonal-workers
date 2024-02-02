@@ -40,11 +40,69 @@ export interface UpdateExperienceResponse {
 
 export interface DeleteExperienceRequest {
   id: string;
-  ad: Ad | undefined;
+  experienceId: string;
 }
 
 export interface DeleteExperienceResponse {
   id: string;
+}
+
+export interface CreateAvailabilityRequest {
+  availability: Ad | undefined;
+}
+
+export interface CreateAvailabilityResponse {
+  id: string;
+}
+
+export interface GetAvailabilitiesRequest {
+  id: string;
+}
+
+export interface GetAvailabilitiesResponse {
+  ads: Ad[];
+}
+
+export interface UpdateAvailabilityRequest {
+  id: string;
+  availability: Ad | undefined;
+}
+
+export interface UpdateAvailabilityResponse {
+  id: string;
+}
+
+export interface DeleteAvailabilityRequest {
+  id: string;
+  availabilityId: string;
+}
+
+export interface DeleteAvailabilityResponse {
+  id: string;
+}
+
+export interface CreateJobOfferRequest {
+  jobOffer: Ad | undefined;
+}
+
+export interface CreateJobOfferRequestResponse {
+  offerId: string;
+}
+
+export interface GetJobOfferRequest {
+  offerId: string;
+}
+
+export interface GetJobOfferResponse {
+  jobOffer: Ad | undefined;
+}
+
+export interface GetJobOffersRecommendationRequest {
+  userId: string;
+}
+
+export interface GetJobOffersRecommendationResponse {
+  jobOffers: Ad[];
 }
 
 const baseCreateExperienceRequest: object = {};
@@ -582,7 +640,7 @@ export const UpdateExperienceResponse = {
   },
 };
 
-const baseDeleteExperienceRequest: object = { id: '' };
+const baseDeleteExperienceRequest: object = { id: '', experienceId: '' };
 
 export const DeleteExperienceRequest = {
   encode(
@@ -592,8 +650,8 @@ export const DeleteExperienceRequest = {
     if (message.id !== '') {
       writer.uint32(10).string(message.id);
     }
-    if (message.ad !== undefined) {
-      Ad.encode(message.ad, writer.uint32(18).fork()).ldelim();
+    if (message.experienceId !== '') {
+      writer.uint32(18).string(message.experienceId);
     }
     return writer;
   },
@@ -611,7 +669,7 @@ export const DeleteExperienceRequest = {
           message.id = reader.string();
           break;
         case 2:
-          message.ad = Ad.decode(reader, reader.uint32());
+          message.experienceId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -630,10 +688,10 @@ export const DeleteExperienceRequest = {
     } else {
       message.id = '';
     }
-    if (object.ad !== undefined && object.ad !== null) {
-      message.ad = Ad.fromJSON(object.ad);
+    if (object.experienceId !== undefined && object.experienceId !== null) {
+      message.experienceId = String(object.experienceId);
     } else {
-      message.ad = undefined;
+      message.experienceId = '';
     }
     return message;
   },
@@ -641,8 +699,8 @@ export const DeleteExperienceRequest = {
   toJSON(message: DeleteExperienceRequest): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
-    message.ad !== undefined &&
-      (obj.ad = message.ad ? Ad.toJSON(message.ad) : undefined);
+    message.experienceId !== undefined &&
+      (obj.experienceId = message.experienceId);
     return obj;
   },
 
@@ -657,10 +715,10 @@ export const DeleteExperienceRequest = {
     } else {
       message.id = '';
     }
-    if (object.ad !== undefined && object.ad !== null) {
-      message.ad = Ad.fromPartial(object.ad);
+    if (object.experienceId !== undefined && object.experienceId !== null) {
+      message.experienceId = object.experienceId;
     } else {
-      message.ad = undefined;
+      message.experienceId = '';
     }
     return message;
   },
@@ -730,6 +788,1004 @@ export const DeleteExperienceResponse = {
       message.id = object.id;
     } else {
       message.id = '';
+    }
+    return message;
+  },
+};
+
+const baseCreateAvailabilityRequest: object = {};
+
+export const CreateAvailabilityRequest = {
+  encode(
+    message: CreateAvailabilityRequest,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    if (message.availability !== undefined) {
+      Ad.encode(message.availability, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number,
+  ): CreateAvailabilityRequest {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseCreateAvailabilityRequest,
+    } as CreateAvailabilityRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.availability = Ad.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateAvailabilityRequest {
+    const message = {
+      ...baseCreateAvailabilityRequest,
+    } as CreateAvailabilityRequest;
+    if (object.availability !== undefined && object.availability !== null) {
+      message.availability = Ad.fromJSON(object.availability);
+    } else {
+      message.availability = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: CreateAvailabilityRequest): unknown {
+    const obj: any = {};
+    message.availability !== undefined &&
+      (obj.availability = message.availability
+        ? Ad.toJSON(message.availability)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<CreateAvailabilityRequest>,
+  ): CreateAvailabilityRequest {
+    const message = {
+      ...baseCreateAvailabilityRequest,
+    } as CreateAvailabilityRequest;
+    if (object.availability !== undefined && object.availability !== null) {
+      message.availability = Ad.fromPartial(object.availability);
+    } else {
+      message.availability = undefined;
+    }
+    return message;
+  },
+};
+
+const baseCreateAvailabilityResponse: object = { id: '' };
+
+export const CreateAvailabilityResponse = {
+  encode(
+    message: CreateAvailabilityResponse,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    if (message.id !== '') {
+      writer.uint32(10).string(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number,
+  ): CreateAvailabilityResponse {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseCreateAvailabilityResponse,
+    } as CreateAvailabilityResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateAvailabilityResponse {
+    const message = {
+      ...baseCreateAvailabilityResponse,
+    } as CreateAvailabilityResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = String(object.id);
+    } else {
+      message.id = '';
+    }
+    return message;
+  },
+
+  toJSON(message: CreateAvailabilityResponse): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<CreateAvailabilityResponse>,
+  ): CreateAvailabilityResponse {
+    const message = {
+      ...baseCreateAvailabilityResponse,
+    } as CreateAvailabilityResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = '';
+    }
+    return message;
+  },
+};
+
+const baseGetAvailabilitiesRequest: object = { id: '' };
+
+export const GetAvailabilitiesRequest = {
+  encode(
+    message: GetAvailabilitiesRequest,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    if (message.id !== '') {
+      writer.uint32(10).string(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number,
+  ): GetAvailabilitiesRequest {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseGetAvailabilitiesRequest,
+    } as GetAvailabilitiesRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAvailabilitiesRequest {
+    const message = {
+      ...baseGetAvailabilitiesRequest,
+    } as GetAvailabilitiesRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = String(object.id);
+    } else {
+      message.id = '';
+    }
+    return message;
+  },
+
+  toJSON(message: GetAvailabilitiesRequest): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<GetAvailabilitiesRequest>,
+  ): GetAvailabilitiesRequest {
+    const message = {
+      ...baseGetAvailabilitiesRequest,
+    } as GetAvailabilitiesRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = '';
+    }
+    return message;
+  },
+};
+
+const baseGetAvailabilitiesResponse: object = {};
+
+export const GetAvailabilitiesResponse = {
+  encode(
+    message: GetAvailabilitiesResponse,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    for (const v of message.ads) {
+      Ad.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number,
+  ): GetAvailabilitiesResponse {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseGetAvailabilitiesResponse,
+    } as GetAvailabilitiesResponse;
+    message.ads = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.ads.push(Ad.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAvailabilitiesResponse {
+    const message = {
+      ...baseGetAvailabilitiesResponse,
+    } as GetAvailabilitiesResponse;
+    message.ads = [];
+    if (object.ads !== undefined && object.ads !== null) {
+      for (const e of object.ads) {
+        message.ads.push(Ad.fromJSON(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: GetAvailabilitiesResponse): unknown {
+    const obj: any = {};
+    if (message.ads) {
+      obj.ads = message.ads.map((e) => (e ? Ad.toJSON(e) : undefined));
+    } else {
+      obj.ads = [];
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<GetAvailabilitiesResponse>,
+  ): GetAvailabilitiesResponse {
+    const message = {
+      ...baseGetAvailabilitiesResponse,
+    } as GetAvailabilitiesResponse;
+    message.ads = [];
+    if (object.ads !== undefined && object.ads !== null) {
+      for (const e of object.ads) {
+        message.ads.push(Ad.fromPartial(e));
+      }
+    }
+    return message;
+  },
+};
+
+const baseUpdateAvailabilityRequest: object = { id: '' };
+
+export const UpdateAvailabilityRequest = {
+  encode(
+    message: UpdateAvailabilityRequest,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    if (message.id !== '') {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.availability !== undefined) {
+      Ad.encode(message.availability, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number,
+  ): UpdateAvailabilityRequest {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateAvailabilityRequest,
+    } as UpdateAvailabilityRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        case 2:
+          message.availability = Ad.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateAvailabilityRequest {
+    const message = {
+      ...baseUpdateAvailabilityRequest,
+    } as UpdateAvailabilityRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = String(object.id);
+    } else {
+      message.id = '';
+    }
+    if (object.availability !== undefined && object.availability !== null) {
+      message.availability = Ad.fromJSON(object.availability);
+    } else {
+      message.availability = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: UpdateAvailabilityRequest): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.availability !== undefined &&
+      (obj.availability = message.availability
+        ? Ad.toJSON(message.availability)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<UpdateAvailabilityRequest>,
+  ): UpdateAvailabilityRequest {
+    const message = {
+      ...baseUpdateAvailabilityRequest,
+    } as UpdateAvailabilityRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = '';
+    }
+    if (object.availability !== undefined && object.availability !== null) {
+      message.availability = Ad.fromPartial(object.availability);
+    } else {
+      message.availability = undefined;
+    }
+    return message;
+  },
+};
+
+const baseUpdateAvailabilityResponse: object = { id: '' };
+
+export const UpdateAvailabilityResponse = {
+  encode(
+    message: UpdateAvailabilityResponse,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    if (message.id !== '') {
+      writer.uint32(10).string(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number,
+  ): UpdateAvailabilityResponse {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateAvailabilityResponse,
+    } as UpdateAvailabilityResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateAvailabilityResponse {
+    const message = {
+      ...baseUpdateAvailabilityResponse,
+    } as UpdateAvailabilityResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = String(object.id);
+    } else {
+      message.id = '';
+    }
+    return message;
+  },
+
+  toJSON(message: UpdateAvailabilityResponse): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<UpdateAvailabilityResponse>,
+  ): UpdateAvailabilityResponse {
+    const message = {
+      ...baseUpdateAvailabilityResponse,
+    } as UpdateAvailabilityResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = '';
+    }
+    return message;
+  },
+};
+
+const baseDeleteAvailabilityRequest: object = { id: '', availabilityId: '' };
+
+export const DeleteAvailabilityRequest = {
+  encode(
+    message: DeleteAvailabilityRequest,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    if (message.id !== '') {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.availabilityId !== '') {
+      writer.uint32(18).string(message.availabilityId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number,
+  ): DeleteAvailabilityRequest {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDeleteAvailabilityRequest,
+    } as DeleteAvailabilityRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        case 2:
+          message.availabilityId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteAvailabilityRequest {
+    const message = {
+      ...baseDeleteAvailabilityRequest,
+    } as DeleteAvailabilityRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = String(object.id);
+    } else {
+      message.id = '';
+    }
+    if (object.availabilityId !== undefined && object.availabilityId !== null) {
+      message.availabilityId = String(object.availabilityId);
+    } else {
+      message.availabilityId = '';
+    }
+    return message;
+  },
+
+  toJSON(message: DeleteAvailabilityRequest): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.availabilityId !== undefined &&
+      (obj.availabilityId = message.availabilityId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<DeleteAvailabilityRequest>,
+  ): DeleteAvailabilityRequest {
+    const message = {
+      ...baseDeleteAvailabilityRequest,
+    } as DeleteAvailabilityRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = '';
+    }
+    if (object.availabilityId !== undefined && object.availabilityId !== null) {
+      message.availabilityId = object.availabilityId;
+    } else {
+      message.availabilityId = '';
+    }
+    return message;
+  },
+};
+
+const baseDeleteAvailabilityResponse: object = { id: '' };
+
+export const DeleteAvailabilityResponse = {
+  encode(
+    message: DeleteAvailabilityResponse,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    if (message.id !== '') {
+      writer.uint32(10).string(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number,
+  ): DeleteAvailabilityResponse {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDeleteAvailabilityResponse,
+    } as DeleteAvailabilityResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteAvailabilityResponse {
+    const message = {
+      ...baseDeleteAvailabilityResponse,
+    } as DeleteAvailabilityResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = String(object.id);
+    } else {
+      message.id = '';
+    }
+    return message;
+  },
+
+  toJSON(message: DeleteAvailabilityResponse): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<DeleteAvailabilityResponse>,
+  ): DeleteAvailabilityResponse {
+    const message = {
+      ...baseDeleteAvailabilityResponse,
+    } as DeleteAvailabilityResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = '';
+    }
+    return message;
+  },
+};
+
+const baseCreateJobOfferRequest: object = {};
+
+export const CreateJobOfferRequest = {
+  encode(
+    message: CreateJobOfferRequest,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    if (message.jobOffer !== undefined) {
+      Ad.encode(message.jobOffer, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): CreateJobOfferRequest {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseCreateJobOfferRequest } as CreateJobOfferRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.jobOffer = Ad.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateJobOfferRequest {
+    const message = { ...baseCreateJobOfferRequest } as CreateJobOfferRequest;
+    if (object.jobOffer !== undefined && object.jobOffer !== null) {
+      message.jobOffer = Ad.fromJSON(object.jobOffer);
+    } else {
+      message.jobOffer = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: CreateJobOfferRequest): unknown {
+    const obj: any = {};
+    message.jobOffer !== undefined &&
+      (obj.jobOffer = message.jobOffer
+        ? Ad.toJSON(message.jobOffer)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<CreateJobOfferRequest>,
+  ): CreateJobOfferRequest {
+    const message = { ...baseCreateJobOfferRequest } as CreateJobOfferRequest;
+    if (object.jobOffer !== undefined && object.jobOffer !== null) {
+      message.jobOffer = Ad.fromPartial(object.jobOffer);
+    } else {
+      message.jobOffer = undefined;
+    }
+    return message;
+  },
+};
+
+const baseCreateJobOfferRequestResponse: object = { offerId: '' };
+
+export const CreateJobOfferRequestResponse = {
+  encode(
+    message: CreateJobOfferRequestResponse,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    if (message.offerId !== '') {
+      writer.uint32(10).string(message.offerId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number,
+  ): CreateJobOfferRequestResponse {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseCreateJobOfferRequestResponse,
+    } as CreateJobOfferRequestResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.offerId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateJobOfferRequestResponse {
+    const message = {
+      ...baseCreateJobOfferRequestResponse,
+    } as CreateJobOfferRequestResponse;
+    if (object.offerId !== undefined && object.offerId !== null) {
+      message.offerId = String(object.offerId);
+    } else {
+      message.offerId = '';
+    }
+    return message;
+  },
+
+  toJSON(message: CreateJobOfferRequestResponse): unknown {
+    const obj: any = {};
+    message.offerId !== undefined && (obj.offerId = message.offerId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<CreateJobOfferRequestResponse>,
+  ): CreateJobOfferRequestResponse {
+    const message = {
+      ...baseCreateJobOfferRequestResponse,
+    } as CreateJobOfferRequestResponse;
+    if (object.offerId !== undefined && object.offerId !== null) {
+      message.offerId = object.offerId;
+    } else {
+      message.offerId = '';
+    }
+    return message;
+  },
+};
+
+const baseGetJobOfferRequest: object = { offerId: '' };
+
+export const GetJobOfferRequest = {
+  encode(
+    message: GetJobOfferRequest,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    if (message.offerId !== '') {
+      writer.uint32(10).string(message.offerId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): GetJobOfferRequest {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseGetJobOfferRequest } as GetJobOfferRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.offerId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetJobOfferRequest {
+    const message = { ...baseGetJobOfferRequest } as GetJobOfferRequest;
+    if (object.offerId !== undefined && object.offerId !== null) {
+      message.offerId = String(object.offerId);
+    } else {
+      message.offerId = '';
+    }
+    return message;
+  },
+
+  toJSON(message: GetJobOfferRequest): unknown {
+    const obj: any = {};
+    message.offerId !== undefined && (obj.offerId = message.offerId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<GetJobOfferRequest>): GetJobOfferRequest {
+    const message = { ...baseGetJobOfferRequest } as GetJobOfferRequest;
+    if (object.offerId !== undefined && object.offerId !== null) {
+      message.offerId = object.offerId;
+    } else {
+      message.offerId = '';
+    }
+    return message;
+  },
+};
+
+const baseGetJobOfferResponse: object = {};
+
+export const GetJobOfferResponse = {
+  encode(
+    message: GetJobOfferResponse,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    if (message.jobOffer !== undefined) {
+      Ad.encode(message.jobOffer, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): GetJobOfferResponse {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseGetJobOfferResponse } as GetJobOfferResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.jobOffer = Ad.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetJobOfferResponse {
+    const message = { ...baseGetJobOfferResponse } as GetJobOfferResponse;
+    if (object.jobOffer !== undefined && object.jobOffer !== null) {
+      message.jobOffer = Ad.fromJSON(object.jobOffer);
+    } else {
+      message.jobOffer = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: GetJobOfferResponse): unknown {
+    const obj: any = {};
+    message.jobOffer !== undefined &&
+      (obj.jobOffer = message.jobOffer
+        ? Ad.toJSON(message.jobOffer)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<GetJobOfferResponse>): GetJobOfferResponse {
+    const message = { ...baseGetJobOfferResponse } as GetJobOfferResponse;
+    if (object.jobOffer !== undefined && object.jobOffer !== null) {
+      message.jobOffer = Ad.fromPartial(object.jobOffer);
+    } else {
+      message.jobOffer = undefined;
+    }
+    return message;
+  },
+};
+
+const baseGetJobOffersRecommendationRequest: object = { userId: '' };
+
+export const GetJobOffersRecommendationRequest = {
+  encode(
+    message: GetJobOffersRecommendationRequest,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    if (message.userId !== '') {
+      writer.uint32(10).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number,
+  ): GetJobOffersRecommendationRequest {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseGetJobOffersRecommendationRequest,
+    } as GetJobOffersRecommendationRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.userId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetJobOffersRecommendationRequest {
+    const message = {
+      ...baseGetJobOffersRecommendationRequest,
+    } as GetJobOffersRecommendationRequest;
+    if (object.userId !== undefined && object.userId !== null) {
+      message.userId = String(object.userId);
+    } else {
+      message.userId = '';
+    }
+    return message;
+  },
+
+  toJSON(message: GetJobOffersRecommendationRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = message.userId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<GetJobOffersRecommendationRequest>,
+  ): GetJobOffersRecommendationRequest {
+    const message = {
+      ...baseGetJobOffersRecommendationRequest,
+    } as GetJobOffersRecommendationRequest;
+    if (object.userId !== undefined && object.userId !== null) {
+      message.userId = object.userId;
+    } else {
+      message.userId = '';
+    }
+    return message;
+  },
+};
+
+const baseGetJobOffersRecommendationResponse: object = {};
+
+export const GetJobOffersRecommendationResponse = {
+  encode(
+    message: GetJobOffersRecommendationResponse,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    for (const v of message.jobOffers) {
+      Ad.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number,
+  ): GetJobOffersRecommendationResponse {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseGetJobOffersRecommendationResponse,
+    } as GetJobOffersRecommendationResponse;
+    message.jobOffers = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.jobOffers.push(Ad.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetJobOffersRecommendationResponse {
+    const message = {
+      ...baseGetJobOffersRecommendationResponse,
+    } as GetJobOffersRecommendationResponse;
+    message.jobOffers = [];
+    if (object.jobOffers !== undefined && object.jobOffers !== null) {
+      for (const e of object.jobOffers) {
+        message.jobOffers.push(Ad.fromJSON(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: GetJobOffersRecommendationResponse): unknown {
+    const obj: any = {};
+    if (message.jobOffers) {
+      obj.jobOffers = message.jobOffers.map((e) =>
+        e ? Ad.toJSON(e) : undefined,
+      );
+    } else {
+      obj.jobOffers = [];
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<GetJobOffersRecommendationResponse>,
+  ): GetJobOffersRecommendationResponse {
+    const message = {
+      ...baseGetJobOffersRecommendationResponse,
+    } as GetJobOffersRecommendationResponse;
+    message.jobOffers = [];
+    if (object.jobOffers !== undefined && object.jobOffers !== null) {
+      for (const e of object.jobOffers) {
+        message.jobOffers.push(Ad.fromPartial(e));
+      }
     }
     return message;
   },

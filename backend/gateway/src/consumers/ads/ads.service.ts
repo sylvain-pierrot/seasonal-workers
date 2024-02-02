@@ -9,22 +9,23 @@ export class AdsService implements Request {
   logger = new Logger(AdsService.name);
   readonly requestId: string;
 
-  async requestSerializer(
+  async requestProtoSerializer(
     request: Request,
     subject: NatsSubjects,
   ): Promise<Response> {
-    const payload = Request.encode(request).finish();
-    const reply = await this.natsService.natsClient.request(subject, payload);
-    const response = Response.decode(reply.data);
-    return response;
+    try {
+      const payload = Request.encode(request).finish();
+      const reply = await this.natsService.natsClient.request(subject, payload);
+      const response = Response.decode(reply.data);
+      return response;
+    } catch (error) {
+      throw new HttpException('NATS request failed', parseInt(error.code));
+    }
   }
 
-  async performRequest(
-    req: Request,
-    subject: NatsSubjects,
-  ): Promise<Response> {
+  async performRequest(req: Request, subject: NatsSubjects): Promise<Response> {
     const request = Request.create(req);
-    const response = await this.requestSerializer(request, subject);
+    const response = await this.requestProtoSerializer(request, subject);
     if (response.error) {
       throw new HttpException(
         response.error.errorMessage,
@@ -37,8 +38,14 @@ export class AdsService implements Request {
 }
 
 export enum NatsSubjects {
-  EXPERIENCE_CREATE = 'ADS.expriences.create',
-  EXPERIENCE_FIND = 'ADS.expriences.find',
-  EXPERIENCE_UPDATE = 'ADS.expriences.update',
-  EXPERIENCE_REMOVE = 'ADS.expriences.remove',
+  EXPERIENCE_CREATE = 'ADS.experiences.create',
+  EXPERIENCE_FIND = 'ADS.experiences.find',
+  EXPERIENCE_UPDATE = 'ADS.experiences.update',
+  EXPERIENCE_REMOVE = 'ADS.experiences.remove',
+  AVAILABILITY_CREATE = 'ADS.availabilities.create',
+  AVAILABILITY_FIND = 'ADS.availabilities.find',
+  AVAILABILITY_UPDATE = 'ADS.availabilities.update',
+  AVAILABILITY_REMOVE = 'ADS.availabilities.remove',
+  JOB_OFFERS_CREATE = 'ADS.jobs.create',
+  JOB_OFFERS_RECOMMENDATION = 'ADS.jobs.recommendation',
 }
