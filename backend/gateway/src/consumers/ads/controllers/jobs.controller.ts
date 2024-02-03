@@ -1,9 +1,10 @@
 import { Controller, Get, Logger } from '@nestjs/common';
 import { Roles } from 'nest-keycloak-connect';
-import { NatsSubjects, AdsService } from '../ads.service';
+import { AdsService } from '../ads.service';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
 import { v4 as uuidv4 } from 'uuid';
+import { NatsSubjects } from '@app/nats/nats.enum';
 
 @Controller('jobs')
 export class JobsController {

@@ -8,4 +8,5 @@ export enum NatsEndpoint {
   APPLY = 'apply',
   STATUS = 'status',
   CATEGORIES = 'categories',
+  VALIDATION = 'validation',
 }

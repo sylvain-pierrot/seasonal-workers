@@ -28,5 +28,6 @@ message Response {
     services.ApplyJobOfferResponse apply_job_offer_response = 15;
     services.GetJobOffersStatusResponse get_job_offer_status_response = 16;
     services.GetJobCategoriesResponse get_job_categories_response = 17;
+    services.UpdateJobOfferStatusResponse update_job_offer_status_response = 18;
   }
 }

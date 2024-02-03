@@ -9,10 +9,11 @@ import {
 } from '@nestjs/common';
 import { AuthenticatedUser, Roles } from 'nest-keycloak-connect';
 import { AdDto } from '@dto/ads.dto';
-import { NatsSubjects, AdsService } from '../ads.service';
+import { AdsService } from '../ads.service';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
 import { v4 as uuidv4 } from 'uuid';
+import { NatsSubjects } from '@app/nats/nats.enum';
 
 @Controller('experiences')
 export class ExperiencesController {

@@ -24,6 +24,7 @@ export class JobsController implements OnApplicationBootstrap {
     await this.handleApplyToJobOffer();
     await this.handleGetJobOffersStatus();
     await this.handleGetJobCategories();
+    await this.handleUpdateJobOfferStatus();
   }
   async handleCreateJobOffer(): Promise<void> {
     this.natsService.job.addEndpoint(
@@ -87,6 +88,23 @@ export class JobsController implements OnApplicationBootstrap {
           const decodedRequest = Request.decode(request.data);
           const response =
             await this.jobService.applyToJobOffer(decodedRequest);
+          return request.respond(response);
+        } catch (e) {
+          const decoded = Request.decode(request.data);
+          const encodedError = NatsResponse.error(decoded.requestId, e);
+          request.respond(encodedError);
+        }
+      },
+    );
+  }
+  async handleUpdateJobOfferStatus(): Promise<void> {
+    this.natsService.job.addEndpoint(
+      NatsEndpoint.VALIDATION,
+      async (error, request: any) => {
+        try {
+          const decodedRequest = Request.decode(request.data);
+          const response =
+            await this.jobService.updateJobOfferStatus(decodedRequest);
           return request.respond(response);
         } catch (e) {
           const decoded = Request.decode(request.data);

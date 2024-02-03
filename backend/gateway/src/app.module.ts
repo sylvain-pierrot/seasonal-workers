@@ -14,6 +14,8 @@ import { AdsService } from './consumers/ads/ads.service';
 import { AvailabilityController } from './consumers/ads/controllers/availabilities.controller';
 import { JobOffersController } from './consumers/ads/controllers/job-offers.controller';
 import { JobsController } from './consumers/ads/controllers/jobs.controller';
+import { NotificationsController } from './consumers/notifications/notifications.controller';
+import { NotificationService } from './consumers/notifications/notifications.service';
 
 @Module({
   imports: [
@@ -29,8 +31,10 @@ import { JobsController } from './consumers/ads/controllers/jobs.controller';
     AvailabilityController,
     JobOffersController,
     JobsController,
+    NotificationsController,
   ],
   providers: [
+    NotificationService,
     AdsService,
     {
       provide: APP_GUARD,

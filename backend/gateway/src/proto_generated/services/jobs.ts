@@ -1,7 +1,12 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { JobCategory } from "../models/job-category";
-import { JobOfferStatus } from "../models/job-status";
+import {
+  JobOfferStatus,
+  JobOfferStatusEnum,
+  jobOfferStatusEnumFromJSON,
+  jobOfferStatusEnumToJSON,
+} from "../models/job-status";
 
 export const protobufPackage = "services";
 
@@ -11,6 +16,16 @@ export interface ApplyJobOfferRequest {
 }
 
 export interface ApplyJobOfferResponse {
+  id: string;
+}
+
+export interface UpdateJobOfferStatusRequest {
+  offerId: string;
+  workerId: string;
+  status: JobOfferStatusEnum;
+}
+
+export interface UpdateJobOfferStatusResponse {
   id: string;
 }
 
@@ -155,6 +170,152 @@ export const ApplyJobOfferResponse = {
   },
   fromPartial<I extends Exact<DeepPartial<ApplyJobOfferResponse>, I>>(object: I): ApplyJobOfferResponse {
     const message = createBaseApplyJobOfferResponse();
+    message.id = object.id ?? "";
+    return message;
+  },
+};
+
+function createBaseUpdateJobOfferStatusRequest(): UpdateJobOfferStatusRequest {
+  return { offerId: "", workerId: "", status: 0 };
+}
+
+export const UpdateJobOfferStatusRequest = {
+  encode(message: UpdateJobOfferStatusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.offerId !== "") {
+      writer.uint32(10).string(message.offerId);
+    }
+    if (message.workerId !== "") {
+      writer.uint32(18).string(message.workerId);
+    }
+    if (message.status !== 0) {
+      writer.uint32(24).int32(message.status);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UpdateJobOfferStatusRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateJobOfferStatusRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.offerId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.workerId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.status = reader.int32() as any;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateJobOfferStatusRequest {
+    return {
+      offerId: isSet(object.offerId) ? globalThis.String(object.offerId) : "",
+      workerId: isSet(object.workerId) ? globalThis.String(object.workerId) : "",
+      status: isSet(object.status) ? jobOfferStatusEnumFromJSON(object.status) : 0,
+    };
+  },
+
+  toJSON(message: UpdateJobOfferStatusRequest): unknown {
+    const obj: any = {};
+    if (message.offerId !== "") {
+      obj.offerId = message.offerId;
+    }
+    if (message.workerId !== "") {
+      obj.workerId = message.workerId;
+    }
+    if (message.status !== 0) {
+      obj.status = jobOfferStatusEnumToJSON(message.status);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateJobOfferStatusRequest>, I>>(base?: I): UpdateJobOfferStatusRequest {
+    return UpdateJobOfferStatusRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateJobOfferStatusRequest>, I>>(object: I): UpdateJobOfferStatusRequest {
+    const message = createBaseUpdateJobOfferStatusRequest();
+    message.offerId = object.offerId ?? "";
+    message.workerId = object.workerId ?? "";
+    message.status = object.status ?? 0;
+    return message;
+  },
+};
+
+function createBaseUpdateJobOfferStatusResponse(): UpdateJobOfferStatusResponse {
+  return { id: "" };
+}
+
+export const UpdateJobOfferStatusResponse = {
+  encode(message: UpdateJobOfferStatusResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UpdateJobOfferStatusResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateJobOfferStatusResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateJobOfferStatusResponse {
+    return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
+  },
+
+  toJSON(message: UpdateJobOfferStatusResponse): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateJobOfferStatusResponse>, I>>(base?: I): UpdateJobOfferStatusResponse {
+    return UpdateJobOfferStatusResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateJobOfferStatusResponse>, I>>(object: I): UpdateJobOfferStatusResponse {
+    const message = createBaseUpdateJobOfferStatusResponse();
     message.id = object.id ?? "";
     return message;
   },

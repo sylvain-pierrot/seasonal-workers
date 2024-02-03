@@ -66,7 +66,6 @@ export class JobService {
     });
     const jobs = AdEntity.arrayToProto(result);
 
-    // If no recommendation found, return random job offers
     if (jobs.length === 0) {
       const randomAds = await this.adsRepository.find({
         where: {
@@ -94,15 +93,12 @@ export class JobService {
   }
   async getJobOffer(request: Request): Promise<Uint8Array> {
     const jobId = request.getJobOfferRequest.offerId;
-    const job = await this.adsRepository.findOne({
+    const job = await this.adsRepository.findOneOrFail({
       where: {
         id: jobId,
         ad_type: AdTypeEnum.JOB_OFFER,
       },
     });
-    if (!job) {
-      throw new NotFoundException('Job offer not found');
-    }
     const response = {
       requestId: request.requestId,
       getJobOfferResponse: {
@@ -146,6 +142,26 @@ export class JobService {
       },
     } as Response;
 
+    return NatsResponse.success(response);
+  }
+  async updateJobOfferStatus(request: Request): Promise<Uint8Array> {
+    const status = request.updateJobOfferStatusRequest.status;
+    const offerId = request.updateJobOfferStatusRequest.offerId;
+    const workerId = request.updateJobOfferStatusRequest.workerId;
+    const jobStatus = await this.jobStatusRepository.findOneOrFail({
+      where: {
+        workerId: workerId,
+        offerId: offerId,
+      },
+    });
+    jobStatus.status = status;
+    await this.jobStatusRepository.save(jobStatus);
+    const response = {
+      requestId: request.requestId,
+      updateJobOfferStatusResponse: {
+        id: jobStatus.offerId,
+      },
+    } as Response;
     return NatsResponse.success(response);
   }
 }

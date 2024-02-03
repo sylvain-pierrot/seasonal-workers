@@ -23,6 +23,6 @@ message Request {
     services.ApplyJobOfferRequest apply_job_offer_request = 14;
     services.GetJobOffersStatusRequest get_job_offers_status_request = 15;
     services.GetJobCategoriesRequest get_job_categories_request = 16;
-
+    services.UpdateJobOfferStatusRequest update_job_offer_status_request = 17;
   }
 } 

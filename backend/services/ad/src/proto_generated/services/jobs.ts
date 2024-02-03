@@ -1,7 +1,12 @@
 /* eslint-disable */
 import { util, configure, Writer, Reader } from 'protobufjs/minimal';
 import * as Long from 'long';
-import { JobOfferStatus } from '../models/job-status';
+import {
+  JobOfferStatusEnum,
+  JobOfferStatus,
+  jobOfferStatusEnumFromJSON,
+  jobOfferStatusEnumToJSON,
+} from '../models/job-status';
 import { JobCategory } from '../models/job-category';
 
 export const protobufPackage = 'services';
@@ -12,6 +17,16 @@ export interface ApplyJobOfferRequest {
 }
 
 export interface ApplyJobOfferResponse {
+  id: string;
+}
+
+export interface UpdateJobOfferStatusRequest {
+  offerId: string;
+  workerId: string;
+  status: JobOfferStatusEnum;
+}
+
+export interface UpdateJobOfferStatusResponse {
   id: string;
 }
 
@@ -155,6 +170,183 @@ export const ApplyJobOfferResponse = {
     object: DeepPartial<ApplyJobOfferResponse>,
   ): ApplyJobOfferResponse {
     const message = { ...baseApplyJobOfferResponse } as ApplyJobOfferResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = '';
+    }
+    return message;
+  },
+};
+
+const baseUpdateJobOfferStatusRequest: object = {
+  offerId: '',
+  workerId: '',
+  status: 0,
+};
+
+export const UpdateJobOfferStatusRequest = {
+  encode(
+    message: UpdateJobOfferStatusRequest,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    if (message.offerId !== '') {
+      writer.uint32(10).string(message.offerId);
+    }
+    if (message.workerId !== '') {
+      writer.uint32(18).string(message.workerId);
+    }
+    if (message.status !== 0) {
+      writer.uint32(24).int32(message.status);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number,
+  ): UpdateJobOfferStatusRequest {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateJobOfferStatusRequest,
+    } as UpdateJobOfferStatusRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.offerId = reader.string();
+          break;
+        case 2:
+          message.workerId = reader.string();
+          break;
+        case 3:
+          message.status = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateJobOfferStatusRequest {
+    const message = {
+      ...baseUpdateJobOfferStatusRequest,
+    } as UpdateJobOfferStatusRequest;
+    if (object.offerId !== undefined && object.offerId !== null) {
+      message.offerId = String(object.offerId);
+    } else {
+      message.offerId = '';
+    }
+    if (object.workerId !== undefined && object.workerId !== null) {
+      message.workerId = String(object.workerId);
+    } else {
+      message.workerId = '';
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = jobOfferStatusEnumFromJSON(object.status);
+    } else {
+      message.status = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: UpdateJobOfferStatusRequest): unknown {
+    const obj: any = {};
+    message.offerId !== undefined && (obj.offerId = message.offerId);
+    message.workerId !== undefined && (obj.workerId = message.workerId);
+    message.status !== undefined &&
+      (obj.status = jobOfferStatusEnumToJSON(message.status));
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<UpdateJobOfferStatusRequest>,
+  ): UpdateJobOfferStatusRequest {
+    const message = {
+      ...baseUpdateJobOfferStatusRequest,
+    } as UpdateJobOfferStatusRequest;
+    if (object.offerId !== undefined && object.offerId !== null) {
+      message.offerId = object.offerId;
+    } else {
+      message.offerId = '';
+    }
+    if (object.workerId !== undefined && object.workerId !== null) {
+      message.workerId = object.workerId;
+    } else {
+      message.workerId = '';
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = object.status;
+    } else {
+      message.status = 0;
+    }
+    return message;
+  },
+};
+
+const baseUpdateJobOfferStatusResponse: object = { id: '' };
+
+export const UpdateJobOfferStatusResponse = {
+  encode(
+    message: UpdateJobOfferStatusResponse,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    if (message.id !== '') {
+      writer.uint32(10).string(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number,
+  ): UpdateJobOfferStatusResponse {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateJobOfferStatusResponse,
+    } as UpdateJobOfferStatusResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateJobOfferStatusResponse {
+    const message = {
+      ...baseUpdateJobOfferStatusResponse,
+    } as UpdateJobOfferStatusResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = String(object.id);
+    } else {
+      message.id = '';
+    }
+    return message;
+  },
+
+  toJSON(message: UpdateJobOfferStatusResponse): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<UpdateJobOfferStatusResponse>,
+  ): UpdateJobOfferStatusResponse {
+    const message = {
+      ...baseUpdateJobOfferStatusResponse,
+    } as UpdateJobOfferStatusResponse;
     if (object.id !== undefined && object.id !== null) {
       message.id = object.id;
     } else {

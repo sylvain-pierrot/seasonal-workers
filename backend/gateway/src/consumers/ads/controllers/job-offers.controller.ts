@@ -1,11 +1,12 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import { AuthenticatedUser, Roles } from 'nest-keycloak-connect';
 import { AdDto } from '@dto/ads.dto';
-import { NatsSubjects, AdsService } from '../ads.service';
+import { AdsService } from '../ads.service';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
 import { v4 as uuidv4 } from 'uuid';
 import { JobStatusDto } from '../dto/job-status.dto';
+import { NatsSubjects } from '@app/nats/nats.enum';
 
 @Controller('job-offers')
 export class JobOffersController {
@@ -99,6 +100,30 @@ export class JobOffersController {
     return this.appService.performRequest(
       requestType,
       NatsSubjects.JOB_OFFERS_APPLY,
+    );
+  }
+
+  @Post('/validation')
+  @Roles({
+    roles: ['realm:app-user'], // remove and add recruter role
+  })
+  async respondeJobOffer(
+    @AuthenticatedUser()
+    user: any,
+    @Body()
+    message: JobStatusDto,
+  ) {
+    const requestType: Request = {
+      requestId: uuidv4(),
+      updateJobOfferStatusRequest: {
+        offerId: message.offerId,
+        workerId: user.sub,
+        status: message.status,
+      },
+    };
+    return this.appService.performRequest(
+      requestType,
+      NatsSubjects.JOB_OFFERS_VALIDATION,
     );
   }
 

@@ -5,9 +5,9 @@ import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
 
 @Injectable()
-export class AdsService implements Request {
+export class NotificationService {
   constructor(private readonly natsService: NatsService) {}
-  logger = new Logger(AdsService.name);
+  logger = new Logger(NotificationService.name);
   readonly requestId: string;
 
   async requestProtoSerializer(
