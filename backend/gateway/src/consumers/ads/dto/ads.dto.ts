@@ -4,31 +4,33 @@ import {
   Address,
   CountryEnum,
   DateRange,
-  JobCategory,
+  JobOfferCategory,
   SalaireCurrencyEnum,
-} from '@app/proto_generated/ad';
+} from '@proto/models/ad';
 import {
   IsNumber,
   ValidateNested,
   IsString,
   IsNotEmpty,
   IsEnum,
+  IsEmpty,
+  IsDateString,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class JobCategoryDto {
   @IsString()
-  category: string;
+  jobTitle: string;
 
   @IsString()
-  subCategory: string;
+  categoryTitle: string;
 }
 
 class DateRangeDto {
-  @IsString()
+  @IsDateString()
   startDate: string;
 
-  @IsString()
+  @IsDateString()
   endDate: string;
 }
 
@@ -47,18 +49,15 @@ export class AdDto implements Ad {
   @IsNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => JobCategoryDto)
-  jobCategory: JobCategory;
+  jobCategory: JobOfferCategory;
 
-  @IsNotEmpty()
-  @IsString()
   id: string;
 
   @IsNotEmpty()
   @IsString()
   title: string;
 
-  @IsNotEmpty()
-  @IsString()
+  @IsEmpty()
   userId: string;
 
   @IsNotEmpty()

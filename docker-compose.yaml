@@ -1,33 +1,38 @@
 services:
   nats:
     image: docker.io/nats:latest
-
-  api-gateway:
-    build:
-      context: backend
-      dockerfile: gateway/Dockerfile
+    container_name: nats
     ports:
-      - 3000:3000
-    environment:
-      NATS_HOST: nats://nats:4222
-    depends_on:
-      - nats
-
-  # keycloak:
-  #   image: bitnami/keycloak:22.0.5
+      - 4222:4222
+      - 8222:8222
+    volumes:
+      - nats:/data
+  # api-gateway:
+  #   build:
+  #     context: backend
+  #     dockerfile: gateway/Dockerfile
   #   ports:
-  #     - "8080:8080"
-  #   env_file:
-  #     - .env/keycloak.template.env
+  #     - 3000:3000
+  #   environment:
+  #     NATS_HOST: nats://nats:4222
   #   depends_on:
-  #     - postgresql-keycloak
+  #     - nats
 
-  # postgresql-keycloak:
-  #   image: docker.io/bitnami/postgresql:latest
-  #   env_file:
-  #     - .env/postgres-keycloak.template.env
-  #   volumes:
-  #     - "postgres_keycloack_data:/bitnami/postgresql"
+  keycloak:
+    image: bitnami/keycloak:22.0.5
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env/keycloak.template.env
+    depends_on:
+      - postgresql-keycloak
+
+  postgresql-keycloak:
+    image: docker.io/bitnami/postgresql:latest
+    env_file:
+      - .env/postgres-keycloak.template.env
+    volumes:
+      - "postgres_keycloack_data:/bitnami/postgresql"
 
   # postgres-profile:
   #   image: docker.io/bitnami/postgresql:latest
@@ -37,17 +42,15 @@ services:
   #   volumes:
   #     - postgres_profile_data:/var/lib/postgresql/data
 
-  # postgres-ads:
-  #   image: docker.io/bitnami/postgresql:latest
-  #   restart: always
-  #   env_file:
-  #     - .env/postgres-ads.template.env
-  #   ports:
-  #     - 5432:5432
-  #   volumes:
-  #     - postgres_ads_data:/var/lib/postgresql/data
-  #     - ./backend/services/ad/sql/init-db.sql:/docker-entrypoint-initdb.d/initdb.sql:ro
-
+  postgres-ads:
+    image: docker.io/bitnami/postgresql:latest
+    restart: always
+    env_file:
+      - .env/postgres-ads.template.env
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_ads_data:/var/lib/postgresql/data
   # minio:
   #   image: docker.io/bitnami/minio:latest
   #   container_name: minio-workers
@@ -58,7 +61,8 @@ services:
   #     - .env/minio.template.env
   #   volumes:
   #     - minio:/data
-# volumes:
-# postgres_profile_data:
-# postgres_keycloack_data:
-# postgres_ads_data:
+volumes:
+  nats:
+  postgres_profile_data:
+  postgres_keycloack_data:
+  postgres_ads_data:

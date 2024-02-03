@@ -20,9 +20,13 @@
     "paths": {
       "@app/*": ["src/*"],
       "@controllers/*": ["src/controllers/*"],
+      "@repositories/*": ["src/repositories/*"],
       "@services/*": ["src/services/*"],
       "@config/*": ["src/config/*"],
-      "@proto/*": ["proto_generated/*"]
+      "@proto/*": ["src/proto_generated/*"],
+      "@nats/*": ["src/nats/*"],
+      "@utils/*": ["src/utils/*"],
+      "@entities/*": ["src/entities/*"]
     }
   }
 }

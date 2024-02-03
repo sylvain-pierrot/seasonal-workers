@@ -1,7 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from '@services/ads/ads.controller';
-import { AppService } from '@services/ads/ads.service';
-// import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
 import {
   AuthGuard,
@@ -12,6 +9,13 @@ import {
 import { APP_GUARD } from '@nestjs/core';
 import { KeycloakConnectConfig } from '@config/KeycloakConnectModule';
 import { NatsModule } from './nats/nats.module';
+import { ExperiencesController } from './consumers/ads/controllers/experiences.controller';
+import { AdsService } from './consumers/ads/ads.service';
+import { AvailabilityController } from './consumers/ads/controllers/availabilities.controller';
+import { JobOffersController } from './consumers/ads/controllers/job-offers.controller';
+import { JobsController } from './consumers/ads/controllers/jobs.controller';
+import { NotificationsController } from './consumers/notifications/notifications.controller';
+import { NotificationService } from './consumers/notifications/notifications.service';
 
 @Module({
   imports: [
@@ -22,9 +26,16 @@ import { NatsModule } from './nats/nats.module';
     NatsModule,
     KeycloakConnectModule.registerAsync(KeycloakConnectConfig),
   ],
-  controllers: [AppController],
+  controllers: [
+    ExperiencesController,
+    AvailabilityController,
+    JobOffersController,
+    JobsController,
+    NotificationsController,
+  ],
   providers: [
-    AppService,
+    NotificationService,
+    AdsService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,

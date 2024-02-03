@@ -1,0 +1,15 @@
+
+syntax = "proto3";
+import "models/ad.proto";
+
+package services;
+
+message GetJobOffersRecommendationRequest {
+    string user_id = 1;
+  }  
+  
+  message GetJobOffersRecommendationResponse {
+    repeated models.Ad job_offers = 1;
+  }  
+  
+  

@@ -1,0 +1,92 @@
+syntax = "proto3";
+import "models/ad.proto";
+
+package services;
+
+message CreateExperienceRequest {
+  models.Ad ad = 1;
+}
+message CreateExperienceResponse {
+  string id = 1;
+}
+
+message GetExperiencesRequest {
+  string id = 1;
+}
+message GetExperiencesResponse {
+  repeated models.Ad ads = 1;
+}
+
+message GetExperienceRequest {
+  string id = 1;
+}
+message GetExperienceResponse {
+  models.Ad ad = 1;
+}
+
+message UpdateExperienceRequest {
+  string id = 1;
+  models.Ad ad = 2;
+}
+message UpdateExperienceResponse {
+  string id = 1;
+}
+
+message DeleteExperienceRequest {
+  string id = 1;
+  string experience_id = 2;
+}
+
+message DeleteExperienceResponse {
+  string id = 1;
+}
+
+message CreateAvailabilityRequest {
+  models.Ad availability = 1;
+}
+
+message CreateAvailabilityResponse {
+  string id = 1;
+}
+
+message GetAvailabilitiesRequest {
+  string id = 1;
+}
+
+message GetAvailabilitiesResponse {
+  repeated models.Ad ads = 1;
+}
+
+message UpdateAvailabilityRequest {
+  string id = 1;
+  models.Ad availability = 2;
+}
+
+message UpdateAvailabilityResponse {
+  string id = 1;
+}
+
+message DeleteAvailabilityRequest {
+  string id = 1;
+  string availability_id = 2;
+}
+
+message DeleteAvailabilityResponse {
+  string id = 1;
+}
+
+message CreateJobOfferRequest {
+  models.Ad job_offer = 1;
+}
+
+message CreateJobOfferRequestResponse {
+  string offer_id = 1;
+}
+
+message GetJobOfferRequest  {
+  string offer_id = 1;
+}
+
+message GetJobOfferResponse {
+  models.Ad job_offer = 1;
+}

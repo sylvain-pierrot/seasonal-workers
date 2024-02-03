@@ -1,22 +1,39 @@
-import { NatsService } from '@app/nats/nats.service';
-import { Injectable, Logger } from '@nestjs/common';
-import { Ad } from '@proto/ad';
+import { NatsSubjects } from '@app/nats/nats.enum';
+import { NatsService } from '@nats/nats.service';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
+import { Request } from '@proto/Request';
+import { Response } from '@proto/Response';
 
 @Injectable()
-export class AppService {
+export class AdsService implements Request {
   constructor(private readonly natsService: NatsService) {}
-  logger = new Logger(AppService.name);
+  logger = new Logger(AdsService.name);
+  readonly requestId: string;
 
-  async postAd(message: Ad, subject: string): Promise<Ad> {
+  async requestProtoSerializer(
+    request: Request,
+    subject: NatsSubjects,
+  ): Promise<Response> {
     try {
-      const payload = Ad.encode(message).finish();
-      this.logger.log(`\n------------------\n${payload}\n------------------\n`);
+      const payload = Request.encode(request).finish();
       const reply = await this.natsService.natsClient.request(subject, payload);
-      const result = Ad.decode(reply.data);
-
-      return result;
+      const response = Response.decode(reply.data);
+      return response;
     } catch (error) {
-      this.logger.error(error);
+      throw new HttpException('NATS request failed', parseInt(error.code));
     }
+  }
+
+  async performRequest(req: Request, subject: NatsSubjects): Promise<Response> {
+    const request = Request.create(req);
+    const response = await this.requestProtoSerializer(request, subject);
+    if (response.error) {
+      throw new HttpException(
+        response.error.errorMessage,
+        response.error.errorCode,
+      );
+    }
+
+    return response;
   }
 }

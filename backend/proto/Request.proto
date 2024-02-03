@@ -1,0 +1,28 @@
+syntax = "proto3";
+import "services/ads.proto";
+import "services/recommendation.proto";
+import "services/jobs.proto";
+
+// Message that contains a generic request
+message Request {
+  string request_id = 1;
+
+  oneof request {
+    services.GetExperiencesRequest get_experiences_request = 2;
+    services.GetExperienceRequest get_experience_request = 3;
+    services.CreateExperienceRequest create_experience_request = 4;
+    services.UpdateExperienceRequest update_experience_request = 5;
+    services.DeleteExperienceRequest delete_experience_request = 6;
+    services.CreateAvailabilityRequest create_availability_request = 7;
+    services.GetAvailabilitiesRequest get_availabilities_request = 8;
+    services.DeleteAvailabilityRequest delete_availability_request = 9;
+    services.UpdateAvailabilityRequest update_availability_request = 10;
+    services.CreateJobOfferRequest create_job_offer_request = 11;
+    services.GetJobOffersRecommendationRequest get_job_offers_recommendation_request = 12;
+    services.GetJobOfferRequest get_job_offer_request = 13;
+    services.ApplyJobOfferRequest apply_job_offer_request = 14;
+    services.GetJobOffersStatusRequest get_job_offers_status_request = 15;
+    services.GetJobCategoriesRequest get_job_categories_request = 16;
+    services.UpdateJobOfferStatusRequest update_job_offer_status_request = 17;
+  }
+} 

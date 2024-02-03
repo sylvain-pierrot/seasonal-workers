@@ -11,7 +11,7 @@ export const databaseConfig: TypeOrmModuleAsyncOptions = {
     password: configService.get('DB_PASSWORD'),
     database: 'ads',
     autoLoadEntities: true,
-    synchronize: false,
+    synchronize: true,
   }),
   inject: [ConfigService],
 };

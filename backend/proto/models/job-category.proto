@@ -1,0 +1,13 @@
+syntax = "proto3";
+package models;
+
+message JobCategory {
+    string job_id = 1;
+    string job_title = 2;
+    JobSubCategory category = 3;
+}
+
+message JobSubCategory {
+    double category_id = 1;
+    string category_title = 2;
+}

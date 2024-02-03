@@ -1,0 +1,39 @@
+syntax = "proto3";
+package services;
+import "models/job-status.proto";
+import "models/job-category.proto";
+
+
+message ApplyJobOfferRequest {
+    string offer_id = 1;
+    string worker_id = 2;
+}
+
+message ApplyJobOfferResponse {
+    string id = 1;
+}
+
+message UpdateJobOfferStatusRequest {
+    string offer_id = 1;
+    string worker_id = 2;
+    models.JobOfferStatusEnum status = 3;
+}
+
+message UpdateJobOfferStatusResponse {
+    string id = 1;
+}
+
+message GetJobOffersStatusRequest {
+    string worker_id = 1;
+}
+
+message GetJobOffersStatusResponse {
+   repeated models.JobOfferStatus job_offers = 1;
+}
+
+message GetJobCategoriesRequest {
+}
+
+message GetJobCategoriesResponse {
+    repeated models.JobCategory categories = 1;
+}
