@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
 import { AuthenticatedUser, Roles } from 'nest-keycloak-connect';
-import { AdDto } from '@services/ads/ads.dto';
+import { AdDto } from '@dto/ads.dto';
 import { AdsService, NatsSubjects } from '../ads.service';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';

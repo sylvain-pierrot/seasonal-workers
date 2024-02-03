@@ -8,11 +8,13 @@ import {
   Delete,
 } from '@nestjs/common';
 import { AuthenticatedUser, Roles } from 'nest-keycloak-connect';
-import { AdDto } from '@services/ads/ads.dto';
+import { AdDto } from '@dto/ads.dto';
 import { NatsSubjects, AdsService } from '../ads.service';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
 import { v4 as uuidv4 } from 'uuid';
+import { JobStatusDto } from '../dto/job-status.dto';
+import { JobOfferStatusEnum } from '@app/proto_generated/models/job-status';
 
 @Controller('job-offers')
 export class JobOffersController {
@@ -20,7 +22,7 @@ export class JobOffersController {
   constructor(private readonly appService: AdsService) {}
   @Post('/')
   @Roles({
-    roles: ['realm:app-user'], // add recruter role
+    roles: ['realm:app-user'], // remove and add recruter role
   })
   async CreateJobOffers(
     @AuthenticatedUser()
@@ -81,52 +83,50 @@ export class JobOffersController {
 
     return this.appService.performRequest(
       requestType,
-      NatsSubjects.JOB_OFFERS_RECOMMENDATION,
+      NatsSubjects.JOB_OFFERS_FIND_ONE,
     );
   }
-  // @Put('/update')
-  // @Roles({
-  //   roles: ['realm:app-user'],
-  // })
-  // async updateExperience(
-  //   @AuthenticatedUser()
-  //   user: any,
-  //   @Body()
-  //   message: AdDto,
-  // ): Promise<Response> {
-  //   const requestType: Request = {
-  //     requestId: uuidv4(),
-  //     updateExperienceRequest: {
-  //       id: user.sub,
-  //       ad: message,
-  //     },
-  //   };
-  //   return this.appService.performRequest(
-  //     requestType,
-  //     NatsSubjects.EXPERIENCE_UPDATE,
-  //   );
-  // }
 
-  // @Delete('/remove')
-  // @Roles({
-  //   roles: ['realm:app-user'],
-  // })
-  // async deleteExperience(
-  //   @AuthenticatedUser()
-  //   user: any,
-  //   @Body()
-  //   message: any,
-  // ): Promise<Response> {
-  //   const requestType: Request = {
-  //     requestId: uuidv4(),
-  //     deleteExperienceRequest: {
-  //       id: user.sub,
-  //       experienceId: message.experience_id,
-  //     },
-  //   };
-  //   return this.appService.performRequest(
-  //     requestType,
-  //     NatsSubjects.EXPERIENCE_REMOVE,
-  //   );
-  // }
+  @Post('/apply')
+  @Roles({
+    roles: ['realm:app-user'],
+  })
+  async applyJobOffer(
+    @AuthenticatedUser()
+    user: any,
+    @Body()
+    message: JobStatusDto,
+  ) {
+    const requestType: Request = {
+      requestId: uuidv4(),
+      applyJobOfferRequest: {
+        offerId: message.offerId,
+        workerId: user.sub,
+      },
+    };
+    return this.appService.performRequest(
+      requestType,
+      NatsSubjects.APPLY_JOB_OFFER,
+    );
+  }
+
+  @Get('/apply/status')
+  @Roles({
+    roles: ['realm:app-user'],
+  })
+  async getAllJobsStatus(
+    @AuthenticatedUser()
+    user: any,
+  ): Promise<Response> {
+    const requestType: Request = {
+      requestId: uuidv4(),
+      getJobOffersStatusRequest: {
+        workerId: user.sub,
+      },
+    };
+    return this.appService.performRequest(
+      requestType,
+      NatsSubjects.GET_APPLIED_JOB_OFFERS,
+    );
+  }
 }

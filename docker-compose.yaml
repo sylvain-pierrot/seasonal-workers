@@ -51,7 +51,6 @@ services:
       - 5432:5432
     volumes:
       - postgres_ads_data:/var/lib/postgresql/data
-      - ./backend/services/ad/database/init-db.sql:/docker-entrypoint-initdb.d/initdb.sql:ro
   # minio:
   #   image: docker.io/bitnami/minio:latest
   #   container_name: minio-workers

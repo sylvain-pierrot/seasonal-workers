@@ -12,9 +12,13 @@ import {
   UpdateAvailabilityResponse,
   DeleteAvailabilityResponse,
   CreateJobOfferRequestResponse,
-  GetJobOffersRecommendationResponse,
   GetJobOfferResponse,
 } from './services/ads';
+import { GetJobOffersRecommendationResponse } from './services/recommendation';
+import {
+  ApplyJobOfferResponse,
+  GetJobOffersStatusResponse,
+} from './services/job-status';
 
 export const protobufPackage = '';
 
@@ -40,6 +44,8 @@ export interface Response {
     | GetJobOffersRecommendationResponse
     | undefined;
   getJobOfferResponse: GetJobOfferResponse | undefined;
+  applyJobOfferResponse: ApplyJobOfferResponse | undefined;
+  getJobOfferStatusResponse: GetJobOffersStatusResponse | undefined;
 }
 
 const baseError: object = { errorMessage: '', errorCode: 0 };
@@ -197,6 +203,18 @@ export const Response = {
         writer.uint32(114).fork(),
       ).ldelim();
     }
+    if (message.applyJobOfferResponse !== undefined) {
+      ApplyJobOfferResponse.encode(
+        message.applyJobOfferResponse,
+        writer.uint32(122).fork(),
+      ).ldelim();
+    }
+    if (message.getJobOfferStatusResponse !== undefined) {
+      GetJobOffersStatusResponse.encode(
+        message.getJobOfferStatusResponse,
+        writer.uint32(130).fork(),
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -273,6 +291,18 @@ export const Response = {
           break;
         case 14:
           message.getJobOfferResponse = GetJobOfferResponse.decode(
+            reader,
+            reader.uint32(),
+          );
+          break;
+        case 15:
+          message.applyJobOfferResponse = ApplyJobOfferResponse.decode(
+            reader,
+            reader.uint32(),
+          );
+          break;
+        case 16:
+          message.getJobOfferStatusResponse = GetJobOffersStatusResponse.decode(
             reader,
             reader.uint32(),
           );
@@ -418,6 +448,26 @@ export const Response = {
     } else {
       message.getJobOfferResponse = undefined;
     }
+    if (
+      object.applyJobOfferResponse !== undefined &&
+      object.applyJobOfferResponse !== null
+    ) {
+      message.applyJobOfferResponse = ApplyJobOfferResponse.fromJSON(
+        object.applyJobOfferResponse,
+      );
+    } else {
+      message.applyJobOfferResponse = undefined;
+    }
+    if (
+      object.getJobOfferStatusResponse !== undefined &&
+      object.getJobOfferStatusResponse !== null
+    ) {
+      message.getJobOfferStatusResponse = GetJobOffersStatusResponse.fromJSON(
+        object.getJobOfferStatusResponse,
+      );
+    } else {
+      message.getJobOfferStatusResponse = undefined;
+    }
     return message;
   },
 
@@ -476,6 +526,14 @@ export const Response = {
     message.getJobOfferResponse !== undefined &&
       (obj.getJobOfferResponse = message.getJobOfferResponse
         ? GetJobOfferResponse.toJSON(message.getJobOfferResponse)
+        : undefined);
+    message.applyJobOfferResponse !== undefined &&
+      (obj.applyJobOfferResponse = message.applyJobOfferResponse
+        ? ApplyJobOfferResponse.toJSON(message.applyJobOfferResponse)
+        : undefined);
+    message.getJobOfferStatusResponse !== undefined &&
+      (obj.getJobOfferStatusResponse = message.getJobOfferStatusResponse
+        ? GetJobOffersStatusResponse.toJSON(message.getJobOfferStatusResponse)
         : undefined);
     return obj;
   },
@@ -616,6 +674,27 @@ export const Response = {
       );
     } else {
       message.getJobOfferResponse = undefined;
+    }
+    if (
+      object.applyJobOfferResponse !== undefined &&
+      object.applyJobOfferResponse !== null
+    ) {
+      message.applyJobOfferResponse = ApplyJobOfferResponse.fromPartial(
+        object.applyJobOfferResponse,
+      );
+    } else {
+      message.applyJobOfferResponse = undefined;
+    }
+    if (
+      object.getJobOfferStatusResponse !== undefined &&
+      object.getJobOfferStatusResponse !== null
+    ) {
+      message.getJobOfferStatusResponse =
+        GetJobOffersStatusResponse.fromPartial(
+          object.getJobOfferStatusResponse,
+        );
+    } else {
+      message.getJobOfferStatusResponse = undefined;
     }
     return message;
   },

@@ -18,10 +18,10 @@ export class JobsController implements OnApplicationBootstrap {
   async onApplicationBootstrap() {
     await this.handleCreateJobOffer();
     await this.handleGetJobOffersRecommandation();
-    // await this.handleGetJobOffer();
-    // await this.handleDeleteExperience();
+    await this.handleGetJobOffer();
+    await this.handleApplyToJobOffer();
+    await this.handleGetJobOffersStatus();
   }
-
   async handleCreateJobOffer(): Promise<void> {
     this.natsService.job.addEndpoint(
       NatsEndpoint.CREATE,
@@ -43,7 +43,6 @@ export class JobsController implements OnApplicationBootstrap {
       },
     );
   }
-
   async handleGetJobOffersRecommandation(): Promise<void> {
     this.natsService.job.addEndpoint(
       NatsEndpoint.RECOMMANDATION,
@@ -61,7 +60,6 @@ export class JobsController implements OnApplicationBootstrap {
       },
     );
   }
-
   async handleGetJobOffer(): Promise<void> {
     this.natsService.job.addEndpoint(
       NatsEndpoint.FIND_ONE,
@@ -78,22 +76,39 @@ export class JobsController implements OnApplicationBootstrap {
       },
     );
   }
-
-  //   async handleDeleteExperience(): Promise<void> {
-  //     this.natsService.experience.addEndpoint(
-  //       NatsEndpoint.REMOVE,
-  //       async (error, request: any) => {
-  //         try {
-  //           const decodedRequest = Request.decode(request.data);
-  //           const response =
-  //             await this.experienceService.deleteExperience(decodedRequest);
-  //           return request.respond(response);
-  //         } catch (e) {
-  //           const decoded = Request.decode(request.data);
-  //           const encodedError = returnResponseError(decoded.requestId, e);
-  //           request.respond(encodedError);
-  //         }
-  //       },
-  //     );
-  //   }
+  async handleApplyToJobOffer(): Promise<void> {
+    this.natsService.job.addEndpoint(
+      NatsEndpoint.APPLY,
+      async (error, request: any) => {
+        try {
+          const decodedRequest = Request.decode(request.data);
+          const response =
+            await this.jobService.applyToJobOffer(decodedRequest);
+          return request.respond(response);
+        } catch (e) {
+          const decoded = Request.decode(request.data);
+          const encodedError = returnResponseError(decoded.requestId, e);
+          request.respond(encodedError);
+        }
+      },
+    );
+  }
+  async handleGetJobOffersStatus(): Promise<void> {
+    this.natsService.job.addEndpoint(
+      NatsEndpoint.STATUS,
+      async (error, request: any) => {
+        try {
+          const decodedRequest = Request.decode(request.data);
+          const response =
+            await this.jobService.getJobOfferStatus(decodedRequest);
+          return request.respond(response);
+        } catch (e) {
+          this.logger.error(e);
+          const decoded = Request.decode(request.data);
+          const encodedError = returnResponseError(decoded.requestId, e);
+          request.respond(encodedError);
+        }
+      },
+    );
+  }
 }

@@ -10,10 +10,11 @@ import {
   GetExperienceRequest,
   GetExperiencesRequest,
   GetJobOfferRequest,
-  GetJobOffersRecommendationRequest,
   UpdateAvailabilityRequest,
   UpdateExperienceRequest,
 } from "./services/ads";
+import { ApplyJobOfferRequest, GetJobOffersStatusRequest } from "./services/job-status";
+import { GetJobOffersRecommendationRequest } from "./services/recommendation";
 
 export const protobufPackage = "";
 
@@ -32,6 +33,8 @@ export interface Request {
   createJobOfferRequest?: CreateJobOfferRequest | undefined;
   getJobOffersRecommendationRequest?: GetJobOffersRecommendationRequest | undefined;
   getJobOfferRequest?: GetJobOfferRequest | undefined;
+  applyJobOfferRequest?: ApplyJobOfferRequest | undefined;
+  getJobOffersStatusRequest?: GetJobOffersStatusRequest | undefined;
 }
 
 function createBaseRequest(): Request {
@@ -49,6 +52,8 @@ function createBaseRequest(): Request {
     createJobOfferRequest: undefined,
     getJobOffersRecommendationRequest: undefined,
     getJobOfferRequest: undefined,
+    applyJobOfferRequest: undefined,
+    getJobOffersStatusRequest: undefined,
   };
 }
 
@@ -93,6 +98,12 @@ export const Request = {
     }
     if (message.getJobOfferRequest !== undefined) {
       GetJobOfferRequest.encode(message.getJobOfferRequest, writer.uint32(106).fork()).ldelim();
+    }
+    if (message.applyJobOfferRequest !== undefined) {
+      ApplyJobOfferRequest.encode(message.applyJobOfferRequest, writer.uint32(114).fork()).ldelim();
+    }
+    if (message.getJobOffersStatusRequest !== undefined) {
+      GetJobOffersStatusRequest.encode(message.getJobOffersStatusRequest, writer.uint32(122).fork()).ldelim();
     }
     return writer;
   },
@@ -195,6 +206,20 @@ export const Request = {
 
           message.getJobOfferRequest = GetJobOfferRequest.decode(reader, reader.uint32());
           continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.applyJobOfferRequest = ApplyJobOfferRequest.decode(reader, reader.uint32());
+          continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.getJobOffersStatusRequest = GetJobOffersStatusRequest.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -243,6 +268,12 @@ export const Request = {
       getJobOfferRequest: isSet(object.getJobOfferRequest)
         ? GetJobOfferRequest.fromJSON(object.getJobOfferRequest)
         : undefined,
+      applyJobOfferRequest: isSet(object.applyJobOfferRequest)
+        ? ApplyJobOfferRequest.fromJSON(object.applyJobOfferRequest)
+        : undefined,
+      getJobOffersStatusRequest: isSet(object.getJobOffersStatusRequest)
+        ? GetJobOffersStatusRequest.fromJSON(object.getJobOffersStatusRequest)
+        : undefined,
     };
   },
 
@@ -288,6 +319,12 @@ export const Request = {
     }
     if (message.getJobOfferRequest !== undefined) {
       obj.getJobOfferRequest = GetJobOfferRequest.toJSON(message.getJobOfferRequest);
+    }
+    if (message.applyJobOfferRequest !== undefined) {
+      obj.applyJobOfferRequest = ApplyJobOfferRequest.toJSON(message.applyJobOfferRequest);
+    }
+    if (message.getJobOffersStatusRequest !== undefined) {
+      obj.getJobOffersStatusRequest = GetJobOffersStatusRequest.toJSON(message.getJobOffersStatusRequest);
     }
     return obj;
   },
@@ -344,6 +381,13 @@ export const Request = {
     message.getJobOfferRequest = (object.getJobOfferRequest !== undefined && object.getJobOfferRequest !== null)
       ? GetJobOfferRequest.fromPartial(object.getJobOfferRequest)
       : undefined;
+    message.applyJobOfferRequest = (object.applyJobOfferRequest !== undefined && object.applyJobOfferRequest !== null)
+      ? ApplyJobOfferRequest.fromPartial(object.applyJobOfferRequest)
+      : undefined;
+    message.getJobOffersStatusRequest =
+      (object.getJobOffersStatusRequest !== undefined && object.getJobOffersStatusRequest !== null)
+        ? GetJobOffersStatusRequest.fromPartial(object.getJobOffersStatusRequest)
+        : undefined;
     return message;
   },
 };

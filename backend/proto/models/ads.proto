@@ -22,11 +22,6 @@ enum SalaireCurrencyEnum {
   DOLLAR = 1;
 }
 
-enum JobOfferStatusEnum {
-  PENDING = 0;
-  APPROVED = 1;
-  REJECTED = 2;
-}
 
 message Address {
   string city = 1;
@@ -43,8 +38,6 @@ message JobCategory {
   string category = 1;
   string sub_category = 2;
 }
-
-
 message Ad {
   string id = 1;
   string title = 2;

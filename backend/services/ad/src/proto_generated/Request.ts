@@ -12,9 +12,13 @@ import {
   DeleteAvailabilityRequest,
   UpdateAvailabilityRequest,
   CreateJobOfferRequest,
-  GetJobOffersRecommendationRequest,
   GetJobOfferRequest,
 } from './services/ads';
+import { GetJobOffersRecommendationRequest } from './services/recommendation';
+import {
+  ApplyJobOfferRequest,
+  GetJobOffersStatusRequest,
+} from './services/job-status';
 
 export const protobufPackage = '';
 
@@ -35,6 +39,8 @@ export interface Request {
     | GetJobOffersRecommendationRequest
     | undefined;
   getJobOfferRequest: GetJobOfferRequest | undefined;
+  applyJobOfferRequest: ApplyJobOfferRequest | undefined;
+  getJobOffersStatusRequest: GetJobOffersStatusRequest | undefined;
 }
 
 const baseRequest: object = { requestId: '' };
@@ -116,6 +122,18 @@ export const Request = {
         writer.uint32(106).fork(),
       ).ldelim();
     }
+    if (message.applyJobOfferRequest !== undefined) {
+      ApplyJobOfferRequest.encode(
+        message.applyJobOfferRequest,
+        writer.uint32(114).fork(),
+      ).ldelim();
+    }
+    if (message.getJobOffersStatusRequest !== undefined) {
+      GetJobOffersStatusRequest.encode(
+        message.getJobOffersStatusRequest,
+        writer.uint32(122).fork(),
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -195,6 +213,18 @@ export const Request = {
           break;
         case 13:
           message.getJobOfferRequest = GetJobOfferRequest.decode(
+            reader,
+            reader.uint32(),
+          );
+          break;
+        case 14:
+          message.applyJobOfferRequest = ApplyJobOfferRequest.decode(
+            reader,
+            reader.uint32(),
+          );
+          break;
+        case 15:
+          message.getJobOffersStatusRequest = GetJobOffersStatusRequest.decode(
             reader,
             reader.uint32(),
           );
@@ -335,6 +365,26 @@ export const Request = {
     } else {
       message.getJobOfferRequest = undefined;
     }
+    if (
+      object.applyJobOfferRequest !== undefined &&
+      object.applyJobOfferRequest !== null
+    ) {
+      message.applyJobOfferRequest = ApplyJobOfferRequest.fromJSON(
+        object.applyJobOfferRequest,
+      );
+    } else {
+      message.applyJobOfferRequest = undefined;
+    }
+    if (
+      object.getJobOffersStatusRequest !== undefined &&
+      object.getJobOffersStatusRequest !== null
+    ) {
+      message.getJobOffersStatusRequest = GetJobOffersStatusRequest.fromJSON(
+        object.getJobOffersStatusRequest,
+      );
+    } else {
+      message.getJobOffersStatusRequest = undefined;
+    }
     return message;
   },
 
@@ -391,6 +441,14 @@ export const Request = {
     message.getJobOfferRequest !== undefined &&
       (obj.getJobOfferRequest = message.getJobOfferRequest
         ? GetJobOfferRequest.toJSON(message.getJobOfferRequest)
+        : undefined);
+    message.applyJobOfferRequest !== undefined &&
+      (obj.applyJobOfferRequest = message.applyJobOfferRequest
+        ? ApplyJobOfferRequest.toJSON(message.applyJobOfferRequest)
+        : undefined);
+    message.getJobOffersStatusRequest !== undefined &&
+      (obj.getJobOffersStatusRequest = message.getJobOffersStatusRequest
+        ? GetJobOffersStatusRequest.toJSON(message.getJobOffersStatusRequest)
         : undefined);
     return obj;
   },
@@ -522,6 +580,26 @@ export const Request = {
       );
     } else {
       message.getJobOfferRequest = undefined;
+    }
+    if (
+      object.applyJobOfferRequest !== undefined &&
+      object.applyJobOfferRequest !== null
+    ) {
+      message.applyJobOfferRequest = ApplyJobOfferRequest.fromPartial(
+        object.applyJobOfferRequest,
+      );
+    } else {
+      message.applyJobOfferRequest = undefined;
+    }
+    if (
+      object.getJobOffersStatusRequest !== undefined &&
+      object.getJobOffersStatusRequest !== null
+    ) {
+      message.getJobOffersStatusRequest = GetJobOffersStatusRequest.fromPartial(
+        object.getJobOffersStatusRequest,
+      );
+    } else {
+      message.getJobOffersStatusRequest = undefined;
     }
     return message;
   },

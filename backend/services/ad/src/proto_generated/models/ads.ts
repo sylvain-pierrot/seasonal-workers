@@ -130,44 +130,6 @@ export function salaireCurrencyEnumToJSON(object: SalaireCurrencyEnum): string {
   }
 }
 
-export enum JobOfferStatusEnum {
-  PENDING = 0,
-  APPROVED = 1,
-  REJECTED = 2,
-  UNRECOGNIZED = -1,
-}
-
-export function jobOfferStatusEnumFromJSON(object: any): JobOfferStatusEnum {
-  switch (object) {
-    case 0:
-    case 'PENDING':
-      return JobOfferStatusEnum.PENDING;
-    case 1:
-    case 'APPROVED':
-      return JobOfferStatusEnum.APPROVED;
-    case 2:
-    case 'REJECTED':
-      return JobOfferStatusEnum.REJECTED;
-    case -1:
-    case 'UNRECOGNIZED':
-    default:
-      return JobOfferStatusEnum.UNRECOGNIZED;
-  }
-}
-
-export function jobOfferStatusEnumToJSON(object: JobOfferStatusEnum): string {
-  switch (object) {
-    case JobOfferStatusEnum.PENDING:
-      return 'PENDING';
-    case JobOfferStatusEnum.APPROVED:
-      return 'APPROVED';
-    case JobOfferStatusEnum.REJECTED:
-      return 'REJECTED';
-    default:
-      return 'UNKNOWN';
-  }
-}
-
 export interface Address {
   city: string;
   zipCode: string;

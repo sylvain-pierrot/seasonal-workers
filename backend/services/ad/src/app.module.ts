@@ -26,7 +26,7 @@ import { JobOfferStatusEntity } from './entities/job-status.entity';
     TypeOrmModule.forFeature([
       AdEntity,
       JobCategoriesEntity,
-      // JobOfferStatusEntity,
+      JobOfferStatusEntity,
     ]),
     ClientsModule.registerAsync(natsConfig),
   ],

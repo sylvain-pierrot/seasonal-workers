@@ -6,10 +6,6 @@ import { Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
-import {
-  convertAdEntityToProto,
-  convertProtoToAdEntity,
-} from '@app/utils/utils';
 @Injectable()
 export class ExperienceService {
   private logger = new Logger(ExperienceService.name);
@@ -25,7 +21,7 @@ export class ExperienceService {
     ad.adType = AdTypeEnum.EXPERIENCE;
     ad.salaryAmount = null;
     ad.salaryCurrency = null;
-    const entity = convertProtoToAdEntity(ad);
+    const entity = AdEntity.fromProto(ad);
     const save = await this.adsRepository.save(entity);
     const response = Response.fromPartial({
       requestId: request.requestId,
@@ -43,7 +39,7 @@ export class ExperienceService {
       where: { user_id: userId, ad_type: AdTypeEnum.EXPERIENCE },
     });
     const ads = experiences.map((ad: AdEntity) => {
-      return convertAdEntityToProto(ad);
+      return AdEntity.fromEntitytoProto(ad);
     });
     const response = Response.fromPartial({
       requestId: request.requestId,
@@ -60,7 +56,7 @@ export class ExperienceService {
     const adId = request.updateExperienceRequest.ad.id;
     const id = request.updateExperienceRequest.id;
 
-    const entity = convertProtoToAdEntity(ad);
+    const entity = AdEntity.fromProto(ad);
     const updated = await this.adsRepository.update(
       {
         id: adId,

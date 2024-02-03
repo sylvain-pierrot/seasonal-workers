@@ -6,11 +6,7 @@ import { Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
-import {
-  convertAdEntityToProto,
-  convertProtoToAdEntity,
-  returnResponse,
-} from '@app/utils/utils';
+import { returnResponse } from '@app/utils/utils';
 @Injectable()
 export class AvailabilityService {
   private logger = new Logger(AvailabilityService.name);
@@ -23,7 +19,7 @@ export class AvailabilityService {
   async CreateAvailability(request: Request): Promise<Uint8Array> {
     const ad = request.createAvailabilityRequest.availability;
     ad.adType = AdTypeEnum.AVAILABILITY;
-    const entity = convertProtoToAdEntity(ad);
+    const entity = AdEntity.fromProto(ad);
     const result = await this.adsRepository.save(entity);
     const response = {
       requestId: request.requestId,
@@ -41,7 +37,7 @@ export class AvailabilityService {
       where: { user_id: userId, ad_type: AdTypeEnum.AVAILABILITY },
     });
     const ads = availabilitys.map((ad: AdEntity) => {
-      return convertAdEntityToProto(ad);
+      return AdEntity.fromEntitytoProto(ad);
     });
     const response = {
       requestId: request.requestId,
@@ -57,7 +53,7 @@ export class AvailabilityService {
     const availability = request.updateAvailabilityRequest.availability;
     const userId = request.updateAvailabilityRequest.id;
     const adId = availability.id;
-    const entity = convertProtoToAdEntity(availability);
+    const entity = AdEntity.fromProto(availability);
     const updated = await this.adsRepository.update(
       {
         id: adId,

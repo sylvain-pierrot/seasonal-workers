@@ -93,15 +93,7 @@ export interface GetJobOfferRequest {
 }
 
 export interface GetJobOfferResponse {
-  ad: Ad | undefined;
-}
-
-export interface GetJobOffersRecommendationRequest {
-  userId: string;
-}
-
-export interface GetJobOffersRecommendationResponse {
-  jobOffer: Ad[];
+  jobOffer: Ad | undefined;
 }
 
 function createBaseCreateExperienceRequest(): CreateExperienceRequest {
@@ -1378,13 +1370,13 @@ export const GetJobOfferRequest = {
 };
 
 function createBaseGetJobOfferResponse(): GetJobOfferResponse {
-  return { ad: undefined };
+  return { jobOffer: undefined };
 }
 
 export const GetJobOfferResponse = {
   encode(message: GetJobOfferResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.ad !== undefined) {
-      Ad.encode(message.ad, writer.uint32(10).fork()).ldelim();
+    if (message.jobOffer !== undefined) {
+      Ad.encode(message.jobOffer, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -1401,7 +1393,7 @@ export const GetJobOfferResponse = {
             break;
           }
 
-          message.ad = Ad.decode(reader, reader.uint32());
+          message.jobOffer = Ad.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1413,13 +1405,13 @@ export const GetJobOfferResponse = {
   },
 
   fromJSON(object: any): GetJobOfferResponse {
-    return { ad: isSet(object.ad) ? Ad.fromJSON(object.ad) : undefined };
+    return { jobOffer: isSet(object.jobOffer) ? Ad.fromJSON(object.jobOffer) : undefined };
   },
 
   toJSON(message: GetJobOfferResponse): unknown {
     const obj: any = {};
-    if (message.ad !== undefined) {
-      obj.ad = Ad.toJSON(message.ad);
+    if (message.jobOffer !== undefined) {
+      obj.jobOffer = Ad.toJSON(message.jobOffer);
     }
     return obj;
   },
@@ -1429,131 +1421,9 @@ export const GetJobOfferResponse = {
   },
   fromPartial<I extends Exact<DeepPartial<GetJobOfferResponse>, I>>(object: I): GetJobOfferResponse {
     const message = createBaseGetJobOfferResponse();
-    message.ad = (object.ad !== undefined && object.ad !== null) ? Ad.fromPartial(object.ad) : undefined;
-    return message;
-  },
-};
-
-function createBaseGetJobOffersRecommendationRequest(): GetJobOffersRecommendationRequest {
-  return { userId: "" };
-}
-
-export const GetJobOffersRecommendationRequest = {
-  encode(message: GetJobOffersRecommendationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetJobOffersRecommendationRequest {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetJobOffersRecommendationRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.userId = reader.string();
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetJobOffersRecommendationRequest {
-    return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
-  },
-
-  toJSON(message: GetJobOffersRecommendationRequest): unknown {
-    const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetJobOffersRecommendationRequest>, I>>(
-    base?: I,
-  ): GetJobOffersRecommendationRequest {
-    return GetJobOffersRecommendationRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetJobOffersRecommendationRequest>, I>>(
-    object: I,
-  ): GetJobOffersRecommendationRequest {
-    const message = createBaseGetJobOffersRecommendationRequest();
-    message.userId = object.userId ?? "";
-    return message;
-  },
-};
-
-function createBaseGetJobOffersRecommendationResponse(): GetJobOffersRecommendationResponse {
-  return { jobOffer: [] };
-}
-
-export const GetJobOffersRecommendationResponse = {
-  encode(message: GetJobOffersRecommendationResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.jobOffer) {
-      Ad.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetJobOffersRecommendationResponse {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetJobOffersRecommendationResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.jobOffer.push(Ad.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetJobOffersRecommendationResponse {
-    return {
-      jobOffer: globalThis.Array.isArray(object?.jobOffer) ? object.jobOffer.map((e: any) => Ad.fromJSON(e)) : [],
-    };
-  },
-
-  toJSON(message: GetJobOffersRecommendationResponse): unknown {
-    const obj: any = {};
-    if (message.jobOffer?.length) {
-      obj.jobOffer = message.jobOffer.map((e) => Ad.toJSON(e));
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetJobOffersRecommendationResponse>, I>>(
-    base?: I,
-  ): GetJobOffersRecommendationResponse {
-    return GetJobOffersRecommendationResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetJobOffersRecommendationResponse>, I>>(
-    object: I,
-  ): GetJobOffersRecommendationResponse {
-    const message = createBaseGetJobOffersRecommendationResponse();
-    message.jobOffer = object.jobOffer?.map((e) => Ad.fromPartial(e)) || [];
+    message.jobOffer = (object.jobOffer !== undefined && object.jobOffer !== null)
+      ? Ad.fromPartial(object.jobOffer)
+      : undefined;
     return message;
   },
 };

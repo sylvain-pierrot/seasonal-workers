@@ -22,8 +22,9 @@
       "@config/*": ["src/config/*"],
       "@services/*": ["src/consumers/*"],
       "@proto/*": ["src/proto_generated/*"],
-      "@nats/*": ["src/nats/*"]
-    }
+      "@nats/*": ["src/nats/*"],
+      "@dto/*": ["src/consumers/ads/dto/*"],
+    },
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
 }

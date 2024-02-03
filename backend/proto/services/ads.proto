@@ -90,12 +90,3 @@ message GetJobOfferRequest  {
 message GetJobOfferResponse {
   models.Ad job_offer = 1;
 }
-
-message GetJobOffersRecommendationRequest {
-  string user_id = 1;
-}  
-
-message GetJobOffersRecommendationResponse {
-  repeated models.Ad job_offers = 1;
-}  
-
