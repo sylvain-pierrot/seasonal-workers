@@ -1,7 +1,7 @@
 syntax = "proto3";
 import "services/ads.proto";
 import "services/recommendation.proto";
-import "services/job-status.proto";
+import "services/jobs.proto";
 
 // Message that contains a generic request
 message Request {
@@ -22,6 +22,7 @@ message Request {
     services.GetJobOfferRequest get_job_offer_request = 13;
     services.ApplyJobOfferRequest apply_job_offer_request = 14;
     services.GetJobOffersStatusRequest get_job_offers_status_request = 15;
+    services.GetJobCategoriesRequest get_job_categories_request = 16;
 
   }
 } 

@@ -1,6 +1,6 @@
 syntax = "proto3";
+import "models/ad.proto";
 package models;
-import "models/ads.proto";
 
 enum JobOfferStatusEnum {
     PENDING = 0;

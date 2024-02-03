@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Ad } from "../models/ads";
+import { Ad } from "../models/ad";
 
 export const protobufPackage = "services";
 

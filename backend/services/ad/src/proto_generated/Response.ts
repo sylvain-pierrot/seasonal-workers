@@ -18,7 +18,8 @@ import { GetJobOffersRecommendationResponse } from './services/recommendation';
 import {
   ApplyJobOfferResponse,
   GetJobOffersStatusResponse,
-} from './services/job-status';
+  GetJobCategoriesResponse,
+} from './services/jobs';
 
 export const protobufPackage = '';
 
@@ -46,6 +47,7 @@ export interface Response {
   getJobOfferResponse: GetJobOfferResponse | undefined;
   applyJobOfferResponse: ApplyJobOfferResponse | undefined;
   getJobOfferStatusResponse: GetJobOffersStatusResponse | undefined;
+  getJobCategoriesResponse: GetJobCategoriesResponse | undefined;
 }
 
 const baseError: object = { errorMessage: '', errorCode: 0 };
@@ -215,6 +217,12 @@ export const Response = {
         writer.uint32(130).fork(),
       ).ldelim();
     }
+    if (message.getJobCategoriesResponse !== undefined) {
+      GetJobCategoriesResponse.encode(
+        message.getJobCategoriesResponse,
+        writer.uint32(138).fork(),
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -303,6 +311,12 @@ export const Response = {
           break;
         case 16:
           message.getJobOfferStatusResponse = GetJobOffersStatusResponse.decode(
+            reader,
+            reader.uint32(),
+          );
+          break;
+        case 17:
+          message.getJobCategoriesResponse = GetJobCategoriesResponse.decode(
             reader,
             reader.uint32(),
           );
@@ -468,6 +482,16 @@ export const Response = {
     } else {
       message.getJobOfferStatusResponse = undefined;
     }
+    if (
+      object.getJobCategoriesResponse !== undefined &&
+      object.getJobCategoriesResponse !== null
+    ) {
+      message.getJobCategoriesResponse = GetJobCategoriesResponse.fromJSON(
+        object.getJobCategoriesResponse,
+      );
+    } else {
+      message.getJobCategoriesResponse = undefined;
+    }
     return message;
   },
 
@@ -534,6 +558,10 @@ export const Response = {
     message.getJobOfferStatusResponse !== undefined &&
       (obj.getJobOfferStatusResponse = message.getJobOfferStatusResponse
         ? GetJobOffersStatusResponse.toJSON(message.getJobOfferStatusResponse)
+        : undefined);
+    message.getJobCategoriesResponse !== undefined &&
+      (obj.getJobCategoriesResponse = message.getJobCategoriesResponse
+        ? GetJobCategoriesResponse.toJSON(message.getJobCategoriesResponse)
         : undefined);
     return obj;
   },
@@ -695,6 +723,16 @@ export const Response = {
         );
     } else {
       message.getJobOfferStatusResponse = undefined;
+    }
+    if (
+      object.getJobCategoriesResponse !== undefined &&
+      object.getJobCategoriesResponse !== null
+    ) {
+      message.getJobCategoriesResponse = GetJobCategoriesResponse.fromPartial(
+        object.getJobCategoriesResponse,
+      );
+    } else {
+      message.getJobCategoriesResponse = undefined;
     }
     return message;
   },

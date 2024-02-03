@@ -1,9 +1,9 @@
-import { AdEntity } from '@app/entities/ads.entity';
-import { AdTypeEnum } from '@proto/models/ads';
+import { AdEntity } from '@entities/ads.entity';
+import { AdTypeEnum } from '@proto/models/ad';
 import {
   AdsRepository,
   JobStatusRepository,
-} from '@app/repositories/ads.repository';
+} from '@repositories/ads.repository';
 import {
   BadRequestException,
   Injectable,
@@ -13,11 +13,12 @@ import { Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
-import { isValideDateRange, returnResponse } from '@app/utils/utils';
 import { In } from 'typeorm';
-import { JobOfferStatusEntity } from '@app/entities/job-status.entity';
-import { JobOfferStatusEnum } from '@app/proto_generated/models/job-status';
+import { JobOfferStatusEntity } from '@entities/job-status.entity';
+import { JobOfferStatusEnum } from '@proto/models/job-status';
 import { UUID } from 'crypto';
+import { NatsResponse } from '@utils/response';
+import { isValideDateRange } from '@utils/utils';
 @Injectable()
 export class JobService {
   private logger = new Logger(JobService.name);
@@ -44,7 +45,7 @@ export class JobService {
       },
     } as Response;
 
-    return returnResponse(response);
+    return NatsResponse.success(response);
   }
   async getJobOffersRecommandation(request: Request): Promise<Uint8Array> {
     const userId = request.getJobOffersRecommendationRequest.userId;
@@ -56,16 +57,14 @@ export class JobService {
       },
     });
     const jobCategoriesInterests = userInterests.map((ad: AdEntity) => {
-      return ad.category;
+      return ad.jobTitle;
     });
 
     const result = await this.adsRepository.findBy({
       ad_type: AdTypeEnum.JOB_OFFER,
-      category: In(jobCategoriesInterests),
+      jobTitle: In(jobCategoriesInterests),
     });
-    const jobs = result.map((ad) => {
-      return AdEntity.fromEntitytoProto(ad);
-    });
+    const jobs = AdEntity.arrayToProto(result);
 
     // If no recommendation found, return random job offers
     if (jobs.length === 0) {
@@ -74,16 +73,15 @@ export class JobService {
           ad_type: AdTypeEnum.JOB_OFFER,
         },
       });
-      const randomJobsProto = randomAds.map((ad) => {
-        return AdEntity.fromEntitytoProto(ad);
-      });
+      const randomJobsProto = AdEntity.arrayToProto(randomAds);
+
       const response = {
         requestId: request.requestId,
         getJobOffersRecommendationResponse: {
           jobOffers: randomJobsProto,
         },
       } as Response;
-      return returnResponse(response);
+      return NatsResponse.success(response);
     }
 
     const response = {
@@ -92,7 +90,7 @@ export class JobService {
         jobOffers: jobs,
       },
     } as Response;
-    return returnResponse(response);
+    return NatsResponse.success(response);
   }
   async getJobOffer(request: Request): Promise<Uint8Array> {
     const jobId = request.getJobOfferRequest.offerId;
@@ -108,10 +106,10 @@ export class JobService {
     const response = {
       requestId: request.requestId,
       getJobOfferResponse: {
-        jobOffer: AdEntity.fromEntitytoProto(job),
+        jobOffer: AdEntity.toProto(job),
       },
     } as Response;
-    return returnResponse(response);
+    return NatsResponse.success(response);
   }
   async applyToJobOffer(request: Request) {
     const offerId = request.applyJobOfferRequest.offerId;
@@ -130,7 +128,7 @@ export class JobService {
         id: result.offerId,
       },
     } as Response;
-    return returnResponse(response);
+    return NatsResponse.success(response);
   }
   async getJobOfferStatus(request: Request): Promise<Uint8Array> {
     const workerId = request.getJobOffersStatusRequest.workerId;
@@ -139,9 +137,8 @@ export class JobService {
         workerId: workerId,
       },
     });
-    const proto = jobStatus.map((status) => {
-      return JobOfferStatusEntity.fromEntitytoProto(status);
-    });
+    const proto = JobOfferStatusEntity.arrayToProto(jobStatus);
+
     const response = {
       requestId: request.requestId,
       getJobOfferStatusResponse: {
@@ -149,6 +146,6 @@ export class JobService {
       },
     } as Response;
 
-    return returnResponse(response);
+    return NatsResponse.success(response);
   }
 }

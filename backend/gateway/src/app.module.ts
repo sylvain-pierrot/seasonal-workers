@@ -11,8 +11,9 @@ import { KeycloakConnectConfig } from '@config/KeycloakConnectModule';
 import { NatsModule } from './nats/nats.module';
 import { ExperiencesController } from './consumers/ads/controllers/experiences.controller';
 import { AdsService } from './consumers/ads/ads.service';
-import { AvailabilityController } from './consumers/ads/controllers/availability.controller';
+import { AvailabilityController } from './consumers/ads/controllers/availabilities.controller';
 import { JobOffersController } from './consumers/ads/controllers/job-offers.controller';
+import { JobsController } from './consumers/ads/controllers/jobs.controller';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { JobOffersController } from './consumers/ads/controllers/job-offers.cont
     ExperiencesController,
     AvailabilityController,
     JobOffersController,
+    JobsController,
   ],
   providers: [
     AdsService,

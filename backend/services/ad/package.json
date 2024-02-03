@@ -18,7 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "proto:generate": "protoc --plugin=node_modules/ts-proto/protoc-gen-ts_proto --ts_proto_out=./src/proto_generated/ -I ../../proto/ ../../proto/**.proto"
+    "proto:generate": "protoc --plugin=node_modules/ts-proto/protoc-gen-ts_proto --ts_proto_out=./src/proto_generated/ -I ../../proto/ ../../proto/**.proto",
+    "copy-sql": "cp -r src/database/init-db.sql dist/database"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

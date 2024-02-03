@@ -49,6 +49,7 @@ export enum NatsSubjects {
   JOB_OFFERS_CREATE = 'ADS.jobs.create',
   JOB_OFFERS_RECOMMENDATION = 'ADS.jobs.recommendation',
   JOB_OFFERS_FIND_ONE = 'ADS.jobs.findOne',
-  APPLY_JOB_OFFER = 'ADS.jobs.apply',
-  GET_APPLIED_JOB_OFFERS = 'ADS.jobs.status',
+  JOB_OFFERS_APPLY = 'ADS.jobs.apply',
+  JOB_OFFERS_GET_STATUS = 'ADS.jobs.status',
+  JOB_GET_CATEGORIES = 'ADS.jobs.categories',
 }

@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Logger,
-  Post,
-  Put,
-  Delete,
-} from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import { AuthenticatedUser, Roles } from 'nest-keycloak-connect';
 import { AdDto } from '@dto/ads.dto';
 import { NatsSubjects, AdsService } from '../ads.service';
@@ -14,7 +6,6 @@ import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
 import { v4 as uuidv4 } from 'uuid';
 import { JobStatusDto } from '../dto/job-status.dto';
-import { JobOfferStatusEnum } from '@app/proto_generated/models/job-status';
 
 @Controller('job-offers')
 export class JobOffersController {
@@ -31,6 +22,7 @@ export class JobOffersController {
     message: AdDto,
   ): Promise<Response> {
     message.userId = user.sub;
+
     const requestType: Request = {
       requestId: uuidv4(),
       createJobOfferRequest: {
@@ -106,7 +98,7 @@ export class JobOffersController {
     };
     return this.appService.performRequest(
       requestType,
-      NatsSubjects.APPLY_JOB_OFFER,
+      NatsSubjects.JOB_OFFERS_APPLY,
     );
   }
 
@@ -126,7 +118,7 @@ export class JobOffersController {
     };
     return this.appService.performRequest(
       requestType,
-      NatsSubjects.GET_APPLIED_JOB_OFFERS,
+      NatsSubjects.JOB_OFFERS_GET_STATUS,
     );
   }
 }

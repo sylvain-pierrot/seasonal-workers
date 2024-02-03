@@ -13,7 +13,7 @@ import {
   UpdateAvailabilityResponse,
   UpdateExperienceResponse,
 } from "./services/ads";
-import { ApplyJobOfferResponse, GetJobOffersStatusResponse } from "./services/job-status";
+import { ApplyJobOfferResponse, GetJobCategoriesResponse, GetJobOffersStatusResponse } from "./services/jobs";
 import { GetJobOffersRecommendationResponse } from "./services/recommendation";
 
 export const protobufPackage = "";
@@ -40,6 +40,7 @@ export interface Response {
   getJobOfferResponse?: GetJobOfferResponse | undefined;
   applyJobOfferResponse?: ApplyJobOfferResponse | undefined;
   getJobOfferStatusResponse?: GetJobOffersStatusResponse | undefined;
+  getJobCategoriesResponse?: GetJobCategoriesResponse | undefined;
 }
 
 function createBaseError(): Error {
@@ -134,6 +135,7 @@ function createBaseResponse(): Response {
     getJobOfferResponse: undefined,
     applyJobOfferResponse: undefined,
     getJobOfferStatusResponse: undefined,
+    getJobCategoriesResponse: undefined,
   };
 }
 
@@ -187,6 +189,9 @@ export const Response = {
     }
     if (message.getJobOfferStatusResponse !== undefined) {
       GetJobOffersStatusResponse.encode(message.getJobOfferStatusResponse, writer.uint32(130).fork()).ldelim();
+    }
+    if (message.getJobCategoriesResponse !== undefined) {
+      GetJobCategoriesResponse.encode(message.getJobCategoriesResponse, writer.uint32(138).fork()).ldelim();
     }
     return writer;
   },
@@ -313,6 +318,13 @@ export const Response = {
 
           message.getJobOfferStatusResponse = GetJobOffersStatusResponse.decode(reader, reader.uint32());
           continue;
+        case 17:
+          if (tag !== 138) {
+            break;
+          }
+
+          message.getJobCategoriesResponse = GetJobCategoriesResponse.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -368,6 +380,9 @@ export const Response = {
       getJobOfferStatusResponse: isSet(object.getJobOfferStatusResponse)
         ? GetJobOffersStatusResponse.fromJSON(object.getJobOfferStatusResponse)
         : undefined,
+      getJobCategoriesResponse: isSet(object.getJobCategoriesResponse)
+        ? GetJobCategoriesResponse.fromJSON(object.getJobCategoriesResponse)
+        : undefined,
     };
   },
 
@@ -422,6 +437,9 @@ export const Response = {
     }
     if (message.getJobOfferStatusResponse !== undefined) {
       obj.getJobOfferStatusResponse = GetJobOffersStatusResponse.toJSON(message.getJobOfferStatusResponse);
+    }
+    if (message.getJobCategoriesResponse !== undefined) {
+      obj.getJobCategoriesResponse = GetJobCategoriesResponse.toJSON(message.getJobCategoriesResponse);
     }
     return obj;
   },
@@ -487,6 +505,10 @@ export const Response = {
     message.getJobOfferStatusResponse =
       (object.getJobOfferStatusResponse !== undefined && object.getJobOfferStatusResponse !== null)
         ? GetJobOffersStatusResponse.fromPartial(object.getJobOfferStatusResponse)
+        : undefined;
+    message.getJobCategoriesResponse =
+      (object.getJobCategoriesResponse !== undefined && object.getJobCategoriesResponse !== null)
+        ? GetJobCategoriesResponse.fromPartial(object.getJobCategoriesResponse)
         : undefined;
     return message;
   },

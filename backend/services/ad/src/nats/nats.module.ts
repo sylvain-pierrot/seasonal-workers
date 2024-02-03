@@ -1,6 +1,5 @@
 import { Module, OnModuleInit } from '@nestjs/common';
-import { NatsService } from './nats.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { NatsService } from '@nats/nats.service';
 
 @Module({
   providers: [NatsService],

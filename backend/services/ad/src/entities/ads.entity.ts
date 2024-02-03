@@ -3,11 +3,11 @@ import {
   AdTypeEnum,
   CountryEnum,
   SalaireCurrencyEnum,
-} from '@proto/models/ads';
+} from '@proto/models/ad';
 import { Entity, PrimaryGeneratedColumn, Column, Unique } from 'typeorm';
 
 @Entity('Ad')
-@Unique(['id', 'user_id', 'title', 'category', 'sub_category'])
+@Unique(['id', 'user_id', 'title', 'jobTitle', 'categoryTitle'])
 export class AdEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -18,11 +18,11 @@ export class AdEntity {
   @Column({ nullable: true })
   title: string;
 
-  @Column({ nullable: true })
-  category: string;
+  @Column({ nullable: true, name: 'job_title' })
+  jobTitle: string;
 
-  @Column({ nullable: true })
-  sub_category: string;
+  @Column({ nullable: true, name: 'category_title' })
+  categoryTitle: string;
 
   @Column({ type: 'date', nullable: true })
   start_date: Date;
@@ -51,14 +51,14 @@ export class AdEntity {
   @Column({ nullable: true })
   ad_type: AdTypeEnum;
 
-  public static fromEntitytoProto(ad: AdEntity): Ad {
+  public static toProto(ad: AdEntity): Ad {
     const adProto = Ad.fromPartial({
       id: ad.id,
       userId: ad.user_id,
       title: ad.title,
       jobCategory: {
-        category: ad.category,
-        subCategory: ad.sub_category,
+        jobTitle: ad.jobTitle,
+        categoryTitle: ad.categoryTitle,
       },
       dateRange: {
         startDate: ad.start_date.toString(),
@@ -77,12 +77,18 @@ export class AdEntity {
     return adProto;
   }
 
+  public static arrayToProto(ads: AdEntity[]): Ad[] {
+    return ads.map((ad) => {
+      return AdEntity.toProto(ad);
+    });
+  }
+
   public static fromProto(ad: Ad): AdEntity {
     const adEntity = new AdEntity();
     adEntity.user_id = ad.userId;
     adEntity.title = ad.title;
-    adEntity.category = ad.jobCategory.category;
-    adEntity.sub_category = ad.jobCategory.subCategory;
+    adEntity.jobTitle = ad.jobCategory.jobTitle;
+    adEntity.categoryTitle = ad.jobCategory.categoryTitle;
     adEntity.start_date = new Date(ad.dateRange.startDate);
     adEntity.end_date = new Date(ad.dateRange.endDate);
     adEntity.salary_amount = ad.salaryAmount;

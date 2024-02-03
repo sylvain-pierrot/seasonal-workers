@@ -2,6 +2,7 @@
 import { util, configure, Writer, Reader } from 'protobufjs/minimal';
 import * as Long from 'long';
 import { JobOfferStatus } from '../models/job-status';
+import { JobCategory } from '../models/job-category';
 
 export const protobufPackage = 'services';
 
@@ -20,6 +21,12 @@ export interface GetJobOffersStatusRequest {
 
 export interface GetJobOffersStatusResponse {
   jobOffers: JobOfferStatus[];
+}
+
+export interface GetJobCategoriesRequest {}
+
+export interface GetJobCategoriesResponse {
+  categories: JobCategory[];
 }
 
 const baseApplyJobOfferRequest: object = { offerId: '', workerId: '' };
@@ -300,6 +307,130 @@ export const GetJobOffersStatusResponse = {
     if (object.jobOffers !== undefined && object.jobOffers !== null) {
       for (const e of object.jobOffers) {
         message.jobOffers.push(JobOfferStatus.fromPartial(e));
+      }
+    }
+    return message;
+  },
+};
+
+const baseGetJobCategoriesRequest: object = {};
+
+export const GetJobCategoriesRequest = {
+  encode(_: GetJobCategoriesRequest, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): GetJobCategoriesRequest {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseGetJobCategoriesRequest,
+    } as GetJobCategoriesRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): GetJobCategoriesRequest {
+    const message = {
+      ...baseGetJobCategoriesRequest,
+    } as GetJobCategoriesRequest;
+    return message;
+  },
+
+  toJSON(_: GetJobCategoriesRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<GetJobCategoriesRequest>,
+  ): GetJobCategoriesRequest {
+    const message = {
+      ...baseGetJobCategoriesRequest,
+    } as GetJobCategoriesRequest;
+    return message;
+  },
+};
+
+const baseGetJobCategoriesResponse: object = {};
+
+export const GetJobCategoriesResponse = {
+  encode(
+    message: GetJobCategoriesResponse,
+    writer: Writer = Writer.create(),
+  ): Writer {
+    for (const v of message.categories) {
+      JobCategory.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number,
+  ): GetJobCategoriesResponse {
+    const reader = input instanceof Reader ? input : new Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseGetJobCategoriesResponse,
+    } as GetJobCategoriesResponse;
+    message.categories = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.categories.push(JobCategory.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetJobCategoriesResponse {
+    const message = {
+      ...baseGetJobCategoriesResponse,
+    } as GetJobCategoriesResponse;
+    message.categories = [];
+    if (object.categories !== undefined && object.categories !== null) {
+      for (const e of object.categories) {
+        message.categories.push(JobCategory.fromJSON(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: GetJobCategoriesResponse): unknown {
+    const obj: any = {};
+    if (message.categories) {
+      obj.categories = message.categories.map((e) =>
+        e ? JobCategory.toJSON(e) : undefined,
+      );
+    } else {
+      obj.categories = [];
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<GetJobCategoriesResponse>,
+  ): GetJobCategoriesResponse {
+    const message = {
+      ...baseGetJobCategoriesResponse,
+    } as GetJobCategoriesResponse;
+    message.categories = [];
+    if (object.categories !== undefined && object.categories !== null) {
+      for (const e of object.categories) {
+        message.categories.push(JobCategory.fromPartial(e));
       }
     }
     return message;

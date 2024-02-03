@@ -1,5 +1,4 @@
 syntax = "proto3";
-
 package models;
 
 enum AdTypeEnum {
@@ -34,10 +33,11 @@ message DateRange {
   string end_date = 2;
 }
 
-message JobCategory {
-  string category = 1;
-  string sub_category = 2;
+message JobOfferCategory {
+  string job_title = 1;
+  string category_title = 2;
 }
+
 message Ad {
   string id = 1;
   string title = 2;
@@ -48,6 +48,6 @@ message Ad {
   Address address = 7;
   string description = 8;
   AdTypeEnum ad_type = 9;
-  JobCategory job_category = 10;
+  JobOfferCategory job_category = 10;
 
 }

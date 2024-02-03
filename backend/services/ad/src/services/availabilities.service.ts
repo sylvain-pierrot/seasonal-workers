@@ -1,12 +1,12 @@
-import { AdEntity } from '@app/entities/ads.entity';
-import { AdTypeEnum } from '@proto/models/ads';
-import { AdsRepository } from '@app/repositories/ads.repository';
+import { AdEntity } from '@entities/ads.entity';
+import { AdTypeEnum } from '@proto/models/ad';
+import { AdsRepository } from '@repositories/ads.repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
-import { returnResponse } from '@app/utils/utils';
+import { NatsResponse } from '@utils/response';
 @Injectable()
 export class AvailabilityService {
   private logger = new Logger(AvailabilityService.name);
@@ -28,7 +28,7 @@ export class AvailabilityService {
       },
     } as Response;
 
-    return returnResponse(response);
+    return NatsResponse.success(response);
   }
 
   async getAvailabilities(request: Request): Promise<Uint8Array> {
@@ -37,7 +37,7 @@ export class AvailabilityService {
       where: { user_id: userId, ad_type: AdTypeEnum.AVAILABILITY },
     });
     const ads = availabilitys.map((ad: AdEntity) => {
-      return AdEntity.fromEntitytoProto(ad);
+      return AdEntity.toProto(ad);
     });
     const response = {
       requestId: request.requestId,
@@ -46,7 +46,7 @@ export class AvailabilityService {
       },
     } as Response;
 
-    return returnResponse(response);
+    return NatsResponse.success(response);
   }
 
   async updateAvailability(request: Request): Promise<Uint8Array> {
@@ -74,7 +74,7 @@ export class AvailabilityService {
       },
     } as Response;
 
-    return returnResponse(response);
+    return NatsResponse.success(response);
   }
 
   async deleteAvailability(request: Request): Promise<Uint8Array> {
@@ -97,6 +97,6 @@ export class AvailabilityService {
       },
     } as Response;
 
-    return returnResponse(response);
+    return NatsResponse.success(response);
   }
 }

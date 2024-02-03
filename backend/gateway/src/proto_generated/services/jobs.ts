@@ -1,5 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
+import { JobCategory } from "../models/job-category";
 import { JobOfferStatus } from "../models/job-status";
 
 export const protobufPackage = "services";
@@ -19,6 +20,13 @@ export interface GetJobOffersStatusRequest {
 
 export interface GetJobOffersStatusResponse {
   jobOffers: JobOfferStatus[];
+}
+
+export interface GetJobCategoriesRequest {
+}
+
+export interface GetJobCategoriesResponse {
+  categories: JobCategory[];
 }
 
 function createBaseApplyJobOfferRequest(): ApplyJobOfferRequest {
@@ -266,6 +274,110 @@ export const GetJobOffersStatusResponse = {
   fromPartial<I extends Exact<DeepPartial<GetJobOffersStatusResponse>, I>>(object: I): GetJobOffersStatusResponse {
     const message = createBaseGetJobOffersStatusResponse();
     message.jobOffers = object.jobOffers?.map((e) => JobOfferStatus.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetJobCategoriesRequest(): GetJobCategoriesRequest {
+  return {};
+}
+
+export const GetJobCategoriesRequest = {
+  encode(_: GetJobCategoriesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetJobCategoriesRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetJobCategoriesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): GetJobCategoriesRequest {
+    return {};
+  },
+
+  toJSON(_: GetJobCategoriesRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetJobCategoriesRequest>, I>>(base?: I): GetJobCategoriesRequest {
+    return GetJobCategoriesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetJobCategoriesRequest>, I>>(_: I): GetJobCategoriesRequest {
+    const message = createBaseGetJobCategoriesRequest();
+    return message;
+  },
+};
+
+function createBaseGetJobCategoriesResponse(): GetJobCategoriesResponse {
+  return { categories: [] };
+}
+
+export const GetJobCategoriesResponse = {
+  encode(message: GetJobCategoriesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.categories) {
+      JobCategory.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetJobCategoriesResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetJobCategoriesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.categories.push(JobCategory.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetJobCategoriesResponse {
+    return {
+      categories: globalThis.Array.isArray(object?.categories)
+        ? object.categories.map((e: any) => JobCategory.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetJobCategoriesResponse): unknown {
+    const obj: any = {};
+    if (message.categories?.length) {
+      obj.categories = message.categories.map((e) => JobCategory.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetJobCategoriesResponse>, I>>(base?: I): GetJobCategoriesResponse {
+    return GetJobCategoriesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetJobCategoriesResponse>, I>>(object: I): GetJobCategoriesResponse {
+    const message = createBaseGetJobCategoriesResponse();
+    message.categories = object.categories?.map((e) => JobCategory.fromPartial(e)) || [];
     return message;
   },
 };

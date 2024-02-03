@@ -1,11 +1,12 @@
-import { AdEntity } from '@app/entities/ads.entity';
-import { AdTypeEnum } from '@proto/models/ads';
-import { AdsRepository } from '@app/repositories/ads.repository';
+import { AdEntity } from '@entities/ads.entity';
+import { AdTypeEnum } from '@proto/models/ad';
+import { AdsRepository } from '@repositories/ads.repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
+import { NatsResponse } from '@utils/response';
 @Injectable()
 export class ExperienceService {
   private logger = new Logger(ExperienceService.name);
@@ -23,14 +24,13 @@ export class ExperienceService {
     ad.salaryCurrency = null;
     const entity = AdEntity.fromProto(ad);
     const save = await this.adsRepository.save(entity);
-    const response = Response.fromPartial({
+    const response = {
       requestId: request.requestId,
       createExperienceResponse: {
         id: save.id,
       },
-    });
-    const encoded = Response.encode(response).finish();
-    return encoded;
+    } as Response;
+    return NatsResponse.success(response);
   }
 
   async getAllExperiences(request: Request): Promise<Uint8Array> {
@@ -39,16 +39,15 @@ export class ExperienceService {
       where: { user_id: userId, ad_type: AdTypeEnum.EXPERIENCE },
     });
     const ads = experiences.map((ad: AdEntity) => {
-      return AdEntity.fromEntitytoProto(ad);
+      return AdEntity.toProto(ad);
     });
-    const response = Response.fromPartial({
+    const response = {
       requestId: request.requestId,
       getExperiencesResponse: {
         ads: ads,
       },
-    });
-    const encodedResponse = Response.encode(response).finish();
-    return encodedResponse;
+    } as Response;
+    return NatsResponse.success(response);
   }
 
   async updateExperience(request: Request): Promise<Uint8Array> {
@@ -72,14 +71,14 @@ export class ExperienceService {
       );
     }
 
-    const response = Response.fromPartial({
+    const response = {
       requestId: request.requestId,
       updateExperienceResponse: {
         id: adId,
       },
-    });
-    const encodedResponse = Response.encode(response).finish();
-    return encodedResponse;
+    } as Response;
+
+    return NatsResponse.success(response);
   }
 
   async deleteExperience(request: Request): Promise<Uint8Array> {
@@ -96,13 +95,12 @@ export class ExperienceService {
         'Impossible to delete experience not found or already deleted',
       );
     }
-    const response = Response.fromPartial({
+    const response = {
       requestId: request.requestId,
       deleteExperienceResponse: {
         id: id,
       },
-    });
-    const encodedResponse = Response.encode(response).finish();
-    return encodedResponse;
+    } as Response;
+    return NatsResponse.success(response);
   }
 }

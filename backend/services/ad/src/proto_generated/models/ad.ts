@@ -141,9 +141,9 @@ export interface DateRange {
   endDate: string;
 }
 
-export interface JobCategory {
-  category: string;
-  subCategory: string;
+export interface JobOfferCategory {
+  jobTitle: string;
+  categoryTitle: string;
 }
 
 export interface Ad {
@@ -156,7 +156,7 @@ export interface Ad {
   address: Address | undefined;
   description: string;
   adType: AdTypeEnum;
-  jobCategory: JobCategory | undefined;
+  jobCategory: JobOfferCategory | undefined;
 }
 
 const baseAddress: object = { city: '', zipCode: '', country: 0 };
@@ -321,31 +321,31 @@ export const DateRange = {
   },
 };
 
-const baseJobCategory: object = { category: '', subCategory: '' };
+const baseJobOfferCategory: object = { jobTitle: '', categoryTitle: '' };
 
-export const JobCategory = {
-  encode(message: JobCategory, writer: Writer = Writer.create()): Writer {
-    if (message.category !== '') {
-      writer.uint32(10).string(message.category);
+export const JobOfferCategory = {
+  encode(message: JobOfferCategory, writer: Writer = Writer.create()): Writer {
+    if (message.jobTitle !== '') {
+      writer.uint32(10).string(message.jobTitle);
     }
-    if (message.subCategory !== '') {
-      writer.uint32(18).string(message.subCategory);
+    if (message.categoryTitle !== '') {
+      writer.uint32(18).string(message.categoryTitle);
     }
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): JobCategory {
+  decode(input: Reader | Uint8Array, length?: number): JobOfferCategory {
     const reader = input instanceof Reader ? input : new Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseJobCategory } as JobCategory;
+    const message = { ...baseJobOfferCategory } as JobOfferCategory;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.category = reader.string();
+          message.jobTitle = reader.string();
           break;
         case 2:
-          message.subCategory = reader.string();
+          message.categoryTitle = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -355,40 +355,40 @@ export const JobCategory = {
     return message;
   },
 
-  fromJSON(object: any): JobCategory {
-    const message = { ...baseJobCategory } as JobCategory;
-    if (object.category !== undefined && object.category !== null) {
-      message.category = String(object.category);
+  fromJSON(object: any): JobOfferCategory {
+    const message = { ...baseJobOfferCategory } as JobOfferCategory;
+    if (object.jobTitle !== undefined && object.jobTitle !== null) {
+      message.jobTitle = String(object.jobTitle);
     } else {
-      message.category = '';
+      message.jobTitle = '';
     }
-    if (object.subCategory !== undefined && object.subCategory !== null) {
-      message.subCategory = String(object.subCategory);
+    if (object.categoryTitle !== undefined && object.categoryTitle !== null) {
+      message.categoryTitle = String(object.categoryTitle);
     } else {
-      message.subCategory = '';
+      message.categoryTitle = '';
     }
     return message;
   },
 
-  toJSON(message: JobCategory): unknown {
+  toJSON(message: JobOfferCategory): unknown {
     const obj: any = {};
-    message.category !== undefined && (obj.category = message.category);
-    message.subCategory !== undefined &&
-      (obj.subCategory = message.subCategory);
+    message.jobTitle !== undefined && (obj.jobTitle = message.jobTitle);
+    message.categoryTitle !== undefined &&
+      (obj.categoryTitle = message.categoryTitle);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<JobCategory>): JobCategory {
-    const message = { ...baseJobCategory } as JobCategory;
-    if (object.category !== undefined && object.category !== null) {
-      message.category = object.category;
+  fromPartial(object: DeepPartial<JobOfferCategory>): JobOfferCategory {
+    const message = { ...baseJobOfferCategory } as JobOfferCategory;
+    if (object.jobTitle !== undefined && object.jobTitle !== null) {
+      message.jobTitle = object.jobTitle;
     } else {
-      message.category = '';
+      message.jobTitle = '';
     }
-    if (object.subCategory !== undefined && object.subCategory !== null) {
-      message.subCategory = object.subCategory;
+    if (object.categoryTitle !== undefined && object.categoryTitle !== null) {
+      message.categoryTitle = object.categoryTitle;
     } else {
-      message.subCategory = '';
+      message.categoryTitle = '';
     }
     return message;
   },
@@ -434,7 +434,7 @@ export const Ad = {
       writer.uint32(72).int32(message.adType);
     }
     if (message.jobCategory !== undefined) {
-      JobCategory.encode(
+      JobOfferCategory.encode(
         message.jobCategory,
         writer.uint32(82).fork(),
       ).ldelim();
@@ -477,7 +477,10 @@ export const Ad = {
           message.adType = reader.int32() as any;
           break;
         case 10:
-          message.jobCategory = JobCategory.decode(reader, reader.uint32());
+          message.jobCategory = JobOfferCategory.decode(
+            reader,
+            reader.uint32(),
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -537,7 +540,7 @@ export const Ad = {
       message.adType = 0;
     }
     if (object.jobCategory !== undefined && object.jobCategory !== null) {
-      message.jobCategory = JobCategory.fromJSON(object.jobCategory);
+      message.jobCategory = JobOfferCategory.fromJSON(object.jobCategory);
     } else {
       message.jobCategory = undefined;
     }
@@ -567,7 +570,7 @@ export const Ad = {
       (obj.adType = adTypeEnumToJSON(message.adType));
     message.jobCategory !== undefined &&
       (obj.jobCategory = message.jobCategory
-        ? JobCategory.toJSON(message.jobCategory)
+        ? JobOfferCategory.toJSON(message.jobCategory)
         : undefined);
     return obj;
   },
@@ -620,7 +623,7 @@ export const Ad = {
       message.adType = 0;
     }
     if (object.jobCategory !== undefined && object.jobCategory !== null) {
-      message.jobCategory = JobCategory.fromPartial(object.jobCategory);
+      message.jobCategory = JobOfferCategory.fromPartial(object.jobCategory);
     } else {
       message.jobCategory = undefined;
     }

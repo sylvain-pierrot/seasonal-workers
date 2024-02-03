@@ -1,15 +1,31 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { JobCategoryEntity } from '@entities/job-categories.entity';
+import { JobsRepository } from '@repositories/ads.repository';
+import { NatsResponse } from '@utils/response';
+import { Injectable } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Request } from '@proto/Request';
+import { Response } from '@proto/Response';
 
 @Injectable()
-export class JobCategoriesService {
-  private logger = new Logger(JobCategoriesService.name);
+export class JobCategoryService {
+  private logger = new Logger(JobCategoryService.name);
 
-  constructor() {}
+  constructor(
+    @InjectRepository(JobCategoryEntity)
+    private jobCategoryRepository: JobsRepository,
+  ) {}
 
-  getAd(data: any): any {
-    const ad = [{ data: data }];
-    return ad;
+  async getJobCategories(request: Request) {
+    const requestId = request.requestId;
+    const categories = await this.jobCategoryRepository.find();
+    const proto = JobCategoryEntity.arrayToProto(categories);
+    const response = {
+      requestId: requestId,
+      getJobCategoriesResponse: {
+        categories: proto,
+      },
+    } as Response;
+    return NatsResponse.success(response);
   }
 }

@@ -1,6 +1,8 @@
 syntax = "proto3";
-import "models/job-status.proto";
 package services;
+import "models/job-status.proto";
+import "models/job-category.proto";
+
 
 message ApplyJobOfferRequest {
     string offer_id = 1;
@@ -17,4 +19,11 @@ message GetJobOffersStatusRequest {
 
 message GetJobOffersStatusResponse {
    repeated models.JobOfferStatus job_offers = 1;
+}
+
+message GetJobCategoriesRequest {
+}
+
+message GetJobCategoriesResponse {
+    repeated models.JobCategory categories = 1;
 }

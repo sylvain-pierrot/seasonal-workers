@@ -7,13 +7,17 @@ import { natsConfig } from '@config/client-nats.config';
 import { ConfigModule } from '@nestjs/config';
 import { NatsModule } from '@nats/nats.module';
 import { AdEntity } from './entities/ads.entity';
-import { JobCategoriesEntity } from './entities/job-categories.entity';
-import { ExperiencesController } from './controllers/experience.controller';
-import { AvailabilitiesController } from './controllers/availability.controller';
-import { AvailabilityService } from './services/availability.service';
-import { JobsController } from './controllers/job.controller';
-import { JobService } from './services/job.service';
-import { JobOfferStatusEntity } from './entities/job-status.entity';
+import { JobSubCategoryEntity } from '@entities/job-subcategories.entity';
+import { ExperiencesController } from '@controllers/experience.controller';
+import { AvailabilitiesController } from '@controllers/availability.controller';
+import { AvailabilityService } from '@app/services/availabilities.service';
+import { JobsController } from '@controllers/job.controller';
+import { JobService } from '@services/job.service';
+import { JobOfferStatusEntity } from '@entities/job-status.entity';
+import { DataSource } from 'typeorm';
+import { DatabaseReady } from './database/init.service';
+import { JobCategoryEntity } from '@entities/job-categories.entity';
+import { JobCategoryService } from '@services/job-categories.service';
 
 @Module({
   imports: [
@@ -25,7 +29,8 @@ import { JobOfferStatusEntity } from './entities/job-status.entity';
     TypeOrmModule.forRootAsync(databaseConfig),
     TypeOrmModule.forFeature([
       AdEntity,
-      JobCategoriesEntity,
+      JobCategoryEntity,
+      JobSubCategoryEntity,
       JobOfferStatusEntity,
     ]),
     ClientsModule.registerAsync(natsConfig),
@@ -35,6 +40,16 @@ import { JobOfferStatusEntity } from './entities/job-status.entity';
     AvailabilitiesController,
     JobsController,
   ],
-  providers: [ExperienceService, AvailabilityService, JobService],
+  providers: [
+    ExperienceService,
+    AvailabilityService,
+    JobService,
+    JobCategoryService,
+  ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly dataSource: DataSource) {
+    const database = new DatabaseReady(dataSource);
+    database.populate();
+  }
+}

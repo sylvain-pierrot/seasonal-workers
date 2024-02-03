@@ -1,11 +1,12 @@
 import { Controller, OnApplicationBootstrap } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
-import { NatsService } from '@app/nats/nats.service';
+import { NatsService } from '@nats/nats.service';
 import { NatsError, ServiceMsg } from 'nats';
-import { ExperienceService } from '@app/services/experiences.service';
 import { Request } from '@proto/Request';
-import { NatsEndpoint, returnResponseError } from '@app/utils/utils';
-import { JobService } from '@app/services/job.service';
+import { JobService } from '@services/job.service';
+import { JobCategoryService } from '@services/job-categories.service';
+import { NatsEndpoint } from '@nats/nats.enum';
+import { NatsResponse } from '@utils/response';
 
 @Controller()
 export class JobsController implements OnApplicationBootstrap {
@@ -13,6 +14,7 @@ export class JobsController implements OnApplicationBootstrap {
   constructor(
     private natsService: NatsService,
     private jobService: JobService,
+    private jobCategoryService: JobCategoryService,
   ) {}
 
   async onApplicationBootstrap() {
@@ -21,6 +23,7 @@ export class JobsController implements OnApplicationBootstrap {
     await this.handleGetJobOffer();
     await this.handleApplyToJobOffer();
     await this.handleGetJobOffersStatus();
+    await this.handleGetJobCategories();
   }
   async handleCreateJobOffer(): Promise<void> {
     this.natsService.job.addEndpoint(
@@ -33,7 +36,7 @@ export class JobsController implements OnApplicationBootstrap {
           request.respond(encodedResponse);
         } catch (e) {
           const decoded = Request.decode(request.data);
-          const encodedError = returnResponseError(
+          const encodedError = NatsResponse.error(
             decoded.requestId,
             e,
             e.status,
@@ -54,7 +57,7 @@ export class JobsController implements OnApplicationBootstrap {
           return request.respond(response);
         } catch (e) {
           const decoded = Request.decode(request.data);
-          const encodedError = returnResponseError(decoded.requestId, e);
+          const encodedError = NatsResponse.error(decoded.requestId, e);
           request.respond(encodedError);
         }
       },
@@ -70,7 +73,7 @@ export class JobsController implements OnApplicationBootstrap {
           return request.respond(response);
         } catch (e) {
           const decoded = Request.decode(request.data);
-          const encodedError = returnResponseError(decoded.requestId, e);
+          const encodedError = NatsResponse.error(decoded.requestId, e);
           request.respond(encodedError);
         }
       },
@@ -87,7 +90,7 @@ export class JobsController implements OnApplicationBootstrap {
           return request.respond(response);
         } catch (e) {
           const decoded = Request.decode(request.data);
-          const encodedError = returnResponseError(decoded.requestId, e);
+          const encodedError = NatsResponse.error(decoded.requestId, e);
           request.respond(encodedError);
         }
       },
@@ -105,7 +108,24 @@ export class JobsController implements OnApplicationBootstrap {
         } catch (e) {
           this.logger.error(e);
           const decoded = Request.decode(request.data);
-          const encodedError = returnResponseError(decoded.requestId, e);
+          const encodedError = NatsResponse.error(decoded.requestId, e);
+          request.respond(encodedError);
+        }
+      },
+    );
+  }
+  async handleGetJobCategories(): Promise<void> {
+    this.natsService.job.addEndpoint(
+      NatsEndpoint.CATEGORIES,
+      async (error, request: any) => {
+        try {
+          const decodedRequest = Request.decode(request.data);
+          const response =
+            await this.jobCategoryService.getJobCategories(decodedRequest);
+          return request.respond(response);
+        } catch (e) {
+          const decoded = Request.decode(request.data);
+          const encodedError = NatsResponse.error(decoded.requestId, e);
           request.respond(encodedError);
         }
       },

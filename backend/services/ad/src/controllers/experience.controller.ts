@@ -1,10 +1,11 @@
 import { Controller, OnApplicationBootstrap } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
-import { NatsService } from '@app/nats/nats.service';
+import { NatsService } from '@nats/nats.service';
 import { NatsError, ServiceMsg } from 'nats';
-import { ExperienceService } from '@app/services/experiences.service';
+import { ExperienceService } from '@services/experiences.service';
 import { Request } from '@proto/Request';
-import { NatsEndpoint, returnResponseError } from '@app/utils/utils';
+import { NatsEndpoint } from '@nats/nats.enum';
+import { NatsResponse } from '@utils/response';
 
 @Controller()
 export class ExperiencesController implements OnApplicationBootstrap {
@@ -32,7 +33,7 @@ export class ExperiencesController implements OnApplicationBootstrap {
           request.respond(encodedResponse);
         } catch (e) {
           const decoded = Request.decode(request.data);
-          const encodedError = returnResponseError(decoded.requestId, e);
+          const encodedError = NatsResponse.error(decoded.requestId, e);
           request.respond(encodedError);
         }
       },
@@ -51,7 +52,7 @@ export class ExperiencesController implements OnApplicationBootstrap {
         } catch (e) {
           this.logger.error(`Error GET experiences: ${e}`);
           const decoded = Request.decode(request.data);
-          const encodedError = returnResponseError(decoded.requestId, e);
+          const encodedError = NatsResponse.error(decoded.requestId, e);
           request.respond(encodedError);
         }
       },
@@ -69,7 +70,7 @@ export class ExperiencesController implements OnApplicationBootstrap {
           return request.respond(response);
         } catch (e) {
           const decoded = Request.decode(request.data);
-          const encodedError = returnResponseError(decoded.requestId, e);
+          const encodedError = NatsResponse.error(decoded.requestId, e);
           request.respond(encodedError);
         }
       },
@@ -87,7 +88,7 @@ export class ExperiencesController implements OnApplicationBootstrap {
           return request.respond(response);
         } catch (e) {
           const decoded = Request.decode(request.data);
-          const encodedError = returnResponseError(decoded.requestId, e);
+          const encodedError = NatsResponse.error(decoded.requestId, e);
           request.respond(encodedError);
         }
       },

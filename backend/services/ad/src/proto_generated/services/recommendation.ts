@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { util, configure, Writer, Reader } from 'protobufjs/minimal';
 import * as Long from 'long';
-import { Ad } from '../models/ads';
+import { Ad } from '../models/ad';
 
 export const protobufPackage = 'services';
 

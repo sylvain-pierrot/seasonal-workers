@@ -1,6 +1,6 @@
 
 syntax = "proto3";
-import "models/ads.proto";
+import "models/ad.proto";
 
 package services;
 

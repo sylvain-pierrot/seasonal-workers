@@ -10,10 +10,8 @@ async function bootstrap() {
       options: {
         servers: ['nats://localhost:4222'],
       },
-      
     },
   );
   app.listen();
-  console.log('Math microservice is listening');
 }
 bootstrap();

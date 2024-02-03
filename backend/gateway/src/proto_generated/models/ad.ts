@@ -143,9 +143,9 @@ export interface DateRange {
   endDate: string;
 }
 
-export interface JobCategory {
-  category: string;
-  subCategory: string;
+export interface JobOfferCategory {
+  jobTitle: string;
+  categoryTitle: string;
 }
 
 export interface Ad {
@@ -158,7 +158,7 @@ export interface Ad {
   address: Address | undefined;
   description: string;
   adType: AdTypeEnum;
-  jobCategory: JobCategory | undefined;
+  jobCategory: JobOfferCategory | undefined;
 }
 
 function createBaseAddress(): Address {
@@ -324,25 +324,25 @@ export const DateRange = {
   },
 };
 
-function createBaseJobCategory(): JobCategory {
-  return { category: "", subCategory: "" };
+function createBaseJobOfferCategory(): JobOfferCategory {
+  return { jobTitle: "", categoryTitle: "" };
 }
 
-export const JobCategory = {
-  encode(message: JobCategory, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.category !== "") {
-      writer.uint32(10).string(message.category);
+export const JobOfferCategory = {
+  encode(message: JobOfferCategory, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.jobTitle !== "") {
+      writer.uint32(10).string(message.jobTitle);
     }
-    if (message.subCategory !== "") {
-      writer.uint32(18).string(message.subCategory);
+    if (message.categoryTitle !== "") {
+      writer.uint32(18).string(message.categoryTitle);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): JobCategory {
+  decode(input: _m0.Reader | Uint8Array, length?: number): JobOfferCategory {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseJobCategory();
+    const message = createBaseJobOfferCategory();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -351,14 +351,14 @@ export const JobCategory = {
             break;
           }
 
-          message.category = reader.string();
+          message.jobTitle = reader.string();
           continue;
         case 2:
           if (tag !== 18) {
             break;
           }
 
-          message.subCategory = reader.string();
+          message.categoryTitle = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -369,31 +369,31 @@ export const JobCategory = {
     return message;
   },
 
-  fromJSON(object: any): JobCategory {
+  fromJSON(object: any): JobOfferCategory {
     return {
-      category: isSet(object.category) ? globalThis.String(object.category) : "",
-      subCategory: isSet(object.subCategory) ? globalThis.String(object.subCategory) : "",
+      jobTitle: isSet(object.jobTitle) ? globalThis.String(object.jobTitle) : "",
+      categoryTitle: isSet(object.categoryTitle) ? globalThis.String(object.categoryTitle) : "",
     };
   },
 
-  toJSON(message: JobCategory): unknown {
+  toJSON(message: JobOfferCategory): unknown {
     const obj: any = {};
-    if (message.category !== "") {
-      obj.category = message.category;
+    if (message.jobTitle !== "") {
+      obj.jobTitle = message.jobTitle;
     }
-    if (message.subCategory !== "") {
-      obj.subCategory = message.subCategory;
+    if (message.categoryTitle !== "") {
+      obj.categoryTitle = message.categoryTitle;
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<JobCategory>, I>>(base?: I): JobCategory {
-    return JobCategory.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<JobOfferCategory>, I>>(base?: I): JobOfferCategory {
+    return JobOfferCategory.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<JobCategory>, I>>(object: I): JobCategory {
-    const message = createBaseJobCategory();
-    message.category = object.category ?? "";
-    message.subCategory = object.subCategory ?? "";
+  fromPartial<I extends Exact<DeepPartial<JobOfferCategory>, I>>(object: I): JobOfferCategory {
+    const message = createBaseJobOfferCategory();
+    message.jobTitle = object.jobTitle ?? "";
+    message.categoryTitle = object.categoryTitle ?? "";
     return message;
   },
 };
@@ -443,7 +443,7 @@ export const Ad = {
       writer.uint32(72).int32(message.adType);
     }
     if (message.jobCategory !== undefined) {
-      JobCategory.encode(message.jobCategory, writer.uint32(82).fork()).ldelim();
+      JobOfferCategory.encode(message.jobCategory, writer.uint32(82).fork()).ldelim();
     }
     return writer;
   },
@@ -523,7 +523,7 @@ export const Ad = {
             break;
           }
 
-          message.jobCategory = JobCategory.decode(reader, reader.uint32());
+          message.jobCategory = JobOfferCategory.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -545,7 +545,7 @@ export const Ad = {
       address: isSet(object.address) ? Address.fromJSON(object.address) : undefined,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       adType: isSet(object.adType) ? adTypeEnumFromJSON(object.adType) : 0,
-      jobCategory: isSet(object.jobCategory) ? JobCategory.fromJSON(object.jobCategory) : undefined,
+      jobCategory: isSet(object.jobCategory) ? JobOfferCategory.fromJSON(object.jobCategory) : undefined,
     };
   },
 
@@ -579,7 +579,7 @@ export const Ad = {
       obj.adType = adTypeEnumToJSON(message.adType);
     }
     if (message.jobCategory !== undefined) {
-      obj.jobCategory = JobCategory.toJSON(message.jobCategory);
+      obj.jobCategory = JobOfferCategory.toJSON(message.jobCategory);
     }
     return obj;
   },
@@ -603,7 +603,7 @@ export const Ad = {
     message.description = object.description ?? "";
     message.adType = object.adType ?? 0;
     message.jobCategory = (object.jobCategory !== undefined && object.jobCategory !== null)
-      ? JobCategory.fromPartial(object.jobCategory)
+      ? JobOfferCategory.fromPartial(object.jobCategory)
       : undefined;
     return message;
   },

@@ -8,11 +8,8 @@ import {
   JoinColumn,
   Index,
 } from 'typeorm';
-import { AdEntity } from './ads.entity';
-import {
-  JobOfferStatus,
-  JobOfferStatusEnum,
-} from '@app/proto_generated/models/job-status';
+import { AdEntity } from '@entities/ads.entity';
+import { JobOfferStatus, JobOfferStatusEnum } from '@proto/models/job-status';
 @Entity('JobOfferStatus')
 @Unique(['workerId', 'offerId'])
 @Index(['workerId', 'offerId'], { unique: true })
@@ -46,17 +43,23 @@ export class JobOfferStatusEntity {
     return entity;
   }
 
-  public static fromEntitytoProto(
-    entity: JobOfferStatusEntity,
-  ): JobOfferStatus {
+  public static toProto(entity: JobOfferStatusEntity): JobOfferStatus {
     const proto = JobOfferStatus.fromPartial({
       statusId: entity.id,
       createdAt: entity.createdAt.toISOString(),
       workerId: entity.workerId,
       offerId: entity.offerId,
       status: entity.status,
-      offer: AdEntity.fromEntitytoProto(entity.offer),
+      offer: AdEntity.toProto(entity.offer),
     });
     return proto;
+  }
+
+  public static arrayToProto(
+    entities: JobOfferStatusEntity[],
+  ): JobOfferStatus[] {
+    return entities.map((entity) => {
+      return JobOfferStatusEntity.toProto(entity);
+    });
   }
 }
