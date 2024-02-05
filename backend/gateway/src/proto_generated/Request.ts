@@ -19,6 +19,7 @@ import {
   GetJobOffersStatusRequest,
   UpdateJobOfferStatusRequest,
 } from "./services/jobs";
+import { GetNotificationsRequest } from "./services/notifications";
 import { GetJobOffersRecommendationRequest } from "./services/recommendation";
 
 export const protobufPackage = "";
@@ -42,6 +43,7 @@ export interface Request {
   getJobOffersStatusRequest?: GetJobOffersStatusRequest | undefined;
   getJobCategoriesRequest?: GetJobCategoriesRequest | undefined;
   updateJobOfferStatusRequest?: UpdateJobOfferStatusRequest | undefined;
+  getNotificationsRequest?: GetNotificationsRequest | undefined;
 }
 
 function createBaseRequest(): Request {
@@ -63,6 +65,7 @@ function createBaseRequest(): Request {
     getJobOffersStatusRequest: undefined,
     getJobCategoriesRequest: undefined,
     updateJobOfferStatusRequest: undefined,
+    getNotificationsRequest: undefined,
   };
 }
 
@@ -119,6 +122,9 @@ export const Request = {
     }
     if (message.updateJobOfferStatusRequest !== undefined) {
       UpdateJobOfferStatusRequest.encode(message.updateJobOfferStatusRequest, writer.uint32(138).fork()).ldelim();
+    }
+    if (message.getNotificationsRequest !== undefined) {
+      GetNotificationsRequest.encode(message.getNotificationsRequest, writer.uint32(146).fork()).ldelim();
     }
     return writer;
   },
@@ -249,6 +255,13 @@ export const Request = {
 
           message.updateJobOfferStatusRequest = UpdateJobOfferStatusRequest.decode(reader, reader.uint32());
           continue;
+        case 18:
+          if (tag !== 146) {
+            break;
+          }
+
+          message.getNotificationsRequest = GetNotificationsRequest.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -309,6 +322,9 @@ export const Request = {
       updateJobOfferStatusRequest: isSet(object.updateJobOfferStatusRequest)
         ? UpdateJobOfferStatusRequest.fromJSON(object.updateJobOfferStatusRequest)
         : undefined,
+      getNotificationsRequest: isSet(object.getNotificationsRequest)
+        ? GetNotificationsRequest.fromJSON(object.getNotificationsRequest)
+        : undefined,
     };
   },
 
@@ -366,6 +382,9 @@ export const Request = {
     }
     if (message.updateJobOfferStatusRequest !== undefined) {
       obj.updateJobOfferStatusRequest = UpdateJobOfferStatusRequest.toJSON(message.updateJobOfferStatusRequest);
+    }
+    if (message.getNotificationsRequest !== undefined) {
+      obj.getNotificationsRequest = GetNotificationsRequest.toJSON(message.getNotificationsRequest);
     }
     return obj;
   },
@@ -436,6 +455,10 @@ export const Request = {
     message.updateJobOfferStatusRequest =
       (object.updateJobOfferStatusRequest !== undefined && object.updateJobOfferStatusRequest !== null)
         ? UpdateJobOfferStatusRequest.fromPartial(object.updateJobOfferStatusRequest)
+        : undefined;
+    message.getNotificationsRequest =
+      (object.getNotificationsRequest !== undefined && object.getNotificationsRequest !== null)
+        ? GetNotificationsRequest.fromPartial(object.getNotificationsRequest)
         : undefined;
     return message;
   },

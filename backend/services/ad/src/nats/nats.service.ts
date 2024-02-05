@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NatsConnection, Service, ServiceGroup, connect } from 'nats';
-
+import { Request } from '@proto/Request';
+import { Response } from '@proto/Response';
 @Injectable()
 export class NatsService {
   natsClient: NatsConnection;
@@ -27,4 +28,35 @@ export class NatsService {
     this.availability = this.privateService.addGroup('ADS.availabilities');
     this.job = this.privateService.addGroup('ADS.jobs');
   }
+
+  async requestProtoSerializer(
+    request: Request,
+    subject: NatsSubjects,
+  ): Promise<Response> {
+    try {
+      const payload = Request.encode(request).finish();
+      const reply = await this.natsClient.request(subject, payload);
+      const response = Response.decode(reply.data);
+      return response;
+    } catch (error) {
+      throw new HttpException('NATS request failed', parseInt(error.code));
+    }
+  }
+
+  async performRequest(req: Request, subject: NatsSubjects): Promise<Response> {
+    const request = Request.fromPartial(req);
+    const response = await this.requestProtoSerializer(request, subject);
+    if (response.error) {
+      throw new HttpException(
+        response.error.errorMessage,
+        response.error.errorCode,
+      );
+    }
+
+    return response;
+  }
+}
+
+export enum NatsSubjects {
+  NOTIFICATION_CREATE = 'NOTIFICATIONS.jobs.create',
 }

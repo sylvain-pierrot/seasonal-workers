@@ -15,5 +15,4 @@ message JobOfferStatus {
   string offer_id = 4;
   JobOfferStatusEnum status = 5;
   models.Ad offer = 6;
-
 }

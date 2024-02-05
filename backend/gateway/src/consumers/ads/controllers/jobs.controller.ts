@@ -1,15 +1,15 @@
 import { Controller, Get, Logger } from '@nestjs/common';
 import { Roles } from 'nest-keycloak-connect';
-import { AdsService } from '../ads.service';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
 import { v4 as uuidv4 } from 'uuid';
 import { NatsSubjects } from '@app/nats/nats.enum';
+import { NatsService } from '@app/nats/nats.service';
 
-@Controller('jobs')
+@Controller('ads/jobs')
 export class JobsController {
   logger = new Logger(JobsController.name);
-  constructor(private readonly appService: AdsService) {}
+  constructor(private readonly natsService: NatsService) {}
 
   @Get('/categories')
   @Roles({
@@ -20,7 +20,7 @@ export class JobsController {
       requestId: uuidv4(),
       getJobCategoriesRequest: {},
     };
-    return this.appService.performRequest(
+    return this.natsService.performRequest(
       requestType,
       NatsSubjects.JOB_GET_CATEGORIES,
     );

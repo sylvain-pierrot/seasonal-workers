@@ -1,0 +1,18 @@
+syntax = "proto3";
+package services;
+import "models/notification.proto";
+
+message GetNotificationsRequest {
+  string user_id = 1;
+}
+message GetNotificationsResponse {
+  repeated models.Notification notifications = 1;
+}
+
+message CreateNotificationRequest {
+  models.Notification notification = 2;
+}
+
+message CreateNotificationResponse {
+  models.Notification notification = 1;
+}

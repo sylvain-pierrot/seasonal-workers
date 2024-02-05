@@ -1,0 +1,18 @@
+syntax = "proto3";
+package models;
+
+enum NotificationType {
+    APPLICATION = 0;
+    MESSAGE = 1;
+    JOB = 2;
+}
+
+message Notification {
+    string id = 1;
+    string user_id = 2;
+    string title = 3;
+    string content = 4;
+    NotificationType type = 5;
+    bool is_read = 6;
+    string created_at = 7;
+}

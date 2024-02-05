@@ -18,7 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "proto:generate": "protoc --plugin=node_modules/ts-proto/protoc-gen-ts_proto --ts_proto_out=./src/proto_generated/ -I $PROTO_DIR/proto/ $PROTO_DIR/proto/**/*.proto",    "copy-sql": "cp -r src/database/init-db.sql dist/database"
+    "proto:generate": "protoc --plugin=node_modules/ts-proto/protoc-gen-ts_proto --ts_proto_out=./src/proto_generated/ -I $PROTO_DIR/proto/ $PROTO_DIR/proto/**/*.proto",
+    "copy-sql": "cp -r src/database/init-db.sql dist/database"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -34,7 +35,8 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "ts-proto": "^1.82.4",
-    "typeorm": "^0.3.19"
+    "typeorm": "^0.3.19",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -44,6 +46,7 @@
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",
     "@types/supertest": "^6.0.0",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.42.0",

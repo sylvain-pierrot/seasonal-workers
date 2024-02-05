@@ -1,15 +1,15 @@
 import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
 import { AuthenticatedUser, Roles } from 'nest-keycloak-connect';
 import { AdDto } from '@dto/ads.dto';
-import { AdsService } from '../ads.service';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
 import { v4 as uuidv4 } from 'uuid';
 import { NatsSubjects } from '@app/nats/nats.enum';
+import { NatsService } from '@app/nats/nats.service';
 
-@Controller('availabilities')
+@Controller('ads/availabilities')
 export class AvailabilityController {
-  constructor(private readonly appService: AdsService) {}
+  constructor(private readonly natsService: NatsService) {}
   @Post('/')
   @Roles({
     roles: ['realm:app-user'],
@@ -27,7 +27,7 @@ export class AvailabilityController {
         availability: message,
       },
     };
-    return this.appService.performRequest(
+    return this.natsService.performRequest(
       requestType,
       NatsSubjects.AVAILABILITY_CREATE,
     );
@@ -48,7 +48,7 @@ export class AvailabilityController {
       },
     };
 
-    return this.appService.performRequest(
+    return this.natsService.performRequest(
       requestType,
       NatsSubjects.AVAILABILITY_FIND,
     );
@@ -71,7 +71,7 @@ export class AvailabilityController {
         availability: message,
       },
     };
-    return this.appService.performRequest(
+    return this.natsService.performRequest(
       requestType,
       NatsSubjects.AVAILABILITY_UPDATE,
     );
@@ -87,7 +87,6 @@ export class AvailabilityController {
     @Body()
     message: any,
   ): Promise<Response> {
-    this.appService.logger.error(JSON.stringify(message));
     const requestType: Request = {
       requestId: uuidv4(),
       deleteAvailabilityRequest: {
@@ -95,7 +94,7 @@ export class AvailabilityController {
         availabilityId: message.availability_id,
       },
     };
-    return this.appService.performRequest(
+    return this.natsService.performRequest(
       requestType,
       NatsSubjects.AVAILABILITY_REMOVE,
     );

@@ -1,17 +1,17 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import { AuthenticatedUser, Roles } from 'nest-keycloak-connect';
 import { AdDto } from '@dto/ads.dto';
-import { AdsService } from '../ads.service';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
 import { v4 as uuidv4 } from 'uuid';
 import { JobStatusDto } from '../dto/job-status.dto';
 import { NatsSubjects } from '@app/nats/nats.enum';
+import { NatsService } from '@app/nats/nats.service';
 
-@Controller('job-offers')
+@Controller('ads/job-offers')
 export class JobOffersController {
   logger = new Logger(JobOffersController.name);
-  constructor(private readonly appService: AdsService) {}
+  constructor(private readonly natsServices: NatsService) {}
   @Post('/')
   @Roles({
     roles: ['realm:app-user'], // remove and add recruter role
@@ -30,7 +30,7 @@ export class JobOffersController {
         jobOffer: message,
       },
     };
-    return this.appService.performRequest(
+    return this.natsServices.performRequest(
       requestType,
       NatsSubjects.JOB_OFFERS_CREATE,
     );
@@ -51,7 +51,7 @@ export class JobOffersController {
       },
     };
 
-    return this.appService.performRequest(
+    return this.natsServices.performRequest(
       requestType,
       NatsSubjects.JOB_OFFERS_RECOMMENDATION,
     );
@@ -74,7 +74,7 @@ export class JobOffersController {
       },
     };
 
-    return this.appService.performRequest(
+    return this.natsServices.performRequest(
       requestType,
       NatsSubjects.JOB_OFFERS_FIND_ONE,
     );
@@ -97,7 +97,7 @@ export class JobOffersController {
         workerId: user.sub,
       },
     };
-    return this.appService.performRequest(
+    return this.natsServices.performRequest(
       requestType,
       NatsSubjects.JOB_OFFERS_APPLY,
     );
@@ -121,7 +121,7 @@ export class JobOffersController {
         status: message.status,
       },
     };
-    return this.appService.performRequest(
+    return this.natsServices.performRequest(
       requestType,
       NatsSubjects.JOB_OFFERS_VALIDATION,
     );
@@ -141,7 +141,7 @@ export class JobOffersController {
         workerId: user.sub,
       },
     };
-    return this.appService.performRequest(
+    return this.natsServices.performRequest(
       requestType,
       NatsSubjects.JOB_OFFERS_GET_STATUS,
     );
