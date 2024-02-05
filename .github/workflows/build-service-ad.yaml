@@ -13,7 +13,7 @@ env:
   IMAGE_NAME: service-ad
   DOCKERFILE_CONTEXT: "backend" # Build's context is the set of files located in the specified PATH or URL (default Git context)
   DOCKERFILE_TARGET: "runner" # Sets the target stage to build
-  DOCKERFILE_FILE: "gateway/services/ad/Dockerfile" # Path to the Dockerfile. (default {context}/Dockerfile)
+  DOCKERFILE_FILE: "services/ad/Dockerfile" # Path to the Dockerfile. (default {context}/Dockerfile)
 
 jobs:
   scan-dockerfile:
