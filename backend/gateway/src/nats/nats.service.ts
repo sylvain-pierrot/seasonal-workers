@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { NatsConnection, Service, ServiceGroup, connect } from 'nats';
+import { NatsConnection, connect } from 'nats';
 import { HttpException } from '@nestjs/common';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';

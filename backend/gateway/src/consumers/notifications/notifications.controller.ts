@@ -3,7 +3,6 @@ import { AuthenticatedUser, Roles } from 'nest-keycloak-connect';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
 import { v4 as uuidv4 } from 'uuid';
-import { NotificationService } from './notifications.service';
 import { NatsSubjects } from '@app/nats/nats.enum';
 import { NatsService } from '@app/nats/nats.service';
 
