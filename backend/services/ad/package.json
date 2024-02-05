@@ -6,10 +6,10 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
+    "build": "PROTO_DIR=${PROTO_DIR:-\"../../\"} npm run proto:generate && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "npm run proto:generate && nest start --watch",
+    "start:dev": "PROTO_DIR=${PROTO_DIR:-\"../../\"} npm run proto:generate && nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -18,8 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "proto:generate": "protoc --plugin=node_modules/ts-proto/protoc-gen-ts_proto --ts_proto_out=./src/proto_generated/ -I ../../proto/ ../../proto/**.proto",
-    "copy-sql": "cp -r src/database/init-db.sql dist/database"
+    "proto:generate": "protoc --plugin=node_modules/ts-proto/protoc-gen-ts_proto --ts_proto_out=./src/proto_generated/ -I $PROTO_DIR/proto/ $PROTO_DIR/proto/**/*.proto",    "copy-sql": "cp -r src/database/init-db.sql dist/database"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
