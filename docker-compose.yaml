@@ -1,22 +1,20 @@
 services:
   nats:
     image: docker.io/nats:latest
-    container_name: nats
     ports:
       - 4222:4222
       - 8222:8222
-    volumes:
-      - nats:/data
-  # api-gateway:
-  #   build:
-  #     context: backend
-  #     dockerfile: gateway/Dockerfile
-  #   ports:
-  #     - 3000:3000
-  #   environment:
-  #     NATS_HOST: nats://nats:4222
-  #   depends_on:
-  #     - nats
+
+  api-gateway:
+    build:
+      context: backend
+      dockerfile: gateway/Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      NATS_HOST: nats://nats:4222
+    depends_on:
+      - nats
 
   keycloak:
     image: bitnami/keycloak:22.0.5
@@ -24,57 +22,37 @@ services:
       - "8080:8080"
     env_file:
       - .env/keycloak.template.env
+    command: ["kc.sh", "start-dev", "--import-realm"]
+    volumes:
+      - ./backend/keycloak/custom-theme:/opt/bitnami/keycloak/themes/custom/login
+      - ./backend/keycloak/realm.json:/opt/bitnami/keycloak/data/import/realm.json
     depends_on:
-      - postgresql-keycloak
+      - db-keycloak
 
-  postgresql-keycloak:
-    image: docker.io/bitnami/postgresql:latest
+  db-keycloak:
+    image: bitnami/postgresql:14
     env_file:
       - .env/postgres-keycloak.template.env
     volumes:
-      - "postgres_keycloack_data:/bitnami/postgresql"
+      - db_kc_data:/var/lib/postgres/data
 
-  # postgres-profile:
-  #   image: docker.io/bitnami/postgresql:latest
-  #   restart: always
-  #   env_file:
-  #     - .env/postgres-profile.template.env
-  #   volumes:
-  #     - postgres_profile_data:/var/lib/postgresql/data
-
-  postgres-ads:
-    image: docker.io/bitnami/postgresql:latest
-    restart: always
+  db-service-ad:
+    image: bitnami/postgresql:14
     env_file:
       - .env/postgres-ads.template.env
-    ports:
-      - 5432:5432
     volumes:
-      - postgres_ads_data:/var/lib/postgresql/data
+      - db_service_ad_data:/var/lib/postgres/data
 
-  timescaledb-notifications:
+  db-notifications:
     image: timescale/timescaledb:latest-pg15
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: notifications
-    ports:
-      - 5433:5432
     volumes:
-      - notifications:/var/lib/postgresql/data
+      - db_notifications_data:/var/lib/postgresql/data
 
-  # minio:
-  #   image: docker.io/bitnami/minio:latest
-  #   container_name: minio-workers
-  #   ports:
-  #     - 9000:9000
-  #     - 9001:9001
-  #   env_file:
-  #     - .env/minio.template.env
-  #   volumes:
-  #     - minio:/data
 volumes:
-  nats:
-  notifications:
-  postgres_profile_data:
-  postgres_keycloack_data:
-  postgres_ads_data:
+  db_notifications_data:
+  db_kc_data:
+  db_service_ad_data:
+

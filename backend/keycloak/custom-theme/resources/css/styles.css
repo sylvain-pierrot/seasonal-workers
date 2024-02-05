@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+#kc-header {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+#kc-header + div {
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 90dvh;
+}
+
+#kc-page-title {
+  margin-top: 20px;
+  text-align: center;
+  color: #333;
+}
+
+form {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 0 10px;
+  align-self: stretch;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#kc-form-options {
+  margin-bottom: 15px;
+}
+
+#kc-form-options a,
+#kc-form-options + div a {
+  text-decoration: none;
+  color: #3498db;
+}
+
+input[type="submit"] {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+}
+
+input[type="submit"]:hover {
+  background-color: #2980b9;
+}
+
+#kc-info {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#kc-registration-container {
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
+#kc-registration {
+  color: #333;
+}
+
+#kc-registration a {
+  text-decoration: none;
+  color: #3498db;
+}
+
+#input-error {
+  color: #de3a3a;
+}
