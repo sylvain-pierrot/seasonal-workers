@@ -4,11 +4,7 @@ import {
   AdsRepository,
   JobStatusRepository,
 } from '@repositories/ads.repository';
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from '@proto/Request';
@@ -19,6 +15,12 @@ import { JobOfferStatusEnum } from '@proto/models/job-status';
 import { UUID } from 'crypto';
 import { NatsResponse } from '@utils/response';
 import { isValideDateRange } from '@utils/utils';
+import { NatsService, NatsSubjects } from '@app/nats/nats.service';
+import { Notification, NotificationType } from '@proto/models/notification';
+import { v4 as uuidv4 } from 'uuid';
+import { ErrorEventsLogEntity } from '@app/entities/event.entity';
+import { NotificationService } from './notifications.service';
+
 @Injectable()
 export class JobService {
   private logger = new Logger(JobService.name);
@@ -27,6 +29,7 @@ export class JobService {
     private adsRepository: AdsRepository,
     @InjectRepository(JobOfferStatusEntity)
     private jobStatusRepository: JobStatusRepository,
+    private notificationService: NotificationService,
   ) {}
   async CreateJobOffer(request: Request): Promise<Uint8Array> {
     const jobOffer = request.createJobOfferRequest.jobOffer;
@@ -117,11 +120,28 @@ export class JobService {
       status: status,
     });
 
-    const result = await this.jobStatusRepository.save(applyJobOffer);
+    const offerStatus = await this.jobStatusRepository.save(applyJobOffer);
+    const offer = await this.adsRepository.findOneOrFail({
+      where: {
+        id: offerStatus.offerId,
+      },
+    });
+
+    const notification =
+      this.notificationService.constructJobOfferStatusNotification(
+        workerId,
+        status,
+        offer,
+      );
+
+    await this.notificationService.send(
+      notification,
+      NatsSubjects.NOTIFICATION_CREATE,
+    );
     const response = {
       requestId: request.requestId,
       applyJobOfferResponse: {
-        id: result.offerId,
+        id: offer.id,
       },
     } as Response;
     return NatsResponse.success(response);
@@ -148,6 +168,7 @@ export class JobService {
     const status = request.updateJobOfferStatusRequest.status;
     const offerId = request.updateJobOfferStatusRequest.offerId;
     const workerId = request.updateJobOfferStatusRequest.workerId;
+    // Check if the worker has applied to the job offer
     const jobStatus = await this.jobStatusRepository.findOneOrFail({
       where: {
         workerId: workerId,
@@ -155,13 +176,27 @@ export class JobService {
       },
     });
     jobStatus.status = status;
-    await this.jobStatusRepository.save(jobStatus);
+    // Update the status
+    const job = await this.jobStatusRepository.save(jobStatus);
+    const offer = jobStatus.offer;
+    // Send notification after updating the status
+    const notification =
+      this.notificationService.constructJobOfferStatusNotification(
+        workerId,
+        status,
+        offer,
+      );
+    await this.notificationService.send(
+      notification,
+      NatsSubjects.NOTIFICATION_CREATE,
+    );
     const response = {
       requestId: request.requestId,
       updateJobOfferStatusResponse: {
-        id: jobStatus.offerId,
+        id: job.id,
       },
     } as Response;
+
     return NatsResponse.success(response);
   }
 }

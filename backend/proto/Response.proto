@@ -2,6 +2,7 @@ syntax = "proto3";
 import "services/ads.proto";
 import "services/recommendation.proto";
 import "services/jobs.proto";
+import "services/notifications.proto";
 
 message Error {
   string error_message = 1;
@@ -29,5 +30,7 @@ message Response {
     services.GetJobOffersStatusResponse get_job_offer_status_response = 16;
     services.GetJobCategoriesResponse get_job_categories_response = 17;
     services.UpdateJobOfferStatusResponse update_job_offer_status_response = 18;
+    services.GetNotificationsResponse get_notifications_response = 19;
+    services.CreateNotificationResponse create_notification_response = 20;
   }
 }

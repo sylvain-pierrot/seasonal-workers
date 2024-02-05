@@ -9,16 +9,16 @@ import {
 } from '@nestjs/common';
 import { AuthenticatedUser, Roles } from 'nest-keycloak-connect';
 import { AdDto } from '@dto/ads.dto';
-import { AdsService } from '../ads.service';
 import { Request } from '@proto/Request';
 import { Response } from '@proto/Response';
 import { v4 as uuidv4 } from 'uuid';
 import { NatsSubjects } from '@app/nats/nats.enum';
+import { NatsService } from '@app/nats/nats.service';
 
-@Controller('experiences')
+@Controller('ads/experiences')
 export class ExperiencesController {
   logger = new Logger(ExperiencesController.name);
-  constructor(private readonly appService: AdsService) {}
+  constructor(private readonly natsService: NatsService) {}
   @Post('/')
   @Roles({
     roles: ['realm:app-user'],
@@ -36,7 +36,7 @@ export class ExperiencesController {
         ad: message,
       },
     };
-    return this.appService.performRequest(
+    return this.natsService.performRequest(
       requestType,
       NatsSubjects.EXPERIENCE_CREATE,
     );
@@ -57,7 +57,7 @@ export class ExperiencesController {
       },
     };
 
-    return this.appService.performRequest(
+    return this.natsService.performRequest(
       requestType,
       NatsSubjects.EXPERIENCE_FIND,
     );
@@ -80,7 +80,7 @@ export class ExperiencesController {
         ad: message,
       },
     };
-    return this.appService.performRequest(
+    return this.natsService.performRequest(
       requestType,
       NatsSubjects.EXPERIENCE_UPDATE,
     );
@@ -103,7 +103,7 @@ export class ExperiencesController {
         experienceId: message.experience_id,
       },
     };
-    return this.appService.performRequest(
+    return this.natsService.performRequest(
       requestType,
       NatsSubjects.EXPERIENCE_REMOVE,
     );

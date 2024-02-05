@@ -18,6 +18,8 @@ import { DataSource } from 'typeorm';
 import { DatabaseReady } from './database/init.service';
 import { JobCategoryEntity } from '@entities/job-categories.entity';
 import { JobCategoryService } from '@services/job-categories.service';
+import { ErrorEventsLogEntity } from './entities/event.entity';
+import { NotificationService } from './services/notifications.service';
 
 @Module({
   imports: [
@@ -29,6 +31,7 @@ import { JobCategoryService } from '@services/job-categories.service';
     TypeOrmModule.forRootAsync(databaseConfig),
     TypeOrmModule.forFeature([
       AdEntity,
+      ErrorEventsLogEntity,
       JobCategoryEntity,
       JobSubCategoryEntity,
       JobOfferStatusEntity,
@@ -41,6 +44,7 @@ import { JobCategoryService } from '@services/job-categories.service';
     JobsController,
   ],
   providers: [
+    NotificationService,
     ExperienceService,
     AvailabilityService,
     JobService,

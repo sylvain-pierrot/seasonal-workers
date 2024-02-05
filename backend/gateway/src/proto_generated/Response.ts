@@ -19,6 +19,7 @@ import {
   GetJobOffersStatusResponse,
   UpdateJobOfferStatusResponse,
 } from "./services/jobs";
+import { GetNotificationsResponse } from "./services/notifications";
 import { GetJobOffersRecommendationResponse } from "./services/recommendation";
 
 export const protobufPackage = "";
@@ -47,6 +48,7 @@ export interface Response {
   getJobOfferStatusResponse?: GetJobOffersStatusResponse | undefined;
   getJobCategoriesResponse?: GetJobCategoriesResponse | undefined;
   updateJobOfferStatusResponse?: UpdateJobOfferStatusResponse | undefined;
+  getNotificationsResponse?: GetNotificationsResponse | undefined;
 }
 
 function createBaseError(): Error {
@@ -143,6 +145,7 @@ function createBaseResponse(): Response {
     getJobOfferStatusResponse: undefined,
     getJobCategoriesResponse: undefined,
     updateJobOfferStatusResponse: undefined,
+    getNotificationsResponse: undefined,
   };
 }
 
@@ -202,6 +205,9 @@ export const Response = {
     }
     if (message.updateJobOfferStatusResponse !== undefined) {
       UpdateJobOfferStatusResponse.encode(message.updateJobOfferStatusResponse, writer.uint32(146).fork()).ldelim();
+    }
+    if (message.getNotificationsResponse !== undefined) {
+      GetNotificationsResponse.encode(message.getNotificationsResponse, writer.uint32(154).fork()).ldelim();
     }
     return writer;
   },
@@ -342,6 +348,13 @@ export const Response = {
 
           message.updateJobOfferStatusResponse = UpdateJobOfferStatusResponse.decode(reader, reader.uint32());
           continue;
+        case 19:
+          if (tag !== 154) {
+            break;
+          }
+
+          message.getNotificationsResponse = GetNotificationsResponse.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -403,6 +416,9 @@ export const Response = {
       updateJobOfferStatusResponse: isSet(object.updateJobOfferStatusResponse)
         ? UpdateJobOfferStatusResponse.fromJSON(object.updateJobOfferStatusResponse)
         : undefined,
+      getNotificationsResponse: isSet(object.getNotificationsResponse)
+        ? GetNotificationsResponse.fromJSON(object.getNotificationsResponse)
+        : undefined,
     };
   },
 
@@ -463,6 +479,9 @@ export const Response = {
     }
     if (message.updateJobOfferStatusResponse !== undefined) {
       obj.updateJobOfferStatusResponse = UpdateJobOfferStatusResponse.toJSON(message.updateJobOfferStatusResponse);
+    }
+    if (message.getNotificationsResponse !== undefined) {
+      obj.getNotificationsResponse = GetNotificationsResponse.toJSON(message.getNotificationsResponse);
     }
     return obj;
   },
@@ -536,6 +555,10 @@ export const Response = {
     message.updateJobOfferStatusResponse =
       (object.updateJobOfferStatusResponse !== undefined && object.updateJobOfferStatusResponse !== null)
         ? UpdateJobOfferStatusResponse.fromPartial(object.updateJobOfferStatusResponse)
+        : undefined;
+    message.getNotificationsResponse =
+      (object.getNotificationsResponse !== undefined && object.getNotificationsResponse !== null)
+        ? GetNotificationsResponse.fromPartial(object.getNotificationsResponse)
         : undefined;
     return message;
   },

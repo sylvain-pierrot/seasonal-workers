@@ -51,6 +51,17 @@ services:
       - 5432:5432
     volumes:
       - postgres_ads_data:/var/lib/postgresql/data
+
+  timescaledb-notifications:
+    image: timescale/timescaledb:latest-pg15
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: notifications
+    ports:
+      - 5433:5432
+    volumes:
+      - notifications:/var/lib/postgresql/data
+
   # minio:
   #   image: docker.io/bitnami/minio:latest
   #   container_name: minio-workers
@@ -63,6 +74,7 @@ services:
   #     - minio:/data
 volumes:
   nats:
+  notifications:
   postgres_profile_data:
   postgres_keycloack_data:
   postgres_ads_data:

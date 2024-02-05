@@ -10,7 +10,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { KeycloakConnectConfig } from '@config/KeycloakConnectModule';
 import { NatsModule } from './nats/nats.module';
 import { ExperiencesController } from './consumers/ads/controllers/experiences.controller';
-import { AdsService } from './consumers/ads/ads.service';
 import { AvailabilityController } from './consumers/ads/controllers/availabilities.controller';
 import { JobOffersController } from './consumers/ads/controllers/job-offers.controller';
 import { JobsController } from './consumers/ads/controllers/jobs.controller';
@@ -35,7 +34,6 @@ import { NotificationService } from './consumers/notifications/notifications.ser
   ],
   providers: [
     NotificationService,
-    AdsService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
