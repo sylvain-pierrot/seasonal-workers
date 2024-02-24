@@ -43,6 +43,16 @@ services:
     volumes:
       - db_service_ad_data:/var/lib/postgres/data
 
+  db-service-profile:
+    image: bitnami/postgresql:14
+    container_name: db-service-profile
+    env_file:
+      - .env/postgres-profile.template.env
+    ports:
+      - 5432:5432
+    volumes:
+      - db_service_profile_data:/var/lib/postgres/data
+
   db-notifications:
     image: timescale/timescaledb:latest-pg15
     environment:
@@ -55,4 +65,4 @@ volumes:
   db_notifications_data:
   db_kc_data:
   db_service_ad_data:
-
+  db_service_profile_data:

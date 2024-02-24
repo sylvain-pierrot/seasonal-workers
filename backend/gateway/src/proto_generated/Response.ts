@@ -19,10 +19,11 @@ import {
   GetJobOffersStatusResponse,
   UpdateJobOfferStatusResponse,
 } from "./services/jobs";
-import { GetNotificationsResponse } from "./services/notifications";
+import { CreateNotificationResponse, GetNotificationsResponse } from "./services/notifications";
+import { CreateUserProfileResponse, UpdateUserProfileResponse } from "./services/profile";
 import { GetJobOffersRecommendationResponse } from "./services/recommendation";
 
-export const protobufPackage = "";
+export const protobufPackage = "response";
 
 export interface Error {
   errorMessage: string;
@@ -49,6 +50,9 @@ export interface Response {
   getJobCategoriesResponse?: GetJobCategoriesResponse | undefined;
   updateJobOfferStatusResponse?: UpdateJobOfferStatusResponse | undefined;
   getNotificationsResponse?: GetNotificationsResponse | undefined;
+  createNotificationResponse?: CreateNotificationResponse | undefined;
+  createUserProfileResponse?: CreateUserProfileResponse | undefined;
+  updateUserProfileResponse?: UpdateUserProfileResponse | undefined;
 }
 
 function createBaseError(): Error {
@@ -146,6 +150,9 @@ function createBaseResponse(): Response {
     getJobCategoriesResponse: undefined,
     updateJobOfferStatusResponse: undefined,
     getNotificationsResponse: undefined,
+    createNotificationResponse: undefined,
+    createUserProfileResponse: undefined,
+    updateUserProfileResponse: undefined,
   };
 }
 
@@ -208,6 +215,15 @@ export const Response = {
     }
     if (message.getNotificationsResponse !== undefined) {
       GetNotificationsResponse.encode(message.getNotificationsResponse, writer.uint32(154).fork()).ldelim();
+    }
+    if (message.createNotificationResponse !== undefined) {
+      CreateNotificationResponse.encode(message.createNotificationResponse, writer.uint32(162).fork()).ldelim();
+    }
+    if (message.createUserProfileResponse !== undefined) {
+      CreateUserProfileResponse.encode(message.createUserProfileResponse, writer.uint32(170).fork()).ldelim();
+    }
+    if (message.updateUserProfileResponse !== undefined) {
+      UpdateUserProfileResponse.encode(message.updateUserProfileResponse, writer.uint32(178).fork()).ldelim();
     }
     return writer;
   },
@@ -355,6 +371,27 @@ export const Response = {
 
           message.getNotificationsResponse = GetNotificationsResponse.decode(reader, reader.uint32());
           continue;
+        case 20:
+          if (tag !== 162) {
+            break;
+          }
+
+          message.createNotificationResponse = CreateNotificationResponse.decode(reader, reader.uint32());
+          continue;
+        case 21:
+          if (tag !== 170) {
+            break;
+          }
+
+          message.createUserProfileResponse = CreateUserProfileResponse.decode(reader, reader.uint32());
+          continue;
+        case 22:
+          if (tag !== 178) {
+            break;
+          }
+
+          message.updateUserProfileResponse = UpdateUserProfileResponse.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -419,6 +456,15 @@ export const Response = {
       getNotificationsResponse: isSet(object.getNotificationsResponse)
         ? GetNotificationsResponse.fromJSON(object.getNotificationsResponse)
         : undefined,
+      createNotificationResponse: isSet(object.createNotificationResponse)
+        ? CreateNotificationResponse.fromJSON(object.createNotificationResponse)
+        : undefined,
+      createUserProfileResponse: isSet(object.createUserProfileResponse)
+        ? CreateUserProfileResponse.fromJSON(object.createUserProfileResponse)
+        : undefined,
+      updateUserProfileResponse: isSet(object.updateUserProfileResponse)
+        ? UpdateUserProfileResponse.fromJSON(object.updateUserProfileResponse)
+        : undefined,
     };
   },
 
@@ -482,6 +528,15 @@ export const Response = {
     }
     if (message.getNotificationsResponse !== undefined) {
       obj.getNotificationsResponse = GetNotificationsResponse.toJSON(message.getNotificationsResponse);
+    }
+    if (message.createNotificationResponse !== undefined) {
+      obj.createNotificationResponse = CreateNotificationResponse.toJSON(message.createNotificationResponse);
+    }
+    if (message.createUserProfileResponse !== undefined) {
+      obj.createUserProfileResponse = CreateUserProfileResponse.toJSON(message.createUserProfileResponse);
+    }
+    if (message.updateUserProfileResponse !== undefined) {
+      obj.updateUserProfileResponse = UpdateUserProfileResponse.toJSON(message.updateUserProfileResponse);
     }
     return obj;
   },
@@ -559,6 +614,18 @@ export const Response = {
     message.getNotificationsResponse =
       (object.getNotificationsResponse !== undefined && object.getNotificationsResponse !== null)
         ? GetNotificationsResponse.fromPartial(object.getNotificationsResponse)
+        : undefined;
+    message.createNotificationResponse =
+      (object.createNotificationResponse !== undefined && object.createNotificationResponse !== null)
+        ? CreateNotificationResponse.fromPartial(object.createNotificationResponse)
+        : undefined;
+    message.createUserProfileResponse =
+      (object.createUserProfileResponse !== undefined && object.createUserProfileResponse !== null)
+        ? CreateUserProfileResponse.fromPartial(object.createUserProfileResponse)
+        : undefined;
+    message.updateUserProfileResponse =
+      (object.updateUserProfileResponse !== undefined && object.updateUserProfileResponse !== null)
+        ? UpdateUserProfileResponse.fromPartial(object.updateUserProfileResponse)
         : undefined;
     return message;
   },

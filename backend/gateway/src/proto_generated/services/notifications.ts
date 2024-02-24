@@ -12,6 +12,14 @@ export interface GetNotificationsResponse {
   notifications: Notification[];
 }
 
+export interface CreateNotificationRequest {
+  notification: Notification | undefined;
+}
+
+export interface CreateNotificationResponse {
+  notification: Notification | undefined;
+}
+
 function createBaseGetNotificationsRequest(): GetNotificationsRequest {
   return { userId: "" };
 }
@@ -126,6 +134,124 @@ export const GetNotificationsResponse = {
   fromPartial<I extends Exact<DeepPartial<GetNotificationsResponse>, I>>(object: I): GetNotificationsResponse {
     const message = createBaseGetNotificationsResponse();
     message.notifications = object.notifications?.map((e) => Notification.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseCreateNotificationRequest(): CreateNotificationRequest {
+  return { notification: undefined };
+}
+
+export const CreateNotificationRequest = {
+  encode(message: CreateNotificationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.notification !== undefined) {
+      Notification.encode(message.notification, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateNotificationRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateNotificationRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.notification = Notification.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateNotificationRequest {
+    return { notification: isSet(object.notification) ? Notification.fromJSON(object.notification) : undefined };
+  },
+
+  toJSON(message: CreateNotificationRequest): unknown {
+    const obj: any = {};
+    if (message.notification !== undefined) {
+      obj.notification = Notification.toJSON(message.notification);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateNotificationRequest>, I>>(base?: I): CreateNotificationRequest {
+    return CreateNotificationRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateNotificationRequest>, I>>(object: I): CreateNotificationRequest {
+    const message = createBaseCreateNotificationRequest();
+    message.notification = (object.notification !== undefined && object.notification !== null)
+      ? Notification.fromPartial(object.notification)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseCreateNotificationResponse(): CreateNotificationResponse {
+  return { notification: undefined };
+}
+
+export const CreateNotificationResponse = {
+  encode(message: CreateNotificationResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.notification !== undefined) {
+      Notification.encode(message.notification, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateNotificationResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateNotificationResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.notification = Notification.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateNotificationResponse {
+    return { notification: isSet(object.notification) ? Notification.fromJSON(object.notification) : undefined };
+  },
+
+  toJSON(message: CreateNotificationResponse): unknown {
+    const obj: any = {};
+    if (message.notification !== undefined) {
+      obj.notification = Notification.toJSON(message.notification);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateNotificationResponse>, I>>(base?: I): CreateNotificationResponse {
+    return CreateNotificationResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateNotificationResponse>, I>>(object: I): CreateNotificationResponse {
+    const message = createBaseCreateNotificationResponse();
+    message.notification = (object.notification !== undefined && object.notification !== null)
+      ? Notification.fromPartial(object.notification)
+      : undefined;
     return message;
   },
 };

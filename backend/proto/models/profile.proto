@@ -1,0 +1,18 @@
+syntax = "proto3";
+package models;
+
+message User {
+  string id = 1;
+  string kc_id = 2;
+  string first_name = 3;
+  string last_name = 4;
+  string email = 5;
+  string gender = 6;
+  string birth_date = 7;
+  string created_at = 8;
+  string phone = 9;
+  string country = 10;
+  string last_auth = 11;
+  bool deleted = 12;
+  string description = 13;
+}
