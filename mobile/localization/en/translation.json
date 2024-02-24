@@ -12,16 +12,12 @@
       }
     },
     "pages": {
-      "sign-in": {
+      "connect": {
         "title": "Log in",
         "form": {
           "password": "Password"
         },
-        "actions": {
-          "forgot": "Forgot yout password?",
-          "sign-in": "Log in",
-          "sign-up": "Sign up"
-        }
+        "action": "Get Started 🔑"
       },
       "forgot-password": {
         "title": "Forgot password",

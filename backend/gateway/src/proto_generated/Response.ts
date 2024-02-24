@@ -19,7 +19,7 @@ import {
   GetJobOffersStatusResponse,
   UpdateJobOfferStatusResponse,
 } from "./services/jobs";
-import { GetNotificationsResponse } from "./services/notifications";
+import { CreateNotificationResponse, GetNotificationsResponse } from "./services/notifications";
 import { GetJobOffersRecommendationResponse } from "./services/recommendation";
 
 export const protobufPackage = "";
@@ -49,6 +49,7 @@ export interface Response {
   getJobCategoriesResponse?: GetJobCategoriesResponse | undefined;
   updateJobOfferStatusResponse?: UpdateJobOfferStatusResponse | undefined;
   getNotificationsResponse?: GetNotificationsResponse | undefined;
+  createNotificationResponse?: CreateNotificationResponse | undefined;
 }
 
 function createBaseError(): Error {
@@ -146,6 +147,7 @@ function createBaseResponse(): Response {
     getJobCategoriesResponse: undefined,
     updateJobOfferStatusResponse: undefined,
     getNotificationsResponse: undefined,
+    createNotificationResponse: undefined,
   };
 }
 
@@ -208,6 +210,9 @@ export const Response = {
     }
     if (message.getNotificationsResponse !== undefined) {
       GetNotificationsResponse.encode(message.getNotificationsResponse, writer.uint32(154).fork()).ldelim();
+    }
+    if (message.createNotificationResponse !== undefined) {
+      CreateNotificationResponse.encode(message.createNotificationResponse, writer.uint32(162).fork()).ldelim();
     }
     return writer;
   },
@@ -355,6 +360,13 @@ export const Response = {
 
           message.getNotificationsResponse = GetNotificationsResponse.decode(reader, reader.uint32());
           continue;
+        case 20:
+          if (tag !== 162) {
+            break;
+          }
+
+          message.createNotificationResponse = CreateNotificationResponse.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -419,6 +431,9 @@ export const Response = {
       getNotificationsResponse: isSet(object.getNotificationsResponse)
         ? GetNotificationsResponse.fromJSON(object.getNotificationsResponse)
         : undefined,
+      createNotificationResponse: isSet(object.createNotificationResponse)
+        ? CreateNotificationResponse.fromJSON(object.createNotificationResponse)
+        : undefined,
     };
   },
 
@@ -482,6 +497,9 @@ export const Response = {
     }
     if (message.getNotificationsResponse !== undefined) {
       obj.getNotificationsResponse = GetNotificationsResponse.toJSON(message.getNotificationsResponse);
+    }
+    if (message.createNotificationResponse !== undefined) {
+      obj.createNotificationResponse = CreateNotificationResponse.toJSON(message.createNotificationResponse);
     }
     return obj;
   },
@@ -559,6 +577,10 @@ export const Response = {
     message.getNotificationsResponse =
       (object.getNotificationsResponse !== undefined && object.getNotificationsResponse !== null)
         ? GetNotificationsResponse.fromPartial(object.getNotificationsResponse)
+        : undefined;
+    message.createNotificationResponse =
+      (object.createNotificationResponse !== undefined && object.createNotificationResponse !== null)
+        ? CreateNotificationResponse.fromPartial(object.createNotificationResponse)
         : undefined;
     return message;
   },

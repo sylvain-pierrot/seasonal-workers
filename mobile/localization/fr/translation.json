@@ -12,16 +12,12 @@
       }
     },
     "pages": {
-      "sign-in": {
+      "connect": {
         "title": "Se connecter",
         "form": {
           "password": "Mot de passe"
         },
-        "actions": {
-          "forgot": "Mot de passe oublié ?",
-          "sign-in": "Se connecter",
-          "sign-up": "S'inscrire"
-        }
+        "action": "Commencer 🔑"
       },
       "forgot-password": {
         "title": "Mot de passe oublié",

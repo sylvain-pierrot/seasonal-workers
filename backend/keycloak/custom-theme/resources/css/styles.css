@@ -17,7 +17,7 @@ body {
 }
 
 #kc-header + div {
-  max-width: 560px;
+  max-width: 860px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@ body {
 }
 
 #kc-page-title {
-  margin-top: 20px;
+  margin-top: 10px;
   text-align: center;
   color: #333;
 }
@@ -35,7 +35,7 @@ form {
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 15px;
   margin: 0 10px;
   align-self: stretch;
 }
@@ -48,8 +48,8 @@ label {
 
 input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
+  padding: 8px;
+  margin-bottom: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
@@ -71,7 +71,7 @@ input[type="submit"] {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   text-align: center;
 }
 

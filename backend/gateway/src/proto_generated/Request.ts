@@ -19,7 +19,7 @@ import {
   GetJobOffersStatusRequest,
   UpdateJobOfferStatusRequest,
 } from "./services/jobs";
-import { GetNotificationsRequest } from "./services/notifications";
+import { CreateNotificationRequest, GetNotificationsRequest } from "./services/notifications";
 import { GetJobOffersRecommendationRequest } from "./services/recommendation";
 
 export const protobufPackage = "";
@@ -44,6 +44,7 @@ export interface Request {
   getJobCategoriesRequest?: GetJobCategoriesRequest | undefined;
   updateJobOfferStatusRequest?: UpdateJobOfferStatusRequest | undefined;
   getNotificationsRequest?: GetNotificationsRequest | undefined;
+  createNotificationRequest?: CreateNotificationRequest | undefined;
 }
 
 function createBaseRequest(): Request {
@@ -66,6 +67,7 @@ function createBaseRequest(): Request {
     getJobCategoriesRequest: undefined,
     updateJobOfferStatusRequest: undefined,
     getNotificationsRequest: undefined,
+    createNotificationRequest: undefined,
   };
 }
 
@@ -125,6 +127,9 @@ export const Request = {
     }
     if (message.getNotificationsRequest !== undefined) {
       GetNotificationsRequest.encode(message.getNotificationsRequest, writer.uint32(146).fork()).ldelim();
+    }
+    if (message.createNotificationRequest !== undefined) {
+      CreateNotificationRequest.encode(message.createNotificationRequest, writer.uint32(154).fork()).ldelim();
     }
     return writer;
   },
@@ -262,6 +267,13 @@ export const Request = {
 
           message.getNotificationsRequest = GetNotificationsRequest.decode(reader, reader.uint32());
           continue;
+        case 19:
+          if (tag !== 154) {
+            break;
+          }
+
+          message.createNotificationRequest = CreateNotificationRequest.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -325,6 +337,9 @@ export const Request = {
       getNotificationsRequest: isSet(object.getNotificationsRequest)
         ? GetNotificationsRequest.fromJSON(object.getNotificationsRequest)
         : undefined,
+      createNotificationRequest: isSet(object.createNotificationRequest)
+        ? CreateNotificationRequest.fromJSON(object.createNotificationRequest)
+        : undefined,
     };
   },
 
@@ -385,6 +400,9 @@ export const Request = {
     }
     if (message.getNotificationsRequest !== undefined) {
       obj.getNotificationsRequest = GetNotificationsRequest.toJSON(message.getNotificationsRequest);
+    }
+    if (message.createNotificationRequest !== undefined) {
+      obj.createNotificationRequest = CreateNotificationRequest.toJSON(message.createNotificationRequest);
     }
     return obj;
   },
@@ -459,6 +477,10 @@ export const Request = {
     message.getNotificationsRequest =
       (object.getNotificationsRequest !== undefined && object.getNotificationsRequest !== null)
         ? GetNotificationsRequest.fromPartial(object.getNotificationsRequest)
+        : undefined;
+    message.createNotificationRequest =
+      (object.createNotificationRequest !== undefined && object.createNotificationRequest !== null)
+        ? CreateNotificationRequest.fromPartial(object.createNotificationRequest)
         : undefined;
     return message;
   },

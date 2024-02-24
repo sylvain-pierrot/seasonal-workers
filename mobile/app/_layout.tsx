@@ -46,11 +46,7 @@ export default function RootLayout() {
               headerShadowVisible: false,
               animation: "fade",
               header: (props) => {
-                if (
-                  ["sign-in", "sign-up", "forgot-password"].includes(
-                    props.route.name
-                  )
-                ) {
+                if (["connect", "sign-up"].includes(props.route.name)) {
                   return (
                     <CustomTabAppBar
                       title={t("no-auth.bar.title")}
@@ -68,7 +64,7 @@ export default function RootLayout() {
                         },
                       ]}
                       canGoBack={() =>
-                        props.route.name !== "sign-in" ||
+                        props.route.name !== "connect" ||
                         props.navigation.canGoBack()
                       }
                       goBack={props.navigation.goBack}
@@ -91,16 +87,12 @@ export default function RootLayout() {
               options={{ title: t("(tabs).title") }}
             />
             <Stack.Screen
-              name="sign-in"
-              options={{ title: t("sign-in.title") }}
+              name="connect"
+              options={{ title: t("connect.title") }}
             />
             <Stack.Screen
               name="sign-up"
               options={{ title: t("sign-up.title") }}
-            />
-            <Stack.Screen
-              name="forgot-password"
-              options={{ title: t("forgot-password.title") }}
             />
           </Stack>
 

@@ -13,6 +13,10 @@ services:
       - 3000:3000
     environment:
       NATS_HOST: nats://nats:4222
+      KEYCLOAK_AUTH_SERVER_URL: http://keycloak:8080
+      KEYCLOAK_REALM: seasonalworkers
+      KEYCLOAK_CLIENT_ID: mobile
+      KEYCLOAK_CLIENT_SECRET: hgBSF3mCT0rHAFo8mmTHypb5eNWQMkok
     depends_on:
       - nats
 
@@ -36,23 +40,37 @@ services:
     volumes:
       - db_kc_data:/var/lib/postgres/data
 
+  service-ad:
+    build:
+      context: backend
+      dockerfile: services/ad/Dockerfile
+    environment:
+      - DB_HOST=db-service-ad
+      - DB_PORT=5432
+      - DB_USERNAME=ads
+      - DB_PASSWORD=password
+    depends_on:
+      - nats
+      - db-service-ad
+
   db-service-ad:
-    image: bitnami/postgresql:14
-    env_file:
-      - .env/postgres-ads.template.env
+    image: postgres:14
+    environment:
+      - POSTGRES_USER=ads
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=ads
     volumes:
       - db_service_ad_data:/var/lib/postgres/data
 
-  db-notifications:
-    image: timescale/timescaledb:latest-pg15
-    environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: notifications
-    volumes:
-      - db_notifications_data:/var/lib/postgresql/data
+  # db-notifications:
+  #   image: timescale/timescaledb:latest-pg15
+  #   environment:
+  #     POSTGRES_PASSWORD: password
+  #     POSTGRES_DB: notifications
+  #   volumes:
+  #     - db_notifications_data:/var/lib/postgresql/data
 
 volumes:
-  db_notifications_data:
+  # db_notifications_data:
   db_kc_data:
   db_service_ad_data:
-
