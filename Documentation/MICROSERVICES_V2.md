@@ -13,20 +13,14 @@
   - [2. Architecture Overview](#2-architecture-overview)
     - [2.1. Related patterns](#21-related-patterns)
     - [2.2. Design architecture pattern about *Seasonal Workers*](#22-design-architecture-pattern-about-seasonal-workers)
-    - [2.1. Workflow step-by-step](#21-workflow-step-by-step)
-  - [4. Architecture Overview](#4-architecture-overview)
-    - [Payload and interface](#payload-and-interface)
-        - [NestJS API Gateway:](#nestjs-api-gateway)
-        - [NATS Server:](#nats-server)
-        - [Profile Service with MinIO:](#profile-service-with-minio)
-        - [Notification Service:](#notification-service)
-        - [Ad Service:](#ad-service)
-    - [Communication Protocols](#communication-protocols)
-    - [Authentication and security](#authentication-and-security)
-    - [Dynamic Messaging, IP Resolution, and Load Balancing](#dynamic-messaging-ip-resolution-and-load-balancing)
-    - [Database per Service](#database-per-service)
-    - [Resilience Considerations](#resilience-considerations)
-  - [Shared Interface with Protocol Buffers](#shared-interface-with-protocol-buffers)
+    - [2.3. Workflow step-by-step](#23-workflow-step-by-step)
+    - [2.4. Components](#24-components)
+      - [NestJS API Gateway:](#nestjs-api-gateway)
+      - [NATS Server:](#nats-server)
+      - [Profile Service with MinIO:](#profile-service-with-minio)
+      - [Notification Service:](#notification-service)
+      - [Ad Service:](#ad-service)
+    - [2.5. Resilience Considerations](#25-resilience-considerations)
 
 
 
@@ -115,35 +109,45 @@ The requirement is to implement an API gateway that is the single entry point fo
 
 The API Gateway authenticates requests by intercepting an access token (e.g., JSON Web Token) and querying Keycloak to determine the corresponding role in the Identity Access Management system and filter by access rights. This process ensures secure identification of the requester. Additionally, a service may include the access token in its requests to other services, facilitating secure communication between services.
 
+Keycloak serves as the authentication service, managing user authentication and generating secure access tokens. In our architecture, Keycloak is deployed as a separate service, using `OpenID Connect (OIDC)` to authenticate users and generate access tokens. This implementation ensures that only authorized users can access resources, providing robust security and compatibility with the OAuth2 specification. From API Gateway side we use `NestJs-keycloack-client` to verify the authenticity of access tokens in each request. This ensures that only authenticated and authorized users can access the ressource.
+
 3. **Communication**: How do services in a microservice architecture communicate?
 
-Communication is the fundamental element upon which several constraints rely. All entities must speak the same language, and messages should be clear and easy to process. If a new entity joins the communication, its integration should be seamless. When one entity communicates with another, should the response be immediate, or can it be asynchronous?
+Communication within a microservices architecture encompasses several critical elements that require particular attention, including language standardization, message clarity, ease of integration, response time and scalability. Seamless integration between services is essential to maintain the architecture's agility and flexibility, allowing additions or modifications to be made without disrupting the existing system. All entities must speak the same language, and messages should be clear and easy to process. If a new entity joins the communication, its integration should be seamless.   When one entity communicates with another, it's essential to consider whether the response should be immediate or asynchronous.
 
-It's clear that this aspect constitutes the core of microservices architecture and involves making compromises. 
+It's clear that this aspect constitutes the core of microservices architecture and involves making compromises.
 
-Inter-service and API Gateway - services communication is based on [NATS](https://docs.nats.io). It is a high perfomance messaging and connective fabric. It uses Subject-Based Messaging. A subject is just a string of characters that form a name which the publisher and subscriber can use to find each other. There are 2 kinds of fonctionalities, synchrone messgaing (Core NATS) and asynchrone messaging, in other terme, persistance messaging (JetStream).
+The three main challenges concern the way messages are transmitted, the data format to be used, and ensuring that the sender formats the messages in such a way that the recipient can understand them. To solve this problem, we have opted for a modern approach to managing requests both synchronously and asynchronously, with an event-driven architecture to cover all eventualities.
 
-There are several different styles of communication:
+In our architecture, we rely on NATS as our high performance messaging and connectivity fabric. NATS' Subject-Based Messaging offers flexibility and scalability, enabling services to discover and communicate seamlessly. NATS also provides distinct functionalities tailored to different communication needs, including synchronous messaging with Core NATS and persistent messaging with JetStream.
 
-- Publish/subscribe - a service publishes a message to zero or more recipients
-- Request-reply - a service sends a request message to a recipient and expects to receive a reply message promptly
-- Queue Groups
+By coupling NATS with the ProtoBuf data format, we enhance communication efficiency and maintainability. ProtoBuf's lightweight nature reduces bandwidth usage and facilitates the establishment of clear communication contracts between services through ProtoBuf files. This approach not only ensures efficient data transmission but also promotes maintainability and extensibility across the entire system.
 
-- Notifications - a sender sends a message a recipient but does not expect a reply. Nor is one sent.
-- Request/asynchronous response - a service sends a request message to a recipient and expects to receive a reply message eventually
-- Publish/asynchronous response - a service publishes a request to one or recipients, some of whom send back a reply
+4. **Discovery**: How does the client of a service - the API gateway or another service - discover the location of a service instance?
 
-1. **Discovery**: How does the client of a service - the API gateway or another service - discover the location of a service instance?
+Our microservices talk to each other using NATS, a quick and simple messaging system. NATS helps them chat fast and without getting too tangled up with each other.
 
-The backend comprises two distinct components: the Identity and Access Management segment, powered by Keycloak, and the application logic segment. The backend is publicly accessible through Keycloak (directly) and by an API gateway.
+NATS also helps out with figuring out where to find each service. It does this cleverly, adapting to changes in our system without needing a lot of manual fuss.
 
-Under the hood, behind the API gateway, the entire backend is powerded by high performance messaging and connective fabric, [NATS](https://docs.nats.io/). A connective technology is responsible for addressing, discovery and exchanging of messages that drive the common patterns in distributed systems; asking and answering questions, aka services/microservices, and making and processing statements, or stream processing.
+And here's the cool part – NATS makes sure no one service gets too overloaded with work. It does this using subscribers and queues, kind of like making sure everyone in a group gets a fair share of the load. This makes our whole system work better and smoother. So, NATS isn't just good at chatting; it's also like a friendly traffic cop, making sure everyone moves along nicely.
+
+<!-- TO COMPLETE -->
+
+5. **Database per service**: What’s the database architecture in a microservices application?
 
 The Database per Service pattern describes how each service has its own database in order to ensure loose coupling.
 
+The "Database per Service" model is employed, meaning that each service is responsible for its own database. Each service has its own REST API for interacting with its database. This provides complete data isolation between services, facilitating maintenance and scalability. The databases can be of different types depending on the needs, such as SQL, NoSQL, etc.
+
+> **_NOTE_**
+> The "Database per Service" approach, while providing data isolation and scalability, can also lead to the challenge of maintaining multiple databases. This can result in increased administrative overhead, especially when it comes to backup, monitoring, and data synchronization across services. It's essential to carefully manage and maintain multiple databases to ensure data consistency and performance.
+
+6. **Communication Protocols**
+
+All communication between clients and internal services is facilitated through the `API Gateway` using secure `HTTPS` calls. This ensures a safe and encrypted channel for data exchange, maintaining the integrity and confidentiality of information. Clients can confidently interact with our system, knowing that their data is transmitted securely over the web.
 
 
-### 2.1. Workflow step-by-step
+### 2.3. Workflow step-by-step
 
 1. The user sends a request to the Keycloak server to get an token access or if he already has one, he sends it to the API Gateway (step :3).
 
@@ -159,76 +163,35 @@ The Database per Service pattern describes how each service has its own database
 
 7. Then all nats client (microservices) which are subscribed to the specific subject, will receive the request and send back the reply to NATS server and the API Gateway will receive the reply.
 
-## 4. Architecture Overview
+### 2.4. Components
 
+Here's a quick look at the key components:
 
-
-
-
-### Payload and interface
-
-
-
-
-In this modern web development ecosystem, the microservices architecture has become a cornerstone for building scalable and maintainable applications. Our system comprises several independent services seamlessly working together to deliver a robust and efficient backend.
-
-Our backend system follows a microservices approach, ensuring flexibility and scalability. Here's a quick look at the key components:
-
-##### NestJS API Gateway:
+#### NestJS API Gateway:
 
 - Manages API access, authentication, and load balancing.
 - Acts as a central entry point for client-server communication.
 
-##### NATS Server:
+#### NATS Server:
 
 - Enables fast and lightweight messaging between microservices.
 - Supports real-time updates and ensures efficient event handling.
 
-##### Profile Service with MinIO:
+#### Profile Service with MinIO:
 
 - Handles user profiles, CVs, and profile photos.
 - Utilizes MinIO for secure and scalable file storage.
 
-##### Notification Service:
+#### Notification Service:
 
 - Provides real-time updates on seasonal job offer statuses.
 - Ensures timely and efficient delivery of notifications.
 
-##### Ad Service:
+#### Ad Service:
 
 - Central hub for managing advertisements, experiences, and recommendations.
 - Enhances user experience through personalized content.
 
-### Communication Protocols
-
-All communication between clients and internal services is facilitated through the `API Gateway` using secure `HTTPS` calls. This ensures a safe and encrypted channel for data exchange, maintaining the integrity and confidentiality of information. Clients can confidently interact with our system, knowing that their data is transmitted securely over the web.
-
-### Authentication and security
-
-Keycloak serves as the authentication service, managing user authentication and generating secure access tokens. In our architecture, Keycloak is deployed as a separate service, using `OpenID Connect (OIDC)` to authenticate users and generate access tokens. This implementation ensures that only authorized users can access resources, providing robust security and compatibility with the OAuth2 specification. From backend side we use `NestJs-keycloack-client` to verify the authenticity of access tokens in each request. This ensures that only authenticated and authorized users can access the ressource.
-
-### Dynamic Messaging, IP Resolution, and Load Balancing
-
-Our microservices talk to each other using NATS, a quick and simple messaging system. NATS helps them chat fast and without getting too tangled up with each other.
-
-NATS also helps out with figuring out where to find each service. It does this cleverly, adapting to changes in our system without needing a lot of manual fuss.
-
-And here's the cool part – NATS makes sure no one service gets too overloaded with work. It does this using subscribers and queues, kind of like making sure everyone in a group gets a fair share of the load. This makes our whole system work better and smoother. So, NATS isn't just good at chatting; it's also like a friendly traffic cop, making sure everyone moves along nicely.
-
-### Database per Service
-
-The "Database per Service" model is employed, meaning that each service is responsible for its own database. Each service has its own REST API for interacting with its database. This provides complete data isolation between services, facilitating maintenance and scalability. The databases can be of different types depending on the needs, such as SQL, NoSQL, etc.
-
-> **_NOTE_**
-> The "Database per Service" approach, while providing data isolation and scalability, can also lead to the challenge of maintaining multiple databases. This can result in increased administrative overhead, especially when it comes to backup, monitoring, and data synchronization across services. It's essential to carefully manage and maintain multiple databases to ensure data consistency and performance.
-
-### Resilience Considerations
+### 2.5. Resilience Considerations
 
 In our current architecture, we have implemented Docker Compose to manage our microservices. While the services are configured to restart always in case of failures, it's essential to address a potential resilience issue. Events that are received during system failures are not currently persistently recorded within the system. This means that any incoming events during such incidents might be lost forever. To enhance the system's resilience and ensure that no critical data is lost, we may need to implement mechanisms like event logging and message queuing systems that can capture and retain incoming events, even in the face of unexpected failures. This will allow us to recover and process any missed events, ensuring data integrity and a more resilient architecture.
-
-## Shared Interface with Protocol Buffers
-
-- We've adopted Protocol Buffers (Protobuf) for shared interfaces across all services.
-- Enables seamless communication by utilizing Protobuf's serialization and deserialization methods.
-
-This addition ensures consistent and efficient data exchange between microservices, contributing to a cohesive and streamlined backend architecture.
