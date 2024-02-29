@@ -1,28 +1,26 @@
 # Seasonal Workers - Architecture
 
-**_last update:_** 2022-02-24
+## Table of Contents
 
-- [Seasonal Workers - Architecture](#seasonal-workers---architecture)
-  - [1. Definition](#1-definition)
+- [Seasonal Workers - Architecture](#seasonal-workers-architecture)
+  - [1.General definition](#1-definition)
     - [1.1. What are microservices?](#11-what-are-microservices)
       - [1.1.1. Independently deployable](#111-independently-deployable)
       - [1.1.2. Loosely coupled](#112-loosely-coupled)
         - [(i) Runtime coupling and availability](#i-runtime-coupling-and-availability)
         - [(ii) Design-time coupling and development velocity](#ii-design-time-coupling-and-development-velocity)
     - [1.2. When you outgrow your monolithic architecture](#12-when-you-outgrow-your-monolithic-architecture)
-  - [2. Architecture Overview](#2-architecture-overview)
-    - [2.1. Related patterns](#21-related-patterns)
-    - [2.2. Design architecture pattern about *Seasonal Workers*](#22-design-architecture-pattern-about-seasonal-workers)
-    - [2.3. Workflow step-by-step](#23-workflow-step-by-step)
-    - [2.4. Components](#24-components)
+  - [2. Architecture Overview : Seasonal Workers](#2-architecture-overview-seasonal-workers)
+    - [Services](#services)
       - [NestJS API Gateway:](#nestjs-api-gateway)
       - [NATS Server:](#nats-server)
       - [Profile Service with MinIO:](#profile-service-with-minio)
       - [Notification Service:](#notification-service)
       - [Ad Service:](#ad-service)
-    - [2.5. Resilience Considerations](#25-resilience-considerations)
-
-
+    - [2.1 Architecture overview](#21-architecture-overview)
+    - [2.2 Schema explanation](#22-schema-explanation)
+  - [2.3 Architecture explanation](#23-architecture-explanation)
+    - [2.4 Resilience Considerations](#24-resilience-considerations)
 
 ## 1. Definition
 
@@ -39,7 +37,7 @@ The microservice architecture enables an organization to deliver large, complex 
 
 #### 1.1.1. Independently deployable
 
-A meaningful definition of *independently deployable* is a service that is packaged as a deployable or executable unit and is production-ready after it has been tested in isolation. Such a service has its own source code repository and deployment pipeline. The deployment pipeline tests the service in isolation by using test doubles for its collaborators along with consumer-driven contract testing. What emerges from the deployment pipeline that is a service that can and should be deployed into production.
+A meaningful definition of _independently deployable_ is a service that is packaged as a deployable or executable unit and is production-ready after it has been tested in isolation. Such a service has its own source code repository and deployment pipeline. The deployment pipeline tests the service in isolation by using test doubles for its collaborators along with consumer-driven contract testing. What emerges from the deployment pipeline that is a service that can and should be deployed into production.
 
 If you need to test your service with other services in order to verify that it’s production ready then it is not independently deployable. Moreover, you might want to consider putting those services in a single repository (as in our case). It ensures that the output of your single deployment pipeline is actually production ready. It will also eliminate the complexity of developing across multiple repositories.
 
@@ -80,30 +78,68 @@ But sometimes an application can outgrow its monolithic architecture and become 
   <img src="https://microservices.io/i/posts/pattern-thumbnails/thumbnail-Monolith_vs_Microservices.png" width=600 /> 
 </div>
 
-## 2. Architecture Overview
+## 2. Architecture Overview : Seasonal Workers
 
-Seasonal-Workers backend is a proof of concept (POC) that follow a microservices software architecture. While its implementation remains modular, the adoption of microservices isn't solely a response to the inadequacy of monolithic architecture. Instead, it's primarily driven by the need for prototyping and experimentation. 
+Seasonal-Workers backend is a proof of concept (POC) that follow a microservices software architecture. While its implementation remains modular, the adoption of microservices isn't solely a response to the inadequacy of monolithic architecture. Instead, it's primarily driven by the need for prototyping and experimentation.
 
+### Services
 
-### 2.1. Related patterns
+Here's a quick look of the services that are part of the Seasonal Workers backend:
 
-There are many patterns related to the Microservices architecture pattern. Here's a diagram you can find on this [link](https://microservices.io/patterns/microservices.html) that summarizes the implementation choices of a microservices architecture.
+#### NestJS API Gateway:
 
-<div align="center">
-  <img src="https://microservices.io/i/PatternsRelatedToMicroservices.jpg" width=700 />
-</div>
+- Manages API access, authentication, and load balancing.
+- Acts as a central entry point for client-server communication.
 
-### 2.2. Design architecture pattern about *Seasonal Workers*
+#### NATS Server:
+
+- Enables fast and lightweight messaging between microservices.
+- Supports real-time updates and ensures efficient event handling.
+
+#### Profile Service with MinIO:
+
+- Handles user profiles, CVs, and profile photos.
+- Utilizes MinIO for secure and scalable file storage.
+
+#### Notification Service:
+
+- Provides real-time updates on seasonal job offer statuses.
+- Ensures timely and efficient delivery of notifications.
+
+#### Ad Service:
+
+- Central hub for managing advertisements, experiences, and recommendations.
+- Enhances user experience through personalized content.
+
+### 2.1 Architecture overview
 
 <div align="center">
   <img src="./assets/schema_microservices_v2.jpg" width=700 />
 </div>
 
+### 2.2 Schema explanation
+
+1. The user sends a request to the Keycloak server to get an token access or if he already has one, he sends it to the API Gateway (step :3).
+
+2. The Keycloak server sends back an access token to the user, to get more information about authentification workflow here #TODO :(define auth schema).
+
+3. The user sends a request to the NestJS API Gateway with his access token to get specific ressources.
+
+4. The API Gateway sends the access token to the Keycloak server to check its validity and performed many controles as Role-based access control (RBAC), Data validation, etc.
+
+5. Keycloack server sends back the validity status of the token to the API Gateway.
+
+6. If the token is valid, the API Gateway sends as nats client the request/reply to NATS server in specific subject.
+
+7. Then all nats client (microservices) which are subscribed to the specific subject, will receive the request and send back the reply to NATS server and the API Gateway will receive the reply.
+
+## 2.3 Architecture explanation
+
 Above is the final model of the microservices architecture we've implemented. This design offers many advantages, and we'll see how certain concepts have been integrated to achieve a lightweight yet complex architecture. The design took several key factors into account, with the aim of simulating and achieving industry standards such as those of Amazon and Netflix. The architecture of the Seasonal Workers backend was developed in depth to ensure optimization from Layer 4 (Transport) of the OSI model through to Layer 7 (Application). Data consistency across the entire backend communication flow is a top priority; no information is to be lost. This means that every request must be processed, even in the event of an error.
 
 1. **Ingress**: How do the clients access the individual services?
 
-The requirement is to implement an API gateway that is the single entry point for all clients. The API gateway handles requests in one of two ways. Some requests are simply proxied/routed to the appropriate service. It handles other requests by fanning out to multiple services. Rather than provide a one-size-fits-all style API, the API gateway can expose a different API for each client. 
+The requirement is to implement an API gateway that is the single entry point for all clients. The API gateway handles requests in one of two ways. Some requests are simply proxied/routed to the appropriate service. It handles other requests by fanning out to multiple services. Rather than provide a one-size-fits-all style API, the API gateway can expose a different API for each client.
 
 2. **Security**: How to communicate the identity of the requestor to the services that handle the request?
 
@@ -113,15 +149,17 @@ Keycloak serves as the authentication service, managing user authentication and 
 
 3. **Communication**: How do services in a microservice architecture communicate?
 
-Communication within a microservices architecture encompasses several critical elements that require particular attention, including language standardization, message clarity, ease of integration, response time and scalability. Seamless integration between services is essential to maintain the architecture's agility and flexibility, allowing additions or modifications to be made without disrupting the existing system. All entities must speak the same language, and messages should be clear and easy to process. If a new entity joins the communication, its integration should be seamless.   When one entity communicates with another, it's essential to consider whether the response should be immediate or asynchronous.
+In a microservices architecture, communication is crucial and involves several key aspects such as language standardization, message clarity, integration ease, response time, and scalability.
 
-It's clear that this aspect constitutes the core of microservices architecture and involves making compromises.
+Seamless service integration is vital for maintaining architecture agility and flexibility. All entities must use a common language and clear, easily processable messages. New entity integration should be smooth.
 
-The three main challenges concern the way messages are transmitted, the data format to be used, and ensuring that the sender formats the messages in such a way that the recipient can understand them. To solve this problem, we have opted for a modern approach to managing requests both synchronously and asynchronously, with an event-driven architecture to cover all eventualities.
+Response type, whether immediate or asynchronous, should be considered during entity communication.
 
-In our architecture, we rely on NATS as our high performance messaging and connectivity fabric. NATS' Subject-Based Messaging offers flexibility and scalability, enabling services to discover and communicate seamlessly. NATS also provides distinct functionalities tailored to different communication needs, including synchronous messaging with Core NATS and persistent messaging with JetStream.
+The core challenges include message transmission, data format selection, and ensuring sender-formatted messages are recipient-comprehensible. We address these using a modern, event-driven architecture managing both synchronous and asynchronous requests.
 
-By coupling NATS with the ProtoBuf data format, we enhance communication efficiency and maintainability. ProtoBuf's lightweight nature reduces bandwidth usage and facilitates the establishment of clear communication contracts between services through ProtoBuf files. This approach not only ensures efficient data transmission but also promotes maintainability and extensibility across the entire system.
+Our architecture uses NATS as a high-performance messaging and connectivity fabric. NATS' Subject-Based Messaging provides flexibility and scalability, enabling seamless service discovery and communication. It also offers synchronous messaging with Core NATS and persistent messaging with JetStream.
+
+By combining NATS with the ProtoBuf data format, we improve communication efficiency and maintainability. ProtoBuf's lightweight nature reduces bandwidth usage and establishes clear communication contracts between services via ProtoBuf files, ensuring efficient data transmission and promoting system-wide maintainability and extensibility.
 
 4. **Discovery**: How does the client of a service - the API gateway or another service - discover the location of a service instance?
 
@@ -130,8 +168,6 @@ Our microservices talk to each other using NATS, a quick and simple messaging sy
 NATS also helps out with figuring out where to find each service. It does this cleverly, adapting to changes in our system without needing a lot of manual fuss.
 
 And here's the cool part – NATS makes sure no one service gets too overloaded with work. It does this using subscribers and queues, kind of like making sure everyone in a group gets a fair share of the load. This makes our whole system work better and smoother. So, NATS isn't just good at chatting; it's also like a friendly traffic cop, making sure everyone moves along nicely.
-
-<!-- TO COMPLETE -->
 
 5. **Database per service**: What’s the database architecture in a microservices application?
 
@@ -160,52 +196,6 @@ It is a good idea to create barriers that enforce this modularity. You could, fo
 
 All communication between clients and internal services is facilitated through the `API Gateway` using secure `HTTPS` calls. This ensures a safe and encrypted channel for data exchange, maintaining the integrity and confidentiality of information. Clients can confidently interact with our system, knowing that their data is transmitted securely over the web.
 
-
-### 2.3. Workflow step-by-step
-
-1. The user sends a request to the Keycloak server to get an token access or if he already has one, he sends it to the API Gateway (step :3).
-
-2. The Keycloak server sends back an access token to the user, to get more information about authentification workflow here #TODO :(define auth schema).
-
-3. The user sends a request to the NestJS API Gateway with his access token to get specific ressources.
-
-4. The API Gateway sends the access token to the Keycloak server to check its validity and performed many controles as Role-based access control (RBAC), Data validation, etc.
-
-5. Keycloack server sends back the validity status of the token to the API Gateway.
-
-6. If the token is valid, the API Gateway sends as nats client the request/reply to NATS server in specific subject.
-
-7. Then all nats client (microservices) which are subscribed to the specific subject, will receive the request and send back the reply to NATS server and the API Gateway will receive the reply.
-
-### 2.4. Components
-
-Here's a quick look at the key components:
-
-#### NestJS API Gateway:
-
-- Manages API access, authentication, and load balancing.
-- Acts as a central entry point for client-server communication.
-
-#### NATS Server:
-
-- Enables fast and lightweight messaging between microservices.
-- Supports real-time updates and ensures efficient event handling.
-
-#### Profile Service with MinIO:
-
-- Handles user profiles, CVs, and profile photos.
-- Utilizes MinIO for secure and scalable file storage.
-
-#### Notification Service:
-
-- Provides real-time updates on seasonal job offer statuses.
-- Ensures timely and efficient delivery of notifications.
-
-#### Ad Service:
-
-- Central hub for managing advertisements, experiences, and recommendations.
-- Enhances user experience through personalized content.
-
-### 2.5. Resilience Considerations
+### 2.4 Resilience Considerations
 
 In our current architecture, we have implemented Docker Compose to manage our microservices. While the services are configured to restart always in case of failures, it's essential to address a potential resilience issue. Events that are received during system failures are not currently persistently recorded within the system. This means that any incoming events during such incidents might be lost forever. To enhance the system's resilience and ensure that no critical data is lost, we may need to implement mechanisms like event logging and message queuing systems that can capture and retain incoming events, even in the face of unexpected failures. This will allow us to recover and process any missed events, ensuring data integrity and a more resilient architecture.
