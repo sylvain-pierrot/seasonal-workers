@@ -15,6 +15,7 @@ import { JobOffersController } from './consumers/ads/controllers/job-offers.cont
 import { JobsController } from './consumers/ads/controllers/jobs.controller';
 import { NotificationsController } from './consumers/notifications/notifications.controller';
 import { NotificationService } from './consumers/notifications/notifications.service';
+import { ProfileController } from './consumers/profile/profile.controller';
 
 @Module({
   imports: [
@@ -30,22 +31,19 @@ import { NotificationService } from './consumers/notifications/notifications.ser
     AvailabilityController,
     JobOffersController,
     JobsController,
+    ProfileController,
     NotificationsController,
   ],
   providers: [
     NotificationService,
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: ResourceGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RoleGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: AuthGuard,
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RoleGuard,
+    // },
   ],
 })
 export class AppModule {}

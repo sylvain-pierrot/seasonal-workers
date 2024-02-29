@@ -1,0 +1,19 @@
+syntax = "proto3";
+package services;
+
+import "models/profile.proto";
+
+message CreateUserProfileRequest {
+    models.User profile = 1;
+}
+
+message CreateUserProfileResponse {
+    string id = 1;
+}
+message UpdateUserProfileRequest {
+    models.User profile = 1;
+}
+
+message UpdateUserProfileResponse {
+    string id = 1;
+}

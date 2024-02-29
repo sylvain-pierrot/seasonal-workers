@@ -15,4 +15,7 @@ export enum NatsSubjects {
   JOB_OFFERS_VALIDATION = 'ADS.jobs.validation',
   JOB_GET_CATEGORIES = 'ADS.jobs.categories',
   NOTIFICATIONS_JOBS_GET = 'NOTIFICATIONS.jobs.get',
+  NOTIFICATIONS_JOBS_CREATE = 'NOTIFICATIONS.jobs.create',
+  PROFILE_WORKERS_CREATE = 'PROFILE.workers.create',
+  PROFILE_WORKERS_UPDATE = 'PROFILE.workers.update',
 }
