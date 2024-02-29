@@ -50,3 +50,13 @@ Before running the app, make sure you have an Android emulator running, or a dev
    Once the server is running, you can press `a` to run the app on Android emulator or device.
 
 ## Running microservices
+
+ During this project, we explored different approaches to shaping our microservices architecture. Initially, we conducted a Proof of Concept (POC) using a **Java stack** with the native Spring gateway and a service discovery mechanism, all communicating solely via HTTP (see [Microservice V1](https://github.com/sylvain-pierrot/seasonal-workers/blob/main/Documentation/MICROSERVICES_V1.md)). Subsequently, we made a significant shift to adopt a **message broker-oriented stack**, using the NATS server and NATS client for each service. This decision brought numerous advantages. Additionally, we implemented **PROTOBUF** to establish shared interfaces across all services (see [Microservice V2](https://github.com/sylvain-pierrot/seasonal-workers/blob/main/Documentation/MICROSERVICES_V2.md)).
+
+From the `Backend` directory, you can run the microservices using the following commands:
+
+```bash
+docker-compose up -d
+```
+
+You can also refer to all readme files in the `Backend` directory for more information.
